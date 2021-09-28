@@ -1,12 +1,11 @@
 <div class="sidebar" data-color="orange" data-background-color="white" data-image="{{ asset('material') }}/img/sidebar-1.jpg">
-  <!--
-      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-      Tip 2: you can also add an image using data-image tag
-  -->
+<?php
+$user_data = auth()->user();
+?>
   <div class="logo">
     <a href="https://creative-tim.com/" class="simple-text logo-normal">
-      {{ __('Creative Tim') }}
+      {{ __('D-Learning') }}
     </a>
   </div>
   <div class="sidebar-wrapper">
@@ -41,12 +40,14 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('table') }}">
-          <i class="material-icons">content_paste</i>
-            <p>{{ __('Table List') }}</p>
+      @if($user_data->category == 'T')
+      <li class="nav-item{{ $activePage == 'class' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('class.index') }}">
+          <i class="material-icons">meeting_room</i>
+            <p>{{ __('My Classes') }}</p>
         </a>
       </li>
+      @endif
       <li class="nav-item{{ $activePage == 'typography' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('typography') }}">
           <i class="material-icons">library_books</i>
