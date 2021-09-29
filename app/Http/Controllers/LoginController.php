@@ -1,31 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
-
-use App\Providers\RouteServiceProvider;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 use Illuminate\Http\JsonResponse;
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    public function __construct()
+    public function showLoginForm()
     {
-        $this->middleware('guest')->except('logout');
+        return view('login');
     }
 
     public function login(Request $request)
@@ -46,9 +31,10 @@ class LoginController extends Controller
         ]);
     }
 
+    
     public function logout(Request $request)
     {
-        $this->guard()->logout();
+        Auth::guard()->logout();
 
         $request->session()->invalidate();
 
@@ -59,13 +45,4 @@ class LoginController extends Controller
             : redirect('/');
     }
 
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
-    protected function guard()
-    {
-        return Auth::guard();
-    }
 }

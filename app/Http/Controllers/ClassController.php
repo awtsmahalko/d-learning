@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 class ClassController extends Controller
-{
-    /**
+{    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
