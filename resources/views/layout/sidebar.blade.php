@@ -11,7 +11,7 @@ $user_data = auth()->user();
   <div class="sidebar-wrapper">
     <ul class="nav">
       <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="./">
           <i class="material-icons">dashboard</i>
             <p>{{ __('Dashboard') }}</p>
         </a>

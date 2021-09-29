@@ -28,8 +28,16 @@ Route::get('/register', [App\Http\Controllers\RegisterController::class, 'showRe
 Route::post('/register', [App\Http\Controllers\RegisterController::class, 'register'])->name('register');
 
 Route::group(['middleware' => 'auth'], function () {
+
+	Route::get('/', function () {
+		return view('dashboard');
+	})->name('home');
+
 	Route::get('home', function () {
 		return view('dashboard');
 	})->name('home');
+
+	
+
 	Route::resource('class', 'App\Http\Controllers\ClassController', ['except' => ['show']]);
 });
