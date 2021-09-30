@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
 	if (Auth::check()) {
-    	return view('welcome');
+		return view('welcome');
 	}
 	return view('login');
 });
@@ -37,7 +37,12 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('dashboard');
 	})->name('home');
 
-	
-
 	Route::resource('class', 'App\Http\Controllers\ClassController', ['except' => ['show']]);
+
+	Route::get('/classes-vue', function () {
+		return view('classes.vue');
+	})->name('class.vue');
+	Route::get('/classes-vue-1', function () {
+		return view('classes.vue1');
+	})->name('class.vue1');
 });
