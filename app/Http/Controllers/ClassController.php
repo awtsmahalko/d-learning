@@ -6,17 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Whoops\Run;
 
 class ClassController extends Controller
-{    /**
+{
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Classes $classes)
+    public function index()
     {
-        return view('classes.index', ['classes' => $classes->where('user_id','=',Auth::id())
-            ->paginate(15)]);
+        $class = Classes::all();
+        return response()->json($class);
     }
 
     /**
@@ -43,10 +45,12 @@ class ClassController extends Controller
         ]);
 
         $request['user_id'] = Auth::id();
-        Classes::create($request->all());
-     
-        return redirect()->route('class.index')
-                        ->with('success','Class created successfully.');
+        $class = Classes::create($request->all());
+
+        return redirect()->json([
+            'message' => 'Class Created Successfully!!',
+            'class' => $class
+        ]);
     }
 
 
@@ -58,7 +62,7 @@ class ClassController extends Controller
      */
     public function edit(Classes $class)
     {
-        return view('classes.edit',compact('class'));
+        return view('classes.edit', compact('class'));
     }
 
     /**
@@ -74,11 +78,11 @@ class ClassController extends Controller
             'code' => 'required',
             'name' => 'required',
         ]);
-    
+
         $class->update($request->all());
-    
+
         return redirect()->route('class.index')
-                        ->with('success','Classes updated successfully');
+            ->with('success', 'Classes updated successfully');
     }
 
     /**
@@ -90,8 +94,8 @@ class ClassController extends Controller
     public function destroy(Classes $class)
     {
         $class->delete();
-    
+
         return redirect()->route('class.index')
-                        ->with('success','Class deleted successfully');
+            ->with('success', 'Class deleted successfully');
     }
 }

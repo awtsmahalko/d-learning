@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\JsonResponse;
+
 class LoginController extends Controller
 {
     public function showLoginForm()
@@ -23,7 +24,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect('/home');
+            return redirect('/');
         }
 
         return back()->withErrors([
@@ -31,7 +32,7 @@ class LoginController extends Controller
         ]);
     }
 
-    
+
     public function logout(Request $request)
     {
         Auth::guard()->logout();
@@ -44,5 +45,4 @@ class LoginController extends Controller
             ? new JsonResponse([], 204)
             : redirect('/');
     }
-
 }
