@@ -52,6 +52,9 @@
     @stack('js')
 
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
+    <script>
+        window.sessionUserId = "{{ Auth::id() }}";
+    </script>
 </body>
 
 </html>

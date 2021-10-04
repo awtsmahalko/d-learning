@@ -21,57 +21,22 @@ class ClassController extends Controller
         return response()->json($class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('classes.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'code' => 'required',
-        ]);
-
-        $request['user_id'] = Auth::id();
         $class = Classes::create($request->all());
 
-        return redirect()->json([
+        return response()->json([
             'message' => 'Class Created Successfully!!',
             'class' => $class
         ]);
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Classes $class)
+    public function show(Classes $class)
     {
-        return view('classes.edit', compact('class'));
+        return response()->json($class);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Classes $class)
     {
         $request->validate([
@@ -81,8 +46,11 @@ class ClassController extends Controller
 
         $class->update($request->all());
 
-        return redirect()->route('class.index')
-            ->with('success', 'Classes updated successfully');
+
+        return response()->json([
+            'message' => 'Class Updated Successfully!!',
+            'class' => $class
+        ]);
     }
 
     /**
@@ -95,7 +63,6 @@ class ClassController extends Controller
     {
         $class->delete();
 
-        return redirect()->route('class.index')
-            ->with('success', 'Class deleted successfully');
+        return response()->json('Class deleted!');
     }
 }

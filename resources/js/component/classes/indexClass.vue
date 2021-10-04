@@ -31,7 +31,10 @@
                                 <td> {{ clas.name}} </td>
                                 <td> {{ clas.created_at}} </td>
                                 <td>
-                                    
+                                    <div class="btn-group" role="group">
+                                        <router-link :to="{name: 'classEdit', params: { id: clas.id }}" class="btn btn-sm btn-success">Edit</router-link>
+                                        <button class="btn btn-sm btn-danger" @click="deleteClass(clas.id)">Delete</button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -70,6 +73,15 @@ export default {
                 console.log(error)
                 this.classes = []
             })
+        },
+        deleteClass(id){
+            if(confirm("Are you sure to delete this class ?")){
+                this.axios.delete(`/api/class/${id}`).then(response=>{
+                    this.getClasses()
+                }).catch(error=>{
+                    console.log(error)
+                })
+            }
         }
     }
 }

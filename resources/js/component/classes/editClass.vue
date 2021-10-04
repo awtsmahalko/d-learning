@@ -9,22 +9,22 @@
                     <p class="card-category">Complete your class details</p>
                 </div>
                 <div class="card-body">
-                    <form @submit.prevent="create">
+                    <form @submit.prevent="update">
                     <div class="row">
                         <div class="col-md-4">
                         <div class="form-group bmd-form-group">
-                            <label class="bmd-label-floating">Code</label>
+                            <label>Code</label>
                             <input v-model="clas.code" type="text" class="form-control" required>
                         </div>
                         </div>
                         <div class="col-md-8">
                         <div class="form-group bmd-form-group">
-                            <label class="bmd-label-floating">Name</label>
+                            <label>Name</label>
                             <input v-model="clas.name" type="text" class="form-control" required>
                         </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right"><span class="material-icons">add_circle_outline</span> Add Class</button>
+                    <button type="submit" class="btn btn-primary pull-right"><span class="material-icons">edit</span> Update Class</button>
                     <div class="clearfix"></div>
                     </form>
                 </div>
@@ -37,19 +37,20 @@
 
 <script>
 export default {
-    name:"add-class",
+    name:"edit-class",
     data(){
         return {
-            clas:{
-                user_id:sessionUserId,
-                code:"",
-                name:""
-            }
+            clas:{}
         }
     },
+    created(){
+        this.axios.get(`/api/class/${this.$route.params.id}`).then((res)=>{
+            this.clas = res.data;
+        });
+    },
     methods:{
-        async create(){
-            await this.axios.post('/api/class',this.clas).then(response=>{
+        async update(){
+            this.axios.patch(`/api/class/${this.$route.params.id}`,this.clas).then(response=>{
                 this.$router.push({name:"class"})
             }).catch(error=>{
                 console.log(error)
