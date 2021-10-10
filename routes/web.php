@@ -19,7 +19,9 @@ Route::post('/logout', [App\Http\Controllers\LoginController::class, 'logout'])-
 
 Route::get('/register', [App\Http\Controllers\RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [App\Http\Controllers\RegisterController::class, 'register'])->name('register');
-
+Route::get('web', function () {
+	return view('web');
+});
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('{any}', function () {
 		if (Auth::check()) {

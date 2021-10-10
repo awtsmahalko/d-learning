@@ -15,10 +15,10 @@ class ClassController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $class = Classes::all();
-        return response()->json($class);
+        $class = Classes::where('user_id', $request->user_id)->get();
+        return response()->json($request);
     }
 
     public function store(Request $request)

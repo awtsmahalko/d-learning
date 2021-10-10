@@ -20,7 +20,7 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
 		Auth::guard()->login($user);
 
-        return redirect()->route('home');
+        return redirect('/home');
 	}
 
 	protected function validator(array $data)

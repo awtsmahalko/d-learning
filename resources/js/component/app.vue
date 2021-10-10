@@ -23,7 +23,7 @@
                             <p>Classes</p>
                         </a>
                     </router-link>
-                    <router-link tag="li" to="/video/join" class="nav-item">
+                    <router-link tag="li" to="/video" class="nav-item">
                         <a class="nav-link">
                             <i class="material-icons">meeting_room</i>
                             <p>Video</p>

@@ -32,6 +32,7 @@
                                 <td> {{ clas.created_at}} </td>
                                 <td>
                                     <div class="btn-group" role="group">
+                                        <router-link :to="{name: 'classView', params: { id: clas.id }}" class="btn btn-sm btn-primary">View</router-link>
                                         <router-link :to="{name: 'classEdit', params: { id: clas.id }}" class="btn btn-sm btn-success">Edit</router-link>
                                         <button class="btn btn-sm btn-danger" @click="deleteClass(clas.id)">Delete</button>
                                     </div>
@@ -66,7 +67,9 @@ export default {
     },
     methods:{
         async getClasses(){
-            await this.axios.get('/api/class').then(response => {
+            await this.axios.get('/api/class',{
+                user_id:sessionUserId
+            }).then(response => {
                 this.classes = response.data
                 console.log(response.data)
             }).catch(error=>{
