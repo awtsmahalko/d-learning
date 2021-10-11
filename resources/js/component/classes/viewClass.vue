@@ -14,6 +14,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button type="button" class="btn btn-sm btn-primary"><span class="material-icons">attach_file</span> ATTACH</button>
                                 <button type="submit" class="btn btn-sm btn-primary"><span class="material-icons">edit</span> POST</button>
                                 <div class="clearfix"></div>
                             </form>

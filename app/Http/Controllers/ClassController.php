@@ -18,7 +18,7 @@ class ClassController extends Controller
     public function index(Request $request)
     {
         $class = Classes::where('user_id', $request->user_id)->get();
-        return response()->json($request);
+        return response()->json($class);
     }
 
     public function store(Request $request)

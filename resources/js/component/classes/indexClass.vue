@@ -68,7 +68,9 @@ export default {
     methods:{
         async getClasses(){
             await this.axios.get('/api/class',{
-                user_id:sessionUserId
+                params:{
+                    user_id:sessionUserId
+                }
             }).then(response => {
                 this.classes = response.data
                 console.log(response.data)
