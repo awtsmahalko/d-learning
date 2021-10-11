@@ -71,8 +71,10 @@ export default {
     methods:{
         async getPosts(){
             await this.axios.get('/api/post',{
-                user_id:sessionUserId,
-                class_id:this.$route.params.id
+                params:{
+                    user_id:sessionUserId,
+                    class_id:this.$route.params.id
+                }
             }).then(response => {
                 this.posts = response.data
                 console.log(response.data)
@@ -84,6 +86,7 @@ export default {
         submitPost() {
             this.axios.post('/api/post',this.post).then(response => {
                 console.log(response.data)
+                this.post.description = ''
                 this.getPosts()
             }).catch(error=>{
                 console.log(error)

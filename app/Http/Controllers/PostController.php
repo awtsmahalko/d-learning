@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\File;
 
 use App\Models\Post;
+
 class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $post = Post::where('class_id',1)->orderByDesc('created_at')->with('user')->get();
+        $post = Post::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->get();
         return response()->json($post);
     }
 
