@@ -111,8 +111,8 @@
                 </h4>
                 <small class="card-category">{{ post.created_at }}</small>
               </div>
-              <div class="card-body">
-                {{ post.description }}
+              <div class="card-body" style="padding-top: 0px">
+                <p style="color: #5a5a5a">{{ post.description }}</p>
 
                 <div class="col-md-12" style="border-top: 0px solid #ddd">
                   <div class="row">
