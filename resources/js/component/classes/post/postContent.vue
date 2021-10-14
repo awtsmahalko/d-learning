@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="card-body" style="padding-top: 0px">
-      <p class="post-description" v-html="descriptionposted"></p>
+      <p class="post-description mt-1" v-html="descriptionposted"></p>
       <div class="col-md-12">
         <div class="row">
           <postContentAttachment />

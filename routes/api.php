@@ -24,3 +24,4 @@ Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'cr
 
 Route::get('/post', [App\Http\Controllers\PostController::class, 'index']);
 Route::post('/post', [App\Http\Controllers\PostController::class, 'store']);
+Route::post('/post/uploadPostAttachment', [App\Http\Controllers\PostController::class, 'uploadAtachment']);

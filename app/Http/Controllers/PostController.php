@@ -24,4 +24,19 @@ class PostController extends Controller
             'class' => $post
         ]);
     }
+
+    public function uploadAtachment(Request $request)
+    {
+        // dd($request);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = $request->getClientOriginalName();
+            $folder = uniqid() . '-' . now()->timestamp;
+            $file->storeAs('avatars/tmp/' . $folder, $filename);
+
+            return $folder;
+        }
+
+        return '';
+    }
 }

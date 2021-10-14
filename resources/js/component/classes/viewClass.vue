@@ -40,13 +40,22 @@
                   </div>
                   <div class="col-md-12" style="border-top: 2px solid #ddd">
                     <div class="row">
-                      <postAttachment />
+                      <div class="col-md-12 mt-1">
+                        <file-pond
+                          name="test"
+                          ref="pond"
+                          label-idle="Drop attachment here..."
+                          v-bind:allow-multiple="true"
+                          :files="myFiles"
+                          :server="{ process }"
+                          v-on:init="handleFilePondInit"
+                          @processfile="onProcessFile"
+                          @addfile="onAddFile"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <button type="button" class="btn btn-sm btn-primary">
-                  <span class="material-icons">attach_file</span> ATTACH
-                </button>
                 <button type="submit" class="btn btn-sm btn-primary">
                   <span class="material-icons">edit</span> POST
                 </button>
@@ -84,6 +93,18 @@
 import postAttachment from "./post/postAttachment.vue";
 import postContent from "./post/postContent.vue";
 
+// Import Vue FilePond
+import vueFilePond from "vue-filepond";
+
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
+
+// Import FilePond plugins
+// Please note that you need to install these plugins separately
+
+// Create component
+const FilePond = vueFilePond();
+
 export default {
   name: "view-class",
   data() {
@@ -95,6 +116,7 @@ export default {
         class_id: "",
         description: "<p><br></p>",
       },
+      myFiles: [],
     };
   },
   created() {
@@ -136,7 +158,7 @@ export default {
         })
         .then((response) => {
           this.posts = response.data;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -158,10 +180,77 @@ export default {
         alert("Compose anything to share to the class");
       }
     },
+    handleFilePondInit: function () {
+      console.log("FilePond has initialized");
+
+      // this.$refs.pond.setOptions({
+      //   server: {
+      //     url: "/post/uploadPostAttachment",
+      //     headers: {
+      //       "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      //     },
+      //   },
+      // });
+
+      // FilePond instance methods are available on `this.$refs.pond`
+    },
+    onProcessFile(error, file) {
+      console.log("file processed", {
+        error,
+        file,
+      });
+
+      // // set data
+      // const formData = new FormData();
+      // formData.append("file", file, file.name);
+
+      // this.axios
+      //   .post("/api/uploadPostAttachment", this.post)
+      //   .then((response) => {
+      //     // passing the file id to FilePond
+      //     // load(response.data.data.id);
+      //     console.log(response.data.data.id);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+    },
+    onAddFile(error, file) {
+      console.log("file added", { error, file });
+    },
+    process(fieldName, file, metadata, load, error, progress, abort) {
+      var self = this;
+
+      // set data
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+
+      this.axios
+        .get("/api/uploadPostAttachment", formData)
+        .then((response) => {
+          console.log(response);
+          load(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    // process: {
+    //   url: "./process",
+    //   method: "POST",
+    //   withCredentials: false,
+    //   headers: {
+    //     "X-CSRF-TOKEN": "{{ csrf_token() }}",
+    //   },
+    //   timeout: 7000,
+    //   onload: null,
+    //   onerror: null,
+    // },
   },
   components: {
     postAttachment,
     postContent,
+    FilePond,
   },
 };
 </script>
