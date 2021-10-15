@@ -42,16 +42,19 @@
                     <div class="row">
                       <div class="col-md-12 mt-1">
                         <file-pond
-                          name="test"
+                          name="file"
                           ref="pond"
                           label-idle="Drop attachment here..."
                           v-bind:allow-multiple="true"
                           :files="myFiles"
-                          :server="{ process }"
+                          :server="server"
+                          v-on:init="handleFilePondInit"
+                        />
+                        <!-- 
                           v-on:init="handleFilePondInit"
                           @processfile="onProcessFile"
                           @addfile="onAddFile"
-                        />
+                         -->
                       </div>
                     </div>
                   </div>
@@ -117,6 +120,47 @@ export default {
         description: "<p><br></p>",
       },
       myFiles: [],
+      server: {
+        process: (fieldName, file, metadata, load, error) => {
+          const formData = new FormData();
+          formData.append("file", file, file.name);
+          formData.append("classId", this.post.class_id);
+          this.axios({
+            method: "POST",
+            url: "/api/uploadPostAttachment",
+            data: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+            .then((response) => {
+              load(response.data);
+              console.log(response.data);
+            })
+            .catch(() => {
+              error();
+            });
+        },
+        revert: (uniqueFileId, load, error) => {
+          this.axios({
+            method: "DELETE",
+            url: "/api/deletePostAttachment",
+            data: uniqueFileId,
+          })
+            .then((response) => {
+              load();
+            })
+            .catch(() => {
+              error();
+            });
+
+          // Can call the error method if something is wrong, should exit after
+          error("oh my goodness");
+
+          // Should call the load method when done, no parameters required
+          load();
+        },
+      },
     };
   },
   created() {
@@ -170,6 +214,8 @@ export default {
         this.axios
           .post("/api/post", this.post)
           .then((response) => {
+            this.$refs.pond.removeFiles();
+            console.log(this.$refs.pond);
             $("textarea#summernote").summernote("code", "<p><br></p>");
             this.getPosts();
           })
@@ -182,70 +228,10 @@ export default {
     },
     handleFilePondInit: function () {
       console.log("FilePond has initialized");
-
-      // this.$refs.pond.setOptions({
-      //   server: {
-      //     url: "/post/uploadPostAttachment",
-      //     headers: {
-      //       "X-CSRF-TOKEN": "{{ csrf_token() }}",
-      //     },
-      //   },
-      // });
-
-      // FilePond instance methods are available on `this.$refs.pond`
+      // example of instance method call on pond reference
+      this.$refs.pond.getFiles();
+      console.log(this.$refs.pond.getFiles());
     },
-    onProcessFile(error, file) {
-      console.log("file processed", {
-        error,
-        file,
-      });
-
-      // // set data
-      // const formData = new FormData();
-      // formData.append("file", file, file.name);
-
-      // this.axios
-      //   .post("/api/uploadPostAttachment", this.post)
-      //   .then((response) => {
-      //     // passing the file id to FilePond
-      //     // load(response.data.data.id);
-      //     console.log(response.data.data.id);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-    },
-    onAddFile(error, file) {
-      console.log("file added", { error, file });
-    },
-    process(fieldName, file, metadata, load, error, progress, abort) {
-      var self = this;
-
-      // set data
-      const formData = new FormData();
-      formData.append("file", file, file.name);
-
-      this.axios
-        .get("/api/uploadPostAttachment", formData)
-        .then((response) => {
-          console.log(response);
-          load(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    // process: {
-    //   url: "./process",
-    //   method: "POST",
-    //   withCredentials: false,
-    //   headers: {
-    //     "X-CSRF-TOKEN": "{{ csrf_token() }}",
-    //   },
-    //   timeout: 7000,
-    //   onload: null,
-    //   onerror: null,
-    // },
   },
   components: {
     postAttachment,
@@ -277,5 +263,10 @@ export default {
 
 .btn-width {
   width: 100%;
+}
+
+.filepond--wrapper {
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 </style>
