@@ -25,8 +25,9 @@ class PostController extends Controller
         // $post->addMedia(storage_path('app/public/postattachment/tmp/6169134b4eb1a-1634276171/LIBONA_PREMIUM_SWINE_STARTER.pdf'))->toMediaCollection('public/postattachment/' . $request->class_id);
 
         // Storage::disk('public')->put('example.txt', 'Contents');
-
-        Storage::move('public/postattachment/tmp/61691be6a2895-1634278374/LIBONA PREMIUM SWINE STARTER.xlsx', 'public/postattachment/' . $class->code . "/LIBONA PREMIUM SWINE STARTER.xlsx");
+        if (Storage::exists('public/postattachment/tmp/61691be6a2895-1634278374/LIBONA PREMIUM SWINE STARTER.xlsx')) {
+            Storage::move('public/postattachment/tmp/61691be6a2895-1634278374/LIBONA PREMIUM SWINE STARTER.xlsx', 'public/postattachment/' . $class->code . "/LIBONA PREMIUM SWINE STARTER.xlsx");
+        }
 
         return response()->json([
             'message' => 'Post Created Successfully!!',
