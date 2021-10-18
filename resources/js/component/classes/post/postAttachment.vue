@@ -1,58 +1,67 @@
 <template>
-  <div class="card file-attachment">
-    <div class="card-horizontal" style="display: flex; flex-direction: row">
-      <img
-        class=""
-        src="http://via.placeholder.com/300x180"
-        alt="Card image cap"
-        style="
-          width: 120px;
-          object-fit: cover;
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
-        "
-      />
+  <div v-if="postsAttachments.length > 0" style="width: 100%">
+    <div
+      v-for="(attachment, key) in postsAttachments"
+      :key="key"
+      class="card file-attachment"
+    >
+      <div class="card-horizontal" style="display: flex; flex-direction: row">
+        <img
+          class=""
+          src="http://via.placeholder.com/300x180"
+          alt="Card image cap"
+          style="
+            width: 120px;
+            object-fit: cover;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+          "
+        />
 
-      <div class="card-body" style="padding: 11px">
-        <div class="row">
-          <div
-            class="col-12"
-            style="
-              display: flex;
-              width: 100px;
-              justify-content: space-between;
-              flex-direction: row;
-              align-items: center;
-            "
-          >
+        <div class="card-body" style="padding: 11px">
+          <div class="row">
             <div
-              style="display: flex; flex-direction: column; width: calc(77%)"
+              class="col-12"
+              style="
+                display: flex;
+                width: 100px;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items: center;
+              "
             >
-              <h5
-                class="card-title"
-                style="
-                  text-overflow: ellipsis;
-                  width: 100%;
-                  white-space: nowrap;
-                  overflow: hidden;
-                "
+              <div
+                style="display: flex; flex-direction: column; width: calc(77%)"
               >
-                <b
-                  >test_attachment_for_classtest_attachment_for_classtest_attachment_for_classtest_attachment_for_classtest_attachment_for_classtest_attachment_for_classtest_attachment_for_class.jpg</b
+                <h5
+                  class="card-title"
+                  style="
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                  "
                 >
-              </h5>
-              <p class="card-text text-muted">Image</p>
-            </div>
+                  <b>{{ attachment.filename }}</b>
+                </h5>
+                <p class="card-text text-muted">{{ attachment.filetype }}</p>
+              </div>
 
-            <a class="attachment-remove">
-              <i class="material-icons attachment-remove-icon">close</i>
-            </a>
+              <a class="attachment-remove">
+                <i class="material-icons attachment-remove-icon">close</i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: ["postsAttachments"],
+};
+</script>
 <style scoped>
 .file-attachment {
   border: 1px solid #c4c0c0;

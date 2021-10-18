@@ -71,6 +71,7 @@
                 :userposted="post.user.fname"
                 :dateposted="post.created_at"
                 :descriptionposted="post.description"
+                :postsAttachments="post.post_attachments"
               />
             </div>
           </div>
@@ -135,7 +136,6 @@ export default {
           })
             .then((response) => {
               load(response.data);
-              console.log(response.data);
             })
             .catch(() => {
               error();
@@ -202,7 +202,8 @@ export default {
         })
         .then((response) => {
           this.posts = response.data;
-          // console.log(response.data);
+          // this.postsAttachments = response.data.post_attachments;
+          // console.log(this.postsAttachments);
         })
         .catch((error) => {
           console.log(error);
@@ -211,11 +212,19 @@ export default {
     },
     submitPost() {
       if (this.post.description != "<p><br></p>") {
+        var postFileValue = [];
+        $("input[name='file']").each(function () {
+          postFileValue.push($(this).val());
+        });
+
         this.axios
-          .post("/api/post", this.post)
+          .post("/api/post", {
+            postData: this.post,
+            postAttachData: postFileValue,
+          })
           .then((response) => {
             this.$refs.pond.removeFiles();
-            console.log(this.$refs.pond);
+            // console.log(this.$refs.pond);
             $("textarea#summernote").summernote("code", "<p><br></p>");
             this.getPosts();
           })
@@ -230,7 +239,7 @@ export default {
       console.log("FilePond has initialized");
       // example of instance method call on pond reference
       this.$refs.pond.getFiles();
-      console.log(this.$refs.pond.getFiles());
+      // console.log(this.$refs.pond.getFiles());
     },
   },
   components: {

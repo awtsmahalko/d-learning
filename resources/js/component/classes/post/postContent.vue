@@ -69,8 +69,7 @@
       <p class="post-description mt-1" v-html="descriptionposted"></p>
       <div class="col-md-12">
         <div class="row">
-          <postContentAttachment />
-          <postContentAttachment />
+          <postContentAttachment :postsAttachments="postsAttachments" />
         </div>
       </div>
     </div>
@@ -89,7 +88,7 @@
 import postContentAttachment from "./postAttachment.vue";
 
 export default {
-  props: ["userposted", "dateposted", "descriptionposted"],
+  props: ["userposted", "dateposted", "descriptionposted", "postsAttachments"],
   components: {
     postContentAttachment,
   },
