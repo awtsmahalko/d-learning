@@ -19,6 +19,7 @@ class CreateTemporaryPostAttachmentsTable extends Migration
             $table->string('filename');
             $table->string('filesize');
             $table->string('filetype');
+            $table->text('thumbnail')->nullable();
             $table->timestamps();
         });
     }

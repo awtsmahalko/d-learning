@@ -72,6 +72,7 @@
                 :dateposted="post.created_at"
                 :descriptionposted="post.description"
                 :postsAttachments="post.post_attachments"
+                :classCode="classData.code"
               />
             </div>
           </div>
@@ -109,6 +110,19 @@ import "filepond/dist/filepond.min.css";
 // Create component
 const FilePond = vueFilePond();
 
+const options = {
+  placeholder: "Share to your class",
+  toolbar: [
+    // ["font", ["bold", "underline", "clear"]],
+    // ["color", ["color"]],
+    ["style", ["style"]],
+    ["font", ["bold", "underline", "clear"]],
+    ["para", ["ul", "ol", "paragraph"]],
+  ],
+  disableDragAndDrop: true,
+  spellCheck: true,
+};
+
 export default {
   name: "view-class",
   data() {
@@ -118,7 +132,7 @@ export default {
       post: {
         user_id: sessionUserId,
         class_id: "",
-        description: "<p><br></p>",
+        description: "<br>",
       },
       myFiles: [],
       server: {
@@ -145,7 +159,10 @@ export default {
           this.axios({
             method: "DELETE",
             url: "/api/deletePostAttachment",
-            data: uniqueFileId,
+            data: {
+              file: uniqueFileId,
+              classId: this.post.class_id,
+            },
           })
             .then((response) => {
               load();
@@ -173,15 +190,6 @@ export default {
   mounted() {
     this.getPosts();
     const vm = this;
-    const options = {
-      placeholder: "Share to your class",
-      toolbar: [
-        ["font", ["bold", "underline", "clear"]],
-        ["color", ["color"]],
-      ],
-      disableDragAndDrop: true,
-      spellCheck: true,
-    };
 
     options.callbacks = {
       onChange(contents) {
@@ -190,6 +198,7 @@ export default {
     };
 
     $("textarea#summernote").summernote(options);
+    $("textarea#summernote").summernote("code", "<br>");
   },
   methods: {
     async getPosts() {
@@ -211,7 +220,8 @@ export default {
         });
     },
     submitPost() {
-      if (this.post.description != "<p><br></p>") {
+      console.log(this.post.description);
+      if (this.post.description != "<br>") {
         var postFileValue = [];
         $("input[name='file']").each(function () {
           postFileValue.push($(this).val());
@@ -224,8 +234,9 @@ export default {
           })
           .then((response) => {
             this.$refs.pond.removeFiles();
-            // console.log(this.$refs.pond);
-            $("textarea#summernote").summernote("code", "<p><br></p>");
+            $("textarea#summernote").summernote("destroy");
+            $("textarea#summernote").summernote(options);
+            $("textarea#summernote").summernote("code", "<br>");
             this.getPosts();
           })
           .catch((error) => {

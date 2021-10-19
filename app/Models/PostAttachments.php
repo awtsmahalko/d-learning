@@ -9,7 +9,7 @@ class PostAttachments extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'folder', 'filename', 'filesize', 'filetype'];
+    protected $fillable = ['post_id', 'folder', 'filename', 'filesize', 'filetype', 'thumbnail'];
 
     public function post()
     {

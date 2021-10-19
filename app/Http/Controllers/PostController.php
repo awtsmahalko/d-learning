@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\File;
 use App\Models\Classes;
 use App\Models\Post;
@@ -61,7 +62,8 @@ class PostController extends Controller
             'folder' => $attachment['folder'],
             'filename' => $attachment['filename'],
             'filesize' => $attachment['filesize'],
-            'filetype' => $attachment['filetype']
+            'filetype' => $attachment['filetype'],
+            'thumbnail' => $attachment['thumbnail']
         ]);
     }
 
@@ -71,17 +73,31 @@ class PostController extends Controller
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
+            $filename = date('his') . '-' . Str::snake($file->getClientOriginalName());
             $filesize = $file->getSize();
             $fileType = $file->getClientOriginalExtension();
             $folder = uniqid() . '-' . now()->timestamp;
+
+            $fileThumbs = ["XLS", "DOCX", "CSV", "TXT", "ZIP", "EXE", "XLSX", "PPT", "PPTX"];
+            $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
+
+            if (in_array(strtoupper($fileType), $fileThumbs)) {
+                $thumbnail = "../../storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+            } else {
+                if (in_array(strtoupper($fileType), $imgThumbs)) {
+                    $thumbnail = '../../storage/postattachment/' . $classCode->code . '/' . $filename;
+                } else {
+                    $thumbnail = "../../storage/file_extension_icon/FILE.png";
+                }
+            }
 
             // insert to temporary table in database
             $tmpPostAttachment = TemporaryPostAttachments::create([
                 'folder' => $folder,
                 'filename' => $filename,
                 'filesize' => $filesize,
-                'filetype' => $fileType
+                'filetype' => $fileType,
+                'thumbnail' => $thumbnail
             ]);
 
             if ($tmpPostAttachment) {
@@ -96,8 +112,11 @@ class PostController extends Controller
 
     public function deletePostAttachment(Request $request)
     {
-        $folder = $request->getContent();
+        $folder = $request->file;
+        $classCode = Classes::find($request->classId);
 
-        rmdir(storage_path('app/public/postattachment/tmp/' . $folder));
+        Storage::deleteDirectory('public/postattachment/tmp/' . $classCode->code . '/' . $folder);
+
+        TemporaryPostAttachments::where('folder', $folder)->delete();
     }
 }

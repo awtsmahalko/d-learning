@@ -37,7 +37,7 @@
               <b id="post-user">{{ userposted }}</b>
             </h4>
             <small class="card-category mt-0 text-muted">
-              {{ dateposted }}
+              {{ new Date(dateposted).toLocaleString() }}
             </small>
           </div>
           <div class="ms-auto">
@@ -67,11 +67,11 @@
     </div>
     <div class="card-body" style="padding-top: 0px">
       <p class="post-description mt-1" v-html="descriptionposted"></p>
-      <div class="col-md-12">
-        <div class="row">
-          <postContentAttachment :postsAttachments="postsAttachments" />
-        </div>
-      </div>
+
+      <postContentAttachment
+        :postsAttachments="postsAttachments"
+        :classCode="classCode"
+      />
     </div>
     <div class="card-footer mx-0 px-1">
       <!-- <div class="col-md-12">
@@ -79,7 +79,7 @@
       </div> -->
       <div class="stats">
         <i class="material-icons">access_time</i>
-        <input type="text" style="width: 100%" />
+        <input class="form-control" type="text" style="width: 100%" />
       </div>
     </div>
   </div>
@@ -88,7 +88,13 @@
 import postContentAttachment from "./postAttachment.vue";
 
 export default {
-  props: ["userposted", "dateposted", "descriptionposted", "postsAttachments"],
+  props: [
+    "userposted",
+    "dateposted",
+    "descriptionposted",
+    "postsAttachments",
+    "classCode",
+  ],
   components: {
     postContentAttachment,
   },

@@ -9,5 +9,5 @@ class TemporaryPostAttachments extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['folder', 'filename', 'filename', 'filesize', 'filetype'];
+    protected $fillable = ['folder', 'filename', 'filename', 'filesize', 'filetype', 'thumbnail'];
 }
