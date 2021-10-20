@@ -15,7 +15,7 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $post = Post::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user', 'postAttachments', 'postComments')->get();
+        $post = Post::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user', 'postAttachments')->get();
         return response()->json($post);
     }
 
