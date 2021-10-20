@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use App\File;
 use App\Models\Classes;
 use App\Models\Post;
 use App\Models\TemporaryPostAttachments;
 use App\Models\PostAttachments;
+use App\Models\PostComments;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $post = Post::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user', 'postAttachments')->get();
+        $post = Post::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user', 'postAttachments', 'postComments')->get();
         return response()->json($post);
     }
 
@@ -73,7 +73,7 @@ class PostController extends Controller
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $filename = date('his') . '-' . Str::snake($file->getClientOriginalName());
+            $filename = date('his') . '-' . $file->getClientOriginalName();
             $filesize = $file->getSize();
             $fileType = $file->getClientOriginalExtension();
             $folder = uniqid() . '-' . now()->timestamp;
@@ -118,5 +118,26 @@ class PostController extends Controller
         Storage::deleteDirectory('public/postattachment/tmp/' . $classCode->code . '/' . $folder);
 
         TemporaryPostAttachments::where('folder', $folder)->delete();
+    }
+
+    public function commentData(Request $request)
+    {
+        $comment = PostComments::where('post_id', $request->post_id)->orderBy('created_at')->with('user')->get();
+        // dd($comment);
+        return response()->json($comment);
+    }
+
+    public function commentStore(Request $request)
+    {
+        $comment = PostComments::create([
+            'post_id' => $request->post_id,
+            'user_id' => $request->user_id,
+            'message' => $request->message
+        ]);
+
+        return response()->json([
+            'message' => 'Comment Posted Successfully!!',
+            'class' => $comment
+        ]);
     }
 }

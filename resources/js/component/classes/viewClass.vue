@@ -73,6 +73,7 @@
                 :descriptionposted="post.description"
                 :postsAttachments="post.post_attachments"
                 :classCode="classData.code"
+                :postId="post.id"
               />
             </div>
           </div>

@@ -23,4 +23,9 @@ class Post extends Model
     {
         return $this->hasMany(PostAttachments::class);
     }
+
+    public function postComments()
+    {
+        return $this->hasMany(PostComments::class);
+    }
 }
