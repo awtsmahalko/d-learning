@@ -20,6 +20,14 @@
               <p>Classes</p>
             </a>
           </router-link>
+
+          <router-link tag="li" to="/class-list" class="nav-item">
+            <a class="nav-link">
+              <i class="material-icons">people</i>
+              <p>List of students</p>
+            </a>
+          </router-link>
+
           <router-link tag="li" to="/video" class="nav-item">
             <a class="nav-link">
               <i class="material-icons">meeting_room</i>

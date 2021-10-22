@@ -67,6 +67,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "edit-class",
   data: function data() {
@@ -1074,7 +1086,7 @@ var staticRenderFns = [
       { staticClass: "btn btn-primary pull-right", attrs: { type: "submit" } },
       [
         _c("span", { staticClass: "material-icons" }, [_vm._v("edit")]),
-        _vm._v(" Update Class")
+        _vm._v(" Update Class\n              ")
       ]
     )
   }
