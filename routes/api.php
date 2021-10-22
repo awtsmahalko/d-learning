@@ -29,3 +29,7 @@ Route::get('/post/comment', [App\Http\Controllers\PostController::class, 'commen
 
 Route::post('/uploadPostAttachment', [App\Http\Controllers\PostController::class, 'uploadAtachment']);
 Route::delete('/deletePostAttachment', [App\Http\Controllers\PostController::class, 'deletePostAttachment']);
+
+// class list
+Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 'studentsList']);
+Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, 'addStudent']);

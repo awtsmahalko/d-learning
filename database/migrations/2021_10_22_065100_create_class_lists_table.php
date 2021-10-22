@@ -15,8 +15,9 @@ class CreateClassListsTable extends Migration
     {
         Schema::create('class_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId("class_id")->constrained();
+            $table->foreignId("user_id")->constrained();
+            $table->string('status',1);
             $table->timestamps();
         });
     }
