@@ -62,7 +62,6 @@
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         window.sessionUserId = "{{ Auth::id() }}";
-        window.baseUrl = "/dlearning";
         function success_add() {
             swal("Success!", "Successfully added entry!", "success");
         }

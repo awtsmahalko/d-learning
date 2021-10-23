@@ -39,7 +39,7 @@ export default {
     },
     methods:{
         fetchClasses(){
-            axios.get(baseUrl+"/api/class",{
+            axios.get("/api/class",{
                 params:{
                     user_id:sessionUserId
                 }
