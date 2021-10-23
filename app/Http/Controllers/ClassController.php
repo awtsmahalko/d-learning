@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Whoops\Run;
 
 class ClassController extends Controller
@@ -17,17 +18,23 @@ class ClassController extends Controller
      */
     public function index(Request $request)
     {
-        $class = Classes::where('user_id', $request->user_id)->get();
+        $class = Classes::where('user_id', $request->user_id)->with('classLists')->get();
         return response()->json($class);
     }
 
     public function store(Request $request)
     {
-        $class = Classes::create($request->all());
+        $form_data = array(
+            'code' => Str::random(6),
+            'name' => $request->name,
+            'description' => $request->description,
+            'user_id' => $request->user_id
+        );
+        $class = Classes::create($form_data);
 
         return response()->json([
             'message' => 'Class Created Successfully!!',
-            'class' => $class
+            'class' => $class   
         ]);
     }
 

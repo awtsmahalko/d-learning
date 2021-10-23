@@ -10,7 +10,7 @@ class ClassListController extends Controller
 {
     //
     public function studentsList(Request $request){
-        $students_list = ClassList::whereRelation('class','user_id',$request->user_id)->with('user','class')->get();
+        $students_list = ClassList::where('class_id',$request->class_id)->with('user')->get();
         return response()->json($students_list);
     }
 
@@ -34,5 +34,13 @@ class ClassListController extends Controller
             'classlist' => $stud_list
         ]);
 
+    }
+
+    public function deleteStudentsList($id)
+    {
+        $classList = ClassList::find($id);
+        $classList->delete();
+
+        return response()->json('List successfully removed');
     }
 }

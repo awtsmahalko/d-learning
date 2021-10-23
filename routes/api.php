@@ -34,3 +34,4 @@ Route::delete('/deletePostAttachment', [App\Http\Controllers\PostController::cla
 Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 'studentsList']);
 Route::get('/studentsList/students', [App\Http\Controllers\ClassListController::class, 'students']);
 Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, 'addStudent']);
+Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);

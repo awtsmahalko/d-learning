@@ -6,55 +6,68 @@ const ClassesView = () => import('./component/classes/viewClass')
 
 // for class list
 const ClassList = () => import('./component/classlist/indexClassList');
+const ClassListView = () => import('./component/classlist/viewClassList');
 
 const VideCon = () => import('./component/videocon/index')
+const VideConView = () => import('./component/videocon/view')
 const VideConJoin = () => import('./component/videocon/join')
 const VideConMeeting = () => import('./component/videocon/meeting')
 
+const baseUrl = "";
 export const routes = [
     {
         name:'home',
-        path:'/',
+        path:baseUrl+'/',
         component:Welcome
     },
     {
         name:'class',
-        path:'/class',
+        path:baseUrl+'/class',
         component:Classes
     },
     {
         name:'classAdd',
-        path:'/class/add',
+        path:baseUrl+'/class/add',
         component:ClassesAdd
     },
     {
         name:'classEdit',
-        path:'/class/edit/:id',
+        path:baseUrl+'/class/edit/:id',
         component:ClassesEdit
     },
     {
         name:'classView',
-        path:'/class/view/:id',
+        path:baseUrl+'/class/view/:id',
         component:ClassesView
     },
     {
         name:'video',
-        path:'/video',
+        path:baseUrl+'/video',
         component:VideCon
     },
     {
+        name:'videoView',
+        path:baseUrl+'/video/view/:id',
+        component:VideConView
+    },
+    {
         name:'videoJoin',
-        path:'/video/join',
+        path:baseUrl+'/video/join',
         component:VideConJoin
     },
     {
         name:'meeting',
-        path:'/video/meeting',
+        path:baseUrl+'/video/meeting',
         component:VideConMeeting
     },
     {
         name:"classlist",
-        path:"/class-list",
+        path:baseUrl+"/class-list",
         component:ClassList
+    },
+    {
+        name:"classlistView",
+        path:baseUrl+"/class-list/view/:id",
+        component:ClassListView
     }
 ]

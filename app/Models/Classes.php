@@ -14,4 +14,8 @@ class Classes extends Model
         'description',
         'user_id'
     ];
+
+    public function classLists(){
+        return $this->hasMany(ClassList::class,'class_id');
+    }
 }

@@ -11,9 +11,7 @@
               <div class="card-body">
                   <div class="row">
                     <div class="col-12 text-right">
-                        <router-link :to='{name:"classAdd"}' class="btn btn-sm btn-primary">
-                            Add Class
-                        </router-link>
+                        <button class="btn btn-sm btn-primary" v-on:click="showAddModal"> Add Class </button>
                     </div>
                     <div class="table-responsive">
                     <table class="table">
@@ -51,7 +49,38 @@
         </div>
       </div>
     </div>
+    </div>    
+    <!-- modal -->
+    <div class="modal fade" id="addModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Class</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form @submit.prevent="addClass">
+                    <div class="modal-body">
+                        <div class="form-group bmd-form-group">
+                            <label>Class Name</label>
+                            <input type="text" class="form-control" style="width:100%;" v-model="form_class.name" required>
+                        </div>
+                        <div class="form-group bmd-form-group">
+                            <label>Class Description</label>
+                            <input type="text" class="form-control" style="width:100%;" v-model="form_class.description">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+    <!-- end modal -->
   </div>
 </template>
 <script>
@@ -59,6 +88,11 @@ export default {
     name:"",
     data(){
         return {
+            form_class:{
+                user_id:sessionUserId,
+                name:'',
+                description:''
+            },
             classes:[]
         }
     },
@@ -87,6 +121,24 @@ export default {
                     console.log(error)
                 })
             }
+        },
+        showAddModal(){
+            this.formReset();
+            $("#addModal").modal('show');
+        },
+        addClass(){
+            axios.post('/api/class',this.form_class).then(response=>{
+                console.log(response);
+                $("#addModal").modal('hide');
+                this.getClasses(); 
+                success_add();      
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
+        formReset(){
+            this.form_class.name = "";
+            this.form_class.description = "";
         }
     }
 }
