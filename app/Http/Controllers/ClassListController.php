@@ -10,6 +10,11 @@ class ClassListController extends Controller
 {
     //
     public function studentsList(Request $request){
+        $students_list = ClassList::whereRelation('class','user_id',$request->user_id)->with('user','class')->get();
+        return response()->json($students_list);
+    }
+
+    public function students(Request $request){
         $students_list = User::where("category","S")->get();
         return response()->json($students_list);
     }

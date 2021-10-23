@@ -19,6 +19,8 @@
     <link href="{{ asset('material') }}/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
+
+    <link href="{{ asset('material') }}/select2/css/select2.css" rel="stylesheet" >
 </head>
 
 <body class="{{ $class ?? '' }}">
@@ -54,9 +56,50 @@
     <script src="{{ asset('material') }}/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
     @stack('js')
 
+    
+    <script src="{{ asset('material') }}/select2/js/select2.js" type="text/javascript"></script>
+
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
-    <script>
+    <script type="text/javascript">
         window.sessionUserId = "{{ Auth::id() }}";
+        function success_add() {
+            swal("Success!", "Successfully added entry!", "success");
+        }
+
+        function success_update() {
+        swal("Success!", "Successfully updated entry!", "success");
+        }
+
+        function success_delete() {
+        swal("Success!", "Successfully deleted entry!", "success");
+        }
+
+        function entry_already_exists() {
+        swal("Cannot proceed!", "Entry already exists!", "warning");
+        }
+
+        function failed_query(data) {
+        swal("Failed to execute query!", data, "warning");
+        //alert('Something is wrong. Failed to execute query. Please try again.');
+        }
+
+        function checkAll(ele, ref) {
+        var checkboxes = document.getElementsByClassName(ref);
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].type == 'checkbox') {
+                checkboxes[i].checked = true;
+            }
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+            //console.log(i)
+            if (checkboxes[i].type == 'checkbox') {
+                checkboxes[i].checked = false;
+            }
+            }
+        }
+        }
     </script>
 </body>
 
