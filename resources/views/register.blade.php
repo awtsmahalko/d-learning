@@ -175,6 +175,20 @@
           </div>
         </div>
       </form>
+      <div class="row">
+        <div class="col-6">
+          @if (Route::has('password.request'))
+          <a href="" class="text-light">
+            <small>{{ __('Forgot password?') }}</small>
+          </a>
+          @endif
+        </div>
+        <div class="col-6 text-right">
+          <a href="{{ route('login') }}" class="text-light">
+            <small>{{ __('Go to Login') }}</small>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>    </div>
