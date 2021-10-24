@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('class', App\Http\Controllers\ClassController::class);
+
+Route::get('/video', [App\Http\Controllers\MeetingController::class, 'index']);
 Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'create']);
 
 

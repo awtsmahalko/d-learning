@@ -41,7 +41,8 @@ export default {
         fetchClasses(){
             axios.get("/api/class",{
                 params:{
-                    user_id:sessionUserId
+                    user_id:sessionUserId,
+                    category:sessionCategory
                 }
             }).then((data)=> {
                 console.log(data.data);

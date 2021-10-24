@@ -10,7 +10,7 @@
               </div>
               <div class="card-body">
                   <div class="row">
-                    <div class="col-12 text-right">
+                    <div v-show="is_teacher" class="col-12 text-right">
                         <button class="btn btn-sm btn-primary" v-on:click="showAddModal"> Add Class </button>
                     </div>
                     <div class="table-responsive">
@@ -27,12 +27,12 @@
                             <tr v-for="(clas,key) in classes" :key="key">
                                 <td> {{ clas.code}} </td>
                                 <td> {{ clas.name}} </td>
-                                <td> {{ clas.created_at}} </td>
+                                <td> {{ new Date (clas.created_at).toLocaleString() }} </td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <router-link :to="{name: 'classView', params: { id: clas.id }}" class="btn btn-sm btn-primary">View</router-link>
-                                        <router-link :to="{name: 'classEdit', params: { id: clas.id }}" class="btn btn-sm btn-success">Edit</router-link>
-                                        <button class="btn btn-sm btn-danger" @click="deleteClass(clas.id)">Delete</button>
+                                        <router-link v-show="is_teacher" :to="{name: 'classEdit', params: { id: clas.id }}" class="btn btn-sm btn-success">Edit</router-link>
+                                        <button v-show="is_teacher" class="btn btn-sm btn-danger" @click="deleteClass(clas.id)">Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -88,6 +88,7 @@ export default {
     name:"",
     data(){
         return {
+            is_teacher:false,
             form_class:{
                 user_id:sessionUserId,
                 name:'',
@@ -97,13 +98,15 @@ export default {
         }
     },
     mounted(){
+        this.is_teacher = sessionCategory == 'T' ? true : false;
         this.getClasses()
     },
     methods:{
         async getClasses(){
             await this.axios.get('/api/class',{
                 params:{
-                    user_id:sessionUserId
+                    user_id:sessionUserId,
+                    category:sessionCategory
                 }
             }).then(response => {
                 this.classes = response.data

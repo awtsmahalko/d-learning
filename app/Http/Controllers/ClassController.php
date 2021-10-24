@@ -18,7 +18,11 @@ class ClassController extends Controller
      */
     public function index(Request $request)
     {
-        $class = Classes::where('user_id', $request->user_id)->with('classLists')->get();
+        if($request->category == 'T'){
+            $class = Classes::where('user_id', $request->user_id)->with('classLists')->get();
+        }else{
+        $class = Classes::whereRelation('classLists', 'user_id', $request->user_id)->with('classLists')->get();
+        }
         return response()->json($class);
     }
 

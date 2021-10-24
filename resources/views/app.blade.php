@@ -21,6 +21,14 @@
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
 
     <link href="{{ asset('material') }}/select2/css/select2.css" rel="stylesheet" >
+    
+    <?php
+    $auth = auth()->user();
+    ?>
+    <script>
+        window.sessionUserId = "{{ Auth::id() }}";
+        window.sessionCategory = "{{ $auth->category; }}";
+    </script>
 </head>
 
 <body class="{{ $class ?? '' }}">
@@ -61,7 +69,6 @@
 
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
-        window.sessionUserId = "{{ Auth::id() }}";
         function success_add() {
             swal("Success!", "Successfully added entry!", "success");
         }

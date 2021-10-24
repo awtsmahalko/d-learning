@@ -28,8 +28,13 @@
                                     <tr v-for="(list,key) in studentsList" :key="key">
                                         <td></td>
                                         <td>{{ list.user.fname + " "+list.user.mname+" "+list.user.lname}}</td>
-                                        <td></td>
+                                        <td>{{ new Date(list.created_at).toLocaleString() }}</td>
                                         <td><button class="btn btn-sm btn-danger" @click="removeStudent(list.id)">Delete</button></td>
+                                    </tr>
+                                </tbody>
+                                <tbody v-else>
+                                    <tr>
+                                        <td colspan="4" align="center">No Class List Found</td>
                                     </tr>
                                 </tbody>
                                 </table>

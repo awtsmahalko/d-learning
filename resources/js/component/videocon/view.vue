@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 text-right">
+                            <div class="col-12 text-right"  v-show="is_teacher">
                                 <button type="button" class="btn btn-sm btn-primary" @click.prevent="showModal"> ADD MEETING</button>
                             </div>
                             <div class="table-responsive">
@@ -30,13 +30,13 @@
                                         <tr v-for="(meeting,key) in meetings" :key="key">
                                             <td> {{ meeting.class}} </td>
                                             <td> {{ meeting.title}} </td>
-                                            <td> {{ meeting.schedule}} </td>
-                                            <td> {{ meeting.created_at}} </td>
+                                            <td> {{ meeting.schedule_at}} </td>
+                                            <td> {{ new Date(meeting.created_at).toLocaleString()}} </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <router-link :to="{name: 'classView', params: { id: meeting.id }}" class="btn btn-sm btn-primary">View</router-link>
-                                                    <router-link :to="{name: 'classEdit', params: { id: meeting.id }}" class="btn btn-sm btn-success">Edit</router-link>
-                                                    <button class="btn btn-sm btn-danger" @click="deleteClass(meeting.id)">Delete</button>
+                                                    <router-link to="#" class="btn btn-sm btn-primary"><span class="material-icons"></span> Join</router-link>
+                                                    <router-link v-show="is_teacher" to="#" class="btn btn-sm btn-success">Edit</router-link>
+                                                    <button v-show="is_teacher" class="btn btn-sm btn-danger" @click="deleteClass(meeting.id)">Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -95,6 +95,7 @@ export default {
   name:"video-view",
     data(){
         return {
+            is_teacher:false,
             meeting:{
                 user_id:sessionUserId,
                 class_id:'',
@@ -107,7 +108,23 @@ export default {
     methods:{
         createMeeting(){
             axios.post('/api/video/create',this.meeting).then(response => {
-                console.log(response.data)
+                console.log(response.data);
+                this.fetchMeeting();
+                $('#exampleModal').modal('hide');
+                success_add();
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
+        fetchMeeting(){
+            axios.get('/api/video',{
+                params:{
+                    user_id:sessionUserId,
+                    category:sessionCategory,
+                    class_id:this.meeting.class_id
+                }
+            }).then(response => {
+                this.meetings = response.data;
             }).catch(error=>{
                 console.log(error)
             })
@@ -117,6 +134,9 @@ export default {
         }
     },
     created(){
+        this.is_teacher = sessionCategory == 'T' ? true : false;
+        this.meeting.class_id = this.$route.params.id;
+        this.fetchMeeting();
     },
     components:{
         CardTitle

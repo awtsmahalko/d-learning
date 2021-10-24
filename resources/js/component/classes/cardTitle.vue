@@ -4,8 +4,7 @@
             <div class="card card-background">
             <div
                 class="full-background"
-                style="
-                background-image: url(@'public/material/img/class.jpg')"
+                style="background-image:url(/material/img/class.jpg)"
             ></div>
             <div class="card-body pt-12">
                 <h2 class="font-weight-bold pt-2">
@@ -30,7 +29,8 @@ export default {
             classData:{
                 name:'',
                 code:''
-            }
+            },
+            image:{backgroundImage:"/material/img/class.jpg"}
         }
     },
     created(){

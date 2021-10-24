@@ -6,36 +6,7 @@
           D-Learning
         </a>
       </div>
-      <div class="sidebar-wrapper">
-        <ul class="nav">
-          <router-link tag="li" to="/" class="nav-item" exact>
-            <a class="nav-link">
-              <i class="material-icons">dashboard</i>
-              <p>Dashboard</p>
-            </a>
-          </router-link>
-          <router-link tag="li" to="/class" class="nav-item">
-            <a class="nav-link">
-              <i class="material-icons">meeting_room</i>
-              <p>Classes</p>
-            </a>
-          </router-link>
-
-          <router-link tag="li" to="/class-list" class="nav-item">
-            <a class="nav-link">
-              <i class="material-icons">people</i>
-              <p>List of students</p>
-            </a>
-          </router-link>
-
-          <router-link tag="li" to="/video" class="nav-item">
-            <a class="nav-link">
-              <i class="material-icons">videocam</i>
-              <p>Video Conferencing</p>
-            </a>
-          </router-link>
-        </ul>
-      </div>
+      <sidebar :sessionCat='sessionCat'></sidebar>
     </div>
     <div class="main-panel">
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
@@ -98,5 +69,16 @@
   </div>
 </template>
 <script>
-export default {};
+import sidebar from './sidebar.vue';
+export default {
+  props:["authCategory"],
+  data(){
+    return {
+      sessionCat:''
+    }
+  },
+  created(){
+    this.sessionCat = sessionCategory == 'T' ? true : false;
+  },
+  components: { sidebar },};
 </script>
