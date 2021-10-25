@@ -15,7 +15,7 @@
                     <div class="card-footer">
                         <div class="stats">
                         <i class="material-icons text-primary">videocam</i>
-                        <router-link :to="{name: 'videoView', params: { id: clas.id }}">{{ clas.class_lists.length }} meetings</router-link>
+                        <router-link :to="{name: 'videoView', params: { id: clas.id }}">{{ is_teacher ? clas.class_lists.length : clas.meetings.length  }} meetings</router-link>
                         </div>
                     </div>
                 </div>
@@ -31,8 +31,12 @@ export default {
     name:"classList",
     data(){
         return{
+            is_teacher : false,
             classes:[]
         }
+    },
+    created(){
+        this.is_teacher = sessionCategory == 'T' ? true : false;
     },
     mounted(){
         this.fetchClasses();

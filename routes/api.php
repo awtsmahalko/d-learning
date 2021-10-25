@@ -22,6 +22,8 @@ Route::resource('class', App\Http\Controllers\ClassController::class);
 
 Route::get('/video', [App\Http\Controllers\MeetingController::class, 'index']);
 Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'create']);
+Route::get('/video/{id}', [App\Http\Controllers\MeetingController::class, 'show']);
+Route::delete('/video/{id}', [App\Http\Controllers\MeetingController::class, 'destroy']);
 
 
 Route::get('/post', [App\Http\Controllers\PostController::class, 'index']);

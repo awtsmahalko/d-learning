@@ -20,8 +20,8 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
 
-    <link href="{{ asset('material') }}/select2/css/select2.css" rel="stylesheet" >
-    
+    <link href="{{ asset('material') }}/select2/css/select2.css" rel="stylesheet">
+
     <?php
     $auth = auth()->user();
     ?>
@@ -64,7 +64,7 @@
     <script src="{{ asset('material') }}/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
     @stack('js')
 
-    
+
     <script src="{{ asset('material') }}/select2/js/select2.js" type="text/javascript"></script>
 
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
@@ -74,38 +74,38 @@
         }
 
         function success_update() {
-        swal("Success!", "Successfully updated entry!", "success");
+            swal("Success!", "Successfully updated entry!", "success");
         }
 
         function success_delete() {
-        swal("Success!", "Successfully deleted entry!", "success");
+            swal("Success!", "Successfully deleted entry!", "success");
         }
 
         function entry_already_exists() {
-        swal("Cannot proceed!", "Entry already exists!", "warning");
+            swal("Cannot proceed!", "Entry already exists!", "warning");
         }
 
         function failed_query(data) {
-        swal("Failed to execute query!", data, "warning");
-        //alert('Something is wrong. Failed to execute query. Please try again.');
+            swal("Failed to execute query!", data, "warning");
+            //alert('Something is wrong. Failed to execute query. Please try again.');
         }
 
         function checkAll(ele, ref) {
-        var checkboxes = document.getElementsByClassName(ref);
-        if (ele.checked) {
-            for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].type == 'checkbox') {
-                checkboxes[i].checked = true;
+            var checkboxes = document.getElementsByClassName(ref);
+            if (ele.checked) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+            } else {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    //console.log(i)
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+                }
             }
-            }
-        } else {
-            for (var i = 0; i < checkboxes.length; i++) {
-            //console.log(i)
-            if (checkboxes[i].type == 'checkbox') {
-                checkboxes[i].checked = false;
-            }
-            }
-        }
         }
     </script>
 </body>

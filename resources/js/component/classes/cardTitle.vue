@@ -7,10 +7,10 @@
                 style="background-image:url(/material/img/class.jpg)"
             ></div>
             <div class="card-body pt-12">
-                <h2 class="font-weight-bold pt-2">
+                <h2 class="text-white font-weight-bold pt-2">
                 {{ classData.name }}
                 </h2>
-                <p>
+                <p class="text-white">
                 Class code: <b>{{ classData.code }}</b>
                 </p>
             </div>
@@ -45,3 +45,24 @@ export default {
     }
 }
 </script>
+<style scoped>
+.card.card-background .full-background {
+  background-position: 50%;
+  background-size: cover;
+  margin-bottom: 30px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 0.75rem;
+}
+
+.card .card-background {
+  align-items: center;
+}
+
+.card-background {
+  height: 200px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+</style>

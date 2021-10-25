@@ -18,10 +18,10 @@ class ClassController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->category == 'T'){
+        if ($request->category == 'T') {
             $class = Classes::where('user_id', $request->user_id)->with('classLists')->get();
-        }else{
-        $class = Classes::whereRelation('classLists', 'user_id', $request->user_id)->with('classLists')->get();
+        } else {
+            $class = Classes::whereRelation('classLists', 'user_id', $request->user_id)->with('meetings')->get();
         }
         return response()->json($class);
     }
@@ -38,7 +38,7 @@ class ClassController extends Controller
 
         return response()->json([
             'message' => 'Class Created Successfully!!',
-            'class' => $class   
+            'class' => $class
         ]);
     }
 

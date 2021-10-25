@@ -29,7 +29,7 @@
                                         <td></td>
                                         <td>{{ list.user.fname + " "+list.user.mname+" "+list.user.lname}}</td>
                                         <td>{{ new Date(list.created_at).toLocaleString() }}</td>
-                                        <td><button class="btn btn-sm btn-danger" @click="removeStudent(list.id)">Delete</button></td>
+                                        <td><button class="btn btn-sm btn-danger" @click="removeStudent(list.id)"><span class="material-icons">remove_circle</span> Remove</button></td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
@@ -143,9 +143,8 @@ export default {
         axios.post("/api/studentsList",{
             student_list:this.studlist
         }).then((data)=> {
-            // console.log(data);
             $("#addModal").modal('hide');
-            success_add();
+            data.data == 1 ? success_add() : entry_already_exists();
             this.fetchStudentsList();
         }).catch( (error) => {
             console.log(error);
@@ -175,29 +174,6 @@ export default {
             },
             allowOutsideClick: false     
         });
-        // swal({
-        //     title: "Are you sure?",
-        //     text: "You will not be able to recover these entries!",
-        //     type: "warning",
-        //     showCancelButton: true,
-        //     confirmButtonClass: "btn-danger",
-        //     confirmButtonText: "Yes, delete it!",
-        //     cancelButtonText: "No, cancel!"
-        // },
-        // function(isConfirm) {
-        //     if (isConfirm) {
-        //         alert(isConfirm);
-        //         // axios.delete(`/api/deleteStudentsList/${id}`).then(response=>{
-        //         //     console.log(response);
-        //         //     success_delete();
-        //         //     this.fetchStudentsList();
-        //         // }).catch(error=>{
-        //         //     console.log(error)
-        //         // });
-        //     } else {
-        //         swal("Cancelled", "Entries are safe :)", "error");
-        //     }
-        // });
     },
     resetForm(){
         $("#student_id").val('');

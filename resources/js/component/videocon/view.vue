@@ -19,10 +19,11 @@
                                 <table class="table">
                                     <thead class=" text-primary">
                                         <tr>
-                                            <th>Class</th>
+                                            <th>#</th>
                                             <th>Title</th>
-                                            <th>Time</th>
-                                            <th>Creation date</th>
+                                            <th>Description</th>
+                                            <th>Schedule</th>
+                                            <th>Status</th>
                                             <th class="text-right">Actions</th>
                                         </tr>
                                     </thead>
@@ -30,13 +31,15 @@
                                         <tr v-for="(meeting,key) in meetings" :key="key">
                                             <td> {{ meeting.class}} </td>
                                             <td> {{ meeting.title}} </td>
-                                            <td> {{ meeting.schedule_at}} </td>
-                                            <td> {{ new Date(meeting.created_at).toLocaleString()}} </td>
-                                            <td>
+                                            <td> {{ meeting.description}} </td>
+                                            <td> {{ new Date(meeting.scheduled_at).toLocaleString()}} </td>
+                                            <td> {{ meeting.status}} </td>
+                                            <td class="text-right">
                                                 <div class="btn-group" role="group">
-                                                    <router-link to="#" class="btn btn-sm btn-primary"><span class="material-icons"></span> Join</router-link>
-                                                    <router-link v-show="is_teacher" to="#" class="btn btn-sm btn-success">Edit</router-link>
-                                                    <button v-show="is_teacher" class="btn btn-sm btn-danger" @click="deleteClass(meeting.id)">Delete</button>
+                                                    <router-link v-show="!is_teacher" to="#" class="btn btn-sm btn-primary"><span class="material-icons">videocam</span> Join</router-link>
+                                                    <router-link v-show="is_teacher" to="#" class="btn btn-sm btn-primary"><span class="material-icons">videocam</span> Start</router-link>
+                                                    <button v-show="is_teacher" class="btn btn-sm btn-success" @click="editMeeting(meeting.id)"><i class="material-icons">edit_note</i> Edit</button>
+                                                    <button v-show="is_teacher" class="btn btn-sm btn-danger" @click="deleteMeeting(meeting.id)"><i class="material-icons">delete_forever</i> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -60,7 +63,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                 <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
-                <h5 class="modal-title" id="exampleModalLabel">Add new meeting</h5>
+                <h5 v-show="is_form_create" class="modal-title" id="exampleModalLabel">Add new meeting</h5>
+                <h5 v-show="!is_form_create" class="modal-title" id="exampleModalLabel">Update meeting</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -69,12 +73,16 @@
                 <form @submit.prevent="createMeeting">
                     <div class="modal-body">
                         <div class="form-group bmd-form-group">
-                            <label class="bmd-label-floating">Title</label>
+                            <label>Title</label>
                             <input v-model="meeting.title" type="text" class="form-control" required>
                         </div>
                         <div class="form-group bmd-form-group">
-                            <label class="bmd-label-floating">Description</label>
+                            <label>Description</label>
                             <input v-model="meeting.description" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group bmd-form-group">
+                            <label>Date</label>
+                            <input v-model="meeting.scheduled_at" type="datetime-local" id="datetimepicker" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -96,11 +104,14 @@ export default {
     data(){
         return {
             is_teacher:false,
+            is_form_create : true,
             meeting:{
+                id:0,
                 user_id:sessionUserId,
                 class_id:'',
                 title:'',
-                description:''
+                description:'',
+                scheduled_at:''
             },
             meetings:[]
         }
@@ -109,14 +120,14 @@ export default {
         createMeeting(){
             axios.post('/api/video/create',this.meeting).then(response => {
                 console.log(response.data);
-                this.fetchMeeting();
+                this.fetchMeetings();
                 $('#exampleModal').modal('hide');
-                success_add();
+                this.is_form_create? success_add() : success_update();
             }).catch(error=>{
                 console.log(error)
             })
         },
-        fetchMeeting(){
+        fetchMeetings(){
             axios.get('/api/video',{
                 params:{
                     user_id:sessionUserId,
@@ -130,13 +141,60 @@ export default {
             })
         },
         showModal(){
+            this.resetForm();
+            this.is_form_create = true;
             $('#exampleModal').modal('show');
+        },
+        editMeeting(id){
+            this.is_form_create = false;
+            axios.get(`/api/video/${id}`).then(response => {
+                console.log(response);
+                this.meeting = response.data;
+                // this.meeting.scheduled_at = new Date(response.data.scheduled_at).toISOString();
+                // this.meeting.scheduled_at = new Date(response.data.scheduled_at).toLocaleString().slice(0, 19);
+                $('#exampleModal').modal('show');
+            }).catch(error => {
+
+            })
+        },
+        deleteMeeting(id){
+            var _this = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                showLoaderOnConfirm: true,
+                preConfirm: function() {
+                    return new Promise(function(resolve) {
+                        axios.delete(`/api/video/${id}`).then(response=>{
+                            console.log(response);
+                            _this.fetchMeetings();
+                            success_delete();
+                        }).catch(error=>{
+                            console.log(error)
+                        });
+                    });
+                },
+                allowOutsideClick: false     
+            });
+        },
+        resetForm(){
+            this.meeting.id = 0;
+            this.meeting.title = '';
+            this.meeting.description = '';
+            this.meeting.scheduled_at = '';
         }
     },
     created(){
         this.is_teacher = sessionCategory == 'T' ? true : false;
         this.meeting.class_id = this.$route.params.id;
-        this.fetchMeeting();
+        this.fetchMeetings();
+    },
+    mounted(){
     },
     components:{
         CardTitle

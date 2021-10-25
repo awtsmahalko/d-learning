@@ -11,6 +11,7 @@ class Meeting extends Model
     protected $fillable = [
         'title',
         'description',
+        'scheduled_at',
         'number',
         'class_id'
     ];
@@ -25,7 +26,8 @@ class Meeting extends Model
         return $this->belongsTo(Classes::class);
     }
 
-    public function classLists(){
-        return $this->belongsTo(ClassList::class,'class_id');
+    public function classLists()
+    {
+        return $this->belongsTo(ClassList::class, 'class_id', 'class_id');
     }
 }

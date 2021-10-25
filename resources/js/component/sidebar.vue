@@ -31,14 +31,12 @@
     </div>
 </template>
 <script>
-const sessionCategory = window.sessionCategory;
 export default {
     name:'sidebar',
     props:[
         'sessionCat'
     ],
     created(){
-        console.log(sessionCategory);
     }
 }
 </script>
