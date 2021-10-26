@@ -25,7 +25,8 @@ Route::get('web', function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('{any}', function () {
 		if (Auth::check()) {
-			return view('app');
+			$public = asset("public/material");
+			return view('app', compact('public'));
 		}
 		return view('login');
 	})->where('any', '.*');

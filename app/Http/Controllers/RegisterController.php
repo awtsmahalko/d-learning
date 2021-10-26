@@ -7,23 +7,25 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 class RegisterController extends Controller
 {
-	public function showRegisterForm()
-	{
-		return view('register');
-	}
+    public function showRegisterForm()
+    {
+        $public = asset("public/material");
+        return view('register', compact('public'));
+    }
 
-	public function register(Request $request)
-	{
+    public function register(Request $request)
+    {
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
-		Auth::guard()->login($user);
+        Auth::guard()->login($user);
 
         return redirect('/');
-	}
+    }
 
-	protected function validator(array $data)
+    protected function validator(array $data)
     {
         return Validator::make($data, [
             'fname' => ['required', 'string', 'max:255'],
