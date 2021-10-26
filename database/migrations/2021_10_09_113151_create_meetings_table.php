@@ -19,8 +19,10 @@ class CreateMeetingsTable extends Migration
             $table->string('description');
             $table->dateTime('scheduled_at');
             $table->string('number')->nullable();
+            $table->string('password')->nullable();
+            $table->string('join_url')->nullable();
             $table->foreignId('class_id')->constrained();
-            $table->string('status', 1)->default('P');
+            $table->string('status')->default('P');
             $table->timestamps();
         });
     }

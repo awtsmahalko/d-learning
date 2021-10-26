@@ -13,6 +13,8 @@ class Meeting extends Model
         'description',
         'scheduled_at',
         'number',
+        'password',
+        'join_url',
         'class_id'
     ];
 

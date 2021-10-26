@@ -34,9 +34,23 @@ class MeetingController extends Controller
         if ($meeting) {
             $meeting = $meeting->update($form_data);
         } else {
+            $meetConfig = array(
+                'topic' => $form_data['title'],
+                'start_time' => $form_data['scheduled_at']
+            );
+            $apiZoom = ZoomApiController::createZoomMeeting($meetConfig);
+            $form_data['number'] = $apiZoom->id;
+            $form_data['password'] = $apiZoom->password;
+            $form_data['join_url'] = $apiZoom->join_url;
             $meeting = Meeting::create($form_data);
         }
         return response()->json($meeting);
+    }
+
+    public function api()
+    {
+        $apiZoom = ZoomApiController::createZoomMeeting();
+        return response()->json($apiZoom->id);
     }
 
     public function show($id)

@@ -1,7 +1,7 @@
 <template>
   <div class="meeting">
     <div class="container-zoom">
-      <ZoomFrame :nickname="nickname" :meetingId="meetingId" :password="password"/>
+      <ZoomFrame :meetId="$route.params.id" :nickname="nickname" :meetingId="meetingId" :password="password"/>
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
     ZoomFrame,
   },
   created : function (){
-      this.nickname = this.$route.query.nickname;
+      this.nickname = sessionFullname;
       this.meetingId = this.$route.query.meetingId;
       this.password = this.$route.query.password;
   }

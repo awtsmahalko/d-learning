@@ -28,18 +28,17 @@
                                         </tr>
                                     </thead>
                                     <tbody v-if="meetings.length > 0">
-                                        <tr v-for="(meeting,key) in meetings" :key="key">
-                                            <td> {{ meeting.class}} </td>
-                                            <td> {{ meeting.title}} </td>
-                                            <td> {{ meeting.description}} </td>
-                                            <td> {{ new Date(meeting.scheduled_at).toLocaleString()}} </td>
-                                            <td> {{ meeting.status}} </td>
+                                        <tr v-for="(meet,key) in meetings" :key="key">
+                                            <td> {{ meet.class}} </td>
+                                            <td> {{ meet.title}} </td>
+                                            <td> {{ meet.description}} </td>
+                                            <td> {{ new Date(meet.scheduled_at).toLocaleString()}} </td>
+                                            <td> {{ meet.status}} </td>
                                             <td class="text-right">
                                                 <div class="btn-group" role="group">
-                                                    <router-link v-show="!is_teacher" to="#" class="btn btn-sm btn-primary"><span class="material-icons">videocam</span> Join</router-link>
-                                                    <router-link v-show="is_teacher" to="#" class="btn btn-sm btn-primary"><span class="material-icons">videocam</span> Start</router-link>
-                                                    <button v-show="is_teacher" class="btn btn-sm btn-success" @click="editMeeting(meeting.id)"><i class="material-icons">edit_note</i> Edit</button>
-                                                    <button v-show="is_teacher" class="btn btn-sm btn-danger" @click="deleteMeeting(meeting.id)"><i class="material-icons">delete_forever</i> Delete</button>
+                                                    <router-link class="btn btn-sm btn-primary" :to="{ name: 'meeting', query: { meetingId: meet.number, password: meet.password }}"><span class="material-icons">videocam</span> {{ is_teacher ? 'Start' : 'Join'}}</router-link>
+                                                    <button v-show="is_teacher" class="btn btn-sm btn-success" @click="editMeeting(meet.id)"><i class="material-icons">edit_note</i> Edit</button>
+                                                    <button v-show="is_teacher" class="btn btn-sm btn-danger" @click="deleteMeeting(meet.id)"><i class="material-icons">delete_forever</i> Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -87,7 +86,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-primary">Save changes</button>
+                        <button type="submit" id="btn-submit" class="btn btn-sm btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -118,8 +117,10 @@ export default {
     },
     methods:{
         createMeeting(){
+            $("#btn-submit").prop("disabled",true);
             axios.post('/api/video/create',this.meeting).then(response => {
                 console.log(response.data);
+                $("#btn-submit").prop("disabled",false);
                 this.fetchMeetings();
                 $('#exampleModal').modal('hide');
                 this.is_form_create? success_add() : success_update();

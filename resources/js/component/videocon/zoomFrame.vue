@@ -8,6 +8,8 @@
   </div>
 </template>
 <script>
+$(".sidebar").remove();
+$('.navbar').remove();
 import { ZoomMtg } from "../../../../node_modules/@zoomus/websdk";
 
 console.log("checkSystemRequirements");
@@ -24,6 +26,9 @@ var API_KEY = 'xE4RMY1iRDCbzXL0hfgQ_A';
 
 var API_SECRET = 'zdxTw3HhPPWFStKXNQ3IY5JrYOkcbyfb06zC';
 
+var role = sessionCategory == 'T' ? 1 : 0;
+var url = "http://127.0.0.1:8000/video/view/";
+
 export default {
   name: "ZoomFrame",
   data: function() {
@@ -36,19 +41,20 @@ export default {
   props: {
     nickname: String,
     meetingId: String,
-    password: String
+    password: String,
+    meetId: String
   },
   created: function() {
     // Meeting config object
     this.meetConfig = {
-      signatureEndpoint:'http://127.0.0.1:8000/',
+      signatureEndpoint: url+this.meetId,
       apiKey: API_KEY,
       apiSecret: API_SECRET,
       meetingNumber: this.meetingId,
       userName: this.nickname,
       passWord: this.password,
-      leaveUrl: "http://127.0.0.1:8000/",
-      role: 0
+      leaveUrl: url+this.meetId,
+      role: role
     };
 
     // Generate Signature function

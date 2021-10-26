@@ -1,5 +1,3 @@
 <?php
 use App\Http\Controllers\ZoomApiController;
-dd(ZoomApiController::createZoomMeeting());
-
-?>
+// dd(ZoomApiController::createZoomMeeting());

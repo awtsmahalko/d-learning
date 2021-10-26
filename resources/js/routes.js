@@ -57,7 +57,7 @@ export const routes = [
     },
     {
         name:'meeting',
-        path:baseUrl+'/video/meeting',
+        path:baseUrl+'/video/meeting/:id',
         component:VideConMeeting
     },
     {

@@ -15,7 +15,7 @@
                     <div class="card-footer">
                         <div class="stats">
                         <i class="material-icons text-primary">videocam</i>
-                        <router-link :to="{name: 'videoView', params: { id: clas.id }}">{{ is_teacher ? clas.class_lists.length : clas.meetings.length  }} meetings</router-link>
+                        <router-link :to="{name: 'videoView', params: { id: clas.id }}">{{ clas.meetings.length  }} meetings</router-link>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,8 @@ export default {
             axios.get("/api/class",{
                 params:{
                     user_id:sessionUserId,
-                    category:sessionCategory
+                    category:sessionCategory,
+                    type:'V'
                 }
             }).then((data)=> {
                 console.log(data.data);

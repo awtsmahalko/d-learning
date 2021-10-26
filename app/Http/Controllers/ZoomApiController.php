@@ -16,7 +16,7 @@ class ZoomApiController extends Controller
             'start_time'    => $meetingConfig['start_time'] ?? date('Y-m-dTh:i:00') . 'Z',
             'duration'      => $meetingConfig['duration']   ?? 30,
             'password'      => $meetingConfig['password']   ?? mt_rand(),
-            'timezone'      => 'Africa/Cairo',
+            'timezone'      => 'UTC',
             'agenda'        => 'PHP Session',
             'settings'  => [
                 'host_video'        => false,
@@ -42,6 +42,7 @@ class ZoomApiController extends Controller
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.zoom.us/v2/users/" . $zoomUserId . "/meetings",
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER         => false,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_SSL_VERIFYHOST => 0,
@@ -58,22 +59,24 @@ class ZoomApiController extends Controller
         ));
 
         $response = curl_exec($curl);
-        $err = curl_error($curl);
-
         curl_close($curl);
 
-        if ($err) {
-            return [
-                'success'     => false,
-                'msg'         => 'cURL Error #:' . $err,
-                'response'     => ''
-            ];
-        } else {
-            return [
-                'success'     => true,
-                'msg'         => 'success',
-                'response'     => json_decode($response)
-            ];
-        }
+        return json_decode($response);
+        // $err = curl_error($curl);
+
+
+        // if ($err) {
+        //     return [
+        //         'success'     => false,
+        //         'msg'         => 'cURL Error #:' . $err,
+        //         'response'     => ''
+        //     ];
+        // } else {
+        //     return [
+        //         'success'     => true,
+        //         'msg'         => 'success',
+        //         'response'     => json_decode($response)
+        //     ];
+        // }
     }
 }

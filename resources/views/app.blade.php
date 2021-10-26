@@ -28,10 +28,11 @@
     <script>
         window.sessionUserId = "{{ Auth::id() }}";
         window.sessionCategory = "{{ $auth->category; }}";
+        window.sessionFullname = "{{ $auth->fname . ' ' . $auth->mname . ' ' . $auth->lname ; }}";
     </script>
 </head>
 
-<body class="{{ $class ?? '' }}">
+<body>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
