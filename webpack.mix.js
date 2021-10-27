@@ -11,7 +11,11 @@ const mix = require('laravel-mix');
  |
  */
 
+// add a prefix subfolder if you upload this app in a 
+// subfolder in hosting server 
+// 'subfolder/public/js' and 'subfolder/public/js'
+
 mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
+    .postCss('resources/css/app.css', 'public/js', [
         //
     ]).vue();

@@ -2,6 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
+if ("PROD" == "LOCAL") {
+	$_REQUEST['public'] = asset("public/material");
+	$_REQUEST['mixAppBlade'] = asset('public/js/app.js');
+	$_REQUEST['baseUrl'] = "/dlearning";
+} else {
+	$_REQUEST['public'] = asset("material");
+	$_REQUEST['mixAppBlade'] = mix('js/app.js');
+	$_REQUEST['baseUrl'] = "";
+}
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,9 +36,7 @@ Route::get('web', function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('{any}', function () {
 		if (Auth::check()) {
-			$public = asset("material");
-			// $public = asset("public/material");
-			return view('app', compact('public'));
+			return view('app');
 		}
 		return view('login');
 	})->where('any', '.*');

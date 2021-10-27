@@ -2237,6 +2237,7 @@ vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPORTED_MODULE_2___default()));
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   mode: "history",
+  // base: "/dlearning/",
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__.routes,
   linkActiveClass: "active"
 });
