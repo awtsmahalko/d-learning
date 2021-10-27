@@ -155,7 +155,7 @@ export default {
           .then((response) => {
             this.getComment();
             this.comment.message = "";
-            alert("comment is posted");
+            // alert("comment is posted");
           })
           .catch((error) => {
             alert("comment is not posted");
