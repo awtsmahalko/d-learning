@@ -1,6 +1,6 @@
 <template>
   <div class="content pt-0">
-    <div class="container-fluid pt-0">
+    <div class="container pt-0">
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <a

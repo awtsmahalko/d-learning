@@ -10,9 +10,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-12 text-right">
-              <button class="btn btn-sm btn-primary" v-on:click="showAddModal">
-                Add Student
-              </button>
+              <button class="btn btn-sm btn-primary">Add Student</button>
             </div>
             <div class="table-responsive">
               <table class="table">
