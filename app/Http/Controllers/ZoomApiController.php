@@ -19,7 +19,7 @@ class ZoomApiController extends Controller
             'timezone'      => 'UTC',
             'agenda'        => 'PHP Session',
             'settings'  => [
-                'host_video'        => false,
+                'host_video'        => true,
                 'participant_video' => true,
                 'cn_meeting'        => false,
                 'in_meeting'        => false,
@@ -30,7 +30,7 @@ class ZoomApiController extends Controller
                 'approval_type'     => 1,
                 'registration_type' => 1,
                 'audio'             => 'voip',
-                'auto_recording'    => 'none',
+                'auto_recording'    => 'cloud',
                 'waiting_room'      => false
             ]
         ];
