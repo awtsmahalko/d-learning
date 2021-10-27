@@ -12,7 +12,8 @@ class RegisterController extends Controller
 {
     public function showRegisterForm()
     {
-        $public = asset("public/material");
+        $public = asset("material");
+        // $public = asset("public/material");
         return view('register', compact('public'));
     }
 

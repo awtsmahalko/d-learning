@@ -45,103 +45,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "classList",
   data: function data() {
     return {
-      classes: [],
-      studentsList: [],
-      studlist: {
-        class_id: "",
-        student_id: ""
-      }
+      classes: []
     };
   },
   mounted: function mounted() {
     this.fetchClasses();
-    this.fetchStudents();
   },
   methods: {
-    showAddModal: function showAddModal() {
-      $("#addModal").modal('show');
-    },
     fetchClasses: function fetchClasses() {
       var _this = this;
 
-      axios.get("/api/class", {
+      axios.get(baseUrl + "/api/class", {
         params: {
-          user_id: sessionUserId
+          user_id: sessionUserId,
+          category: sessionCategory
         }
       }).then(function (data) {
-        //alert(data);
-        _this.classes = data.data;
-      })["catch"](function (error) {
-        alert(error);
-      });
-    },
-    fetchStudents: function fetchStudents() {
-      var _this2 = this;
+        console.log(data.data); //alert(data);
 
-      axios.get("/api/studentsList", {
-        params: {
-          user_id: sessionUserId
-        }
-      }).then(function (data) {
-        //alert(data);
-        _this2.studentsList = data.data;
-      })["catch"](function (error) {
-        alert(error);
-      });
-    },
-    addStudent: function addStudent() {
-      axios.post("/api/studentsList", {
-        student_list: this.studlist
-      }).then(function (data) {
-        alert(data);
-        console.log(data);
+        _this.classes = data.data;
       })["catch"](function (error) {
         alert(error);
       });
@@ -237,217 +163,78 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "content" }, [
     _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "card" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-12 text-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-sm btn-primary",
-                      on: { click: _vm.showAddModal }
-                    },
-                    [_vm._v(" Add Class ")]
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "modal",
-                attrs: { tabindex: "-1", role: "dialog", id: "addModal" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "modal-dialog", attrs: { role: "document" } },
-                  [
-                    _c("div", { staticClass: "modal-content" }, [
-                      _vm._m(2),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "modal-body" }, [
-                        _c("div", { staticClass: "col-md-12" }, [
-                          _c(
-                            "div",
-                            { staticClass: "form-group bmd-form-group" },
-                            [
-                              _c("label", { staticClass: "bmd-label" }, [
-                                _vm._v("Class")
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.studlist.class_id,
-                                      expression: "studlist.class_id"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.$set(
-                                        _vm.studlist,
-                                        "class_id",
-                                        $event.target.multiple
-                                          ? $$selectedVal
-                                          : $$selectedVal[0]
-                                      )
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("option", [_vm._v("-- Select class --")]),
-                                  _vm._v(" "),
-                                  _vm._l(_vm.classes, function(values, key) {
-                                    return _c(
-                                      "option",
-                                      {
-                                        key: key,
-                                        domProps: { value: values.id }
-                                      },
-                                      [_vm._v(" " + _vm._s(values.name) + " ")]
-                                    )
-                                  })
-                                ],
-                                2
-                              )
-                            ]
-                          )
+      _vm.classes.length > 0
+        ? _c(
+            "div",
+            { staticClass: "row" },
+            _vm._l(_vm.classes, function(clas, key) {
+              return _c(
+                "div",
+                { key: key, staticClass: "col-lg-4 col-md-6 col-sm-6" },
+                [
+                  _c("div", { staticClass: "card card-stats" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card-header card-header-warning card-header-icon"
+                      },
+                      [
+                        _vm._m(0, true),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-category" }, [
+                          _vm._v(_vm._s(clas.code))
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-md-12" }, [
+                        _c("h3", { staticClass: "card-title" }, [
+                          _vm._v(_vm._s(clas.name))
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "card-category" }, [
+                          _vm._v(_vm._s(clas.description))
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-footer" }, [
+                      _c(
+                        "div",
+                        { staticClass: "stats" },
+                        [
                           _c(
-                            "div",
-                            { staticClass: "form-group bmd-form-group" },
+                            "i",
+                            { staticClass: "material-icons text-primary" },
+                            [_vm._v("people")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "classlistView",
+                                  params: { id: clas.id }
+                                }
+                              }
+                            },
                             [
-                              _c("label", { staticClass: "bmd-label" }, [
-                                _vm._v("Student")
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.studlist.student_id,
-                                      expression: "studlist.student_id"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.$set(
-                                        _vm.studlist,
-                                        "student_id",
-                                        $event.target.multiple
-                                          ? $$selectedVal
-                                          : $$selectedVal[0]
-                                      )
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("option", [
-                                    _vm._v("-- Select student --")
-                                  ]),
-                                  _vm._v(" "),
-                                  _vm._l(_vm.studentsList, function(
-                                    values,
-                                    key
-                                  ) {
-                                    return _c(
-                                      "option",
-                                      {
-                                        key: key,
-                                        domProps: { value: values.id }
-                                      },
-                                      [
-                                        _vm._v(
-                                          " " +
-                                            _vm._s(
-                                              values.fname +
-                                                " " +
-                                                values.mname +
-                                                " " +
-                                                values.fname
-                                            ) +
-                                            " "
-                                        )
-                                      ]
-                                    )
-                                  })
-                                ],
-                                2
+                              _vm._v(
+                                _vm._s(clas.class_lists.length) +
+                                  " students enrolled"
                               )
                             ]
                           )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "modal-footer" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary",
-                            attrs: { type: "button" },
-                            on: { click: _vm.addStudent }
-                          },
-                          [_vm._v("Save changes")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-secondary",
-                            attrs: { type: "button", "data-dismiss": "modal" }
-                          },
-                          [_vm._v("Close")]
-                        )
-                      ])
+                        ],
+                        1
+                      )
                     ])
-                  ]
-                )
-              ]
-            )
-          ])
-        ])
-      ])
+                  ])
+                ]
+              )
+            }),
+            0
+          )
+        : _vm._e()
     ])
   ])
 }
@@ -456,55 +243,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header card-header-primary" }, [
-      _c("h4", { staticClass: "card-title " }, [_vm._v("Class list")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "card-category" }, [
-        _vm._v(" Here you can manage your list of students")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "table-responsive" }, [
-      _c("table", { staticClass: "table" }, [
-        _c("thead", { staticClass: " text-primary" }, [
-          _c("tr", [
-            _c("th", [_vm._v("#")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Student Name")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Creation date")]),
-            _vm._v(" "),
-            _c("th", { staticClass: "text-right" }, [_vm._v("Actions")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("tbody")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
+    return _c("div", { staticClass: "card-icon" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("books")])
     ])
   }
 ]

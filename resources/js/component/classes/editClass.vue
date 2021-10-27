@@ -56,9 +56,11 @@ export default {
     };
   },
   created() {
-    this.axios.get(`/api/class/${this.$route.params.id}`).then((res) => {
-      this.clas = res.data;
-    });
+    this.axios
+      .get(baseUrl + `/api/class/${this.$route.params.id}`)
+      .then((res) => {
+        this.clas = res.data;
+      });
   },
   methods: {
     async update() {

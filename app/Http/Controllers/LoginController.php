@@ -11,7 +11,8 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        $public = asset("public/material");
+        $public = asset("material");
+        // $public = asset("public/material");
         return view('login', compact('public'));
     }
 

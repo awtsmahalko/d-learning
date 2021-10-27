@@ -89,7 +89,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   created: function created() {
     var _this = this;
 
-    this.axios.get("/api/class/".concat(this.$route.params.id)).then(function (res) {
+    this.axios.get(baseUrl + "/api/class/".concat(this.$route.params.id)).then(function (res) {
       _this.clas = res.data;
     });
   },

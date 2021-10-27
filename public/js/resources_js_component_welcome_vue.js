@@ -89,17 +89,16 @@ var staticRenderFns = [
                 [
                   _c("div", { staticClass: "card-icon" }, [
                     _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("content_copy")
+                      _vm._v("meeting_room")
                     ])
                   ]),
                   _vm._v(" "),
                   _c("p", { staticClass: "card-category" }, [
-                    _vm._v("Used Space")
+                    _vm._v("No. of Classes")
                   ]),
                   _vm._v(" "),
                   _c("h3", { staticClass: "card-title" }, [
-                    _vm._v("49/50\n                "),
-                    _c("small", [_vm._v("GB")])
+                    _vm._v("1\n                ")
                   ])
                 ]
               ),
@@ -129,15 +128,15 @@ var staticRenderFns = [
                 [
                   _c("div", { staticClass: "card-icon" }, [
                     _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("store")
+                      _vm._v("people")
                     ])
                   ]),
                   _vm._v(" "),
                   _c("p", { staticClass: "card-category" }, [
-                    _vm._v("Revenue")
+                    _vm._v("No. of Students")
                   ]),
                   _vm._v(" "),
-                  _c("h3", { staticClass: "card-title" }, [_vm._v("$34,245")])
+                  _c("h3", { staticClass: "card-title" }, [_vm._v("1")])
                 ]
               ),
               _vm._v(" "),
@@ -162,12 +161,12 @@ var staticRenderFns = [
                 [
                   _c("div", { staticClass: "card-icon" }, [
                     _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("info_outline")
+                      _vm._v("books")
                     ])
                   ]),
                   _vm._v(" "),
                   _c("p", { staticClass: "card-category" }, [
-                    _vm._v("Fixed Issues")
+                    _vm._v("Pending Activities")
                   ]),
                   _vm._v(" "),
                   _c("h3", { staticClass: "card-title" }, [_vm._v("75")])
@@ -194,11 +193,13 @@ var staticRenderFns = [
                 },
                 [
                   _c("div", { staticClass: "card-icon" }, [
-                    _c("i", { staticClass: "fa fa-twitter" })
+                    _c("i", { staticClass: "material-icons" }, [
+                      _vm._v("info_outline")
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("p", { staticClass: "card-category" }, [
-                    _vm._v("Followers")
+                    _vm._v("No. of Announcement")
                   ]),
                   _vm._v(" "),
                   _c("h3", { staticClass: "card-title" }, [_vm._v("+245")])

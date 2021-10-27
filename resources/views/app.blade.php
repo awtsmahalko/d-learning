@@ -29,6 +29,7 @@
         window.sessionUserId = "{{ Auth::id() }}";
         window.sessionCategory = "{{ $auth->category; }}";
         window.sessionFullname = "{{ $auth->fname . ' ' . $auth->mname . ' ' . $auth->lname ; }}";
+        window.baseUrl = "";
     </script>
 </head>
 

@@ -143,7 +143,7 @@ export default {
           formData.append("classId", this.post.class_id);
           this.axios({
             method: "POST",
-            url: "/api/uploadPostAttachment",
+            url: baseUrl + "/api/uploadPostAttachment",
             data: formData,
             headers: {
               "Content-Type": "multipart/form-data",
@@ -159,7 +159,7 @@ export default {
         revert: (uniqueFileId, load, error) => {
           this.axios({
             method: "DELETE",
-            url: "/api/deletePostAttachment",
+            url: baseUrl + "/api/deletePostAttachment",
             data: {
               file: uniqueFileId,
               classId: this.post.class_id,
@@ -184,9 +184,11 @@ export default {
   created() {
     this.post.class_id = this.$route.params.id;
 
-    this.axios.get(`/api/class/${this.$route.params.id}`).then((res) => {
-      this.classData = res.data;
-    });
+    this.axios
+      .get(baseUrl + `/api/class/${this.$route.params.id}`)
+      .then((res) => {
+        this.classData = res.data;
+      });
   },
   mounted() {
     this.getPosts();
@@ -204,7 +206,7 @@ export default {
   methods: {
     async getPosts() {
       await this.axios
-        .get("/api/post", {
+        .get(baseUrl + "/api/post", {
           params: {
             user_id: sessionUserId,
             class_id: this.$route.params.id,
@@ -229,7 +231,7 @@ export default {
         });
 
         this.axios
-          .post("/api/post", {
+          .post(baseUrl + "/api/post", {
             postData: this.post,
             postAttachData: postFileValue,
           })

@@ -67,6 +67,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "add-class",
   data: function data() {
@@ -88,7 +101,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.post('/api/class', _this.clas).then(function (response) {
+                return _this.axios.post(baseUrl + "/api/class", _this.clas).then(function (response) {
                   _this.$router.push({
                     name: "class"
                   });
@@ -1078,7 +1091,7 @@ var staticRenderFns = [
         _c("span", { staticClass: "material-icons" }, [
           _vm._v("add_circle_outline")
         ]),
-        _vm._v(" Add Class")
+        _vm._v(" Add\n                Class\n              ")
       ]
     )
   }

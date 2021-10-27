@@ -86,14 +86,108 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "",
   data: function data() {
     return {
+      is_teacher: false,
+      form_class: {
+        user_id: sessionUserId,
+        name: "",
+        description: ""
+      },
       classes: []
     };
   },
   mounted: function mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
     this.getClasses();
   },
   methods: {
@@ -106,9 +200,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get('/api/class', {
+                return _this.axios.get(baseUrl + "/api/class", {
                   params: {
-                    user_id: sessionUserId
+                    user_id: sessionUserId,
+                    category: sessionCategory
                   }
                 }).then(function (response) {
                   _this.classes = response.data;
@@ -130,12 +225,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       if (confirm("Are you sure to delete this class ?")) {
-        this.axios["delete"]("/api/class/".concat(id)).then(function (response) {
+        this.axios["delete"](baseUrl + "/api/class/".concat(id)).then(function (response) {
           _this2.getClasses();
         })["catch"](function (error) {
           console.log(error);
         });
       }
+    },
+    showAddModal: function showAddModal() {
+      this.formReset();
+      $("#addModal").modal("show");
+    },
+    addClass: function addClass() {
+      var _this3 = this;
+
+      axios.post(baseUrl + "/api/class", this.form_class).then(function (response) {
+        console.log(response);
+        $("#addModal").modal("hide");
+
+        _this3.getClasses();
+
+        success_add();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    formReset: function formReset() {
+      this.form_class.name = "";
+      this.form_class.description = "";
     }
   }
 });
@@ -1005,22 +1122,31 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c(
                   "div",
-                  { staticClass: "col-12 text-right" },
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.is_teacher,
+                        expression: "is_teacher"
+                      }
+                    ],
+                    staticClass: "col-12 text-right"
+                  },
                   [
                     _c(
-                      "router-link",
+                      "button",
                       {
                         staticClass: "btn btn-sm btn-primary",
-                        attrs: { to: { name: "classAdd" } }
+                        on: { click: _vm.showAddModal }
                       },
                       [
                         _vm._v(
-                          "\n                          Add Class\n                      "
+                          "\n                  Add Class\n                "
                         )
                       ]
                     )
-                  ],
-                  1
+                  ]
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "table-responsive" }, [
@@ -1032,12 +1158,18 @@ var render = function() {
                           "tbody",
                           _vm._l(_vm.classes, function(clas, key) {
                             return _c("tr", { key: key }, [
-                              _c("td", [_vm._v(" " + _vm._s(clas.code) + " ")]),
+                              _c("td", [_vm._v(_vm._s(clas.code))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(" " + _vm._s(clas.name) + " ")]),
+                              _c("td", [_vm._v(_vm._s(clas.name))]),
                               _vm._v(" "),
                               _c("td", [
-                                _vm._v(" " + _vm._s(clas.created_at) + " ")
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      new Date(clas.created_at).toLocaleString()
+                                    ) +
+                                    "\n                      "
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", [
@@ -1065,6 +1197,14 @@ var render = function() {
                                     _c(
                                       "router-link",
                                       {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.is_teacher,
+                                            expression: "is_teacher"
+                                          }
+                                        ],
                                         staticClass: "btn btn-sm btn-success",
                                         attrs: {
                                           to: {
@@ -1079,6 +1219,14 @@ var render = function() {
                                     _c(
                                       "button",
                                       {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.is_teacher,
+                                            expression: "is_teacher"
+                                          }
+                                        ],
                                         staticClass: "btn btn-sm btn-danger",
                                         on: {
                                           click: function($event) {
@@ -1086,7 +1234,11 @@ var render = function() {
                                           }
                                         }
                                       },
-                                      [_vm._v("Delete")]
+                                      [
+                                        _vm._v(
+                                          "\n                            Delete\n                          "
+                                        )
+                                      ]
                                     )
                                   ],
                                   1
@@ -1104,7 +1256,110 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addModal",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.addClass.apply(null, arguments)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group bmd-form-group" }, [
+                      _c("label", [_vm._v("Class Name")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form_class.name,
+                            expression: "form_class.name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        staticStyle: { width: "100%" },
+                        attrs: { type: "text", required: "" },
+                        domProps: { value: _vm.form_class.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form_class,
+                              "name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group bmd-form-group" }, [
+                      _c("label", [_vm._v("Class Description")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form_class.description,
+                            expression: "form_class.description"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        staticStyle: { width: "100%" },
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.form_class.description },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form_class,
+                              "description",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4)
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -1113,10 +1368,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header card-header-primary" }, [
-      _c("h4", { staticClass: "card-title " }, [_vm._v("Class")]),
+      _c("h4", { staticClass: "card-title" }, [_vm._v("Class")]),
       _vm._v(" "),
       _c("p", { staticClass: "card-category" }, [
-        _vm._v(" Here you can manage your classes")
+        _vm._v("Here you can manage your classes")
       ])
     ])
   },
@@ -1124,7 +1379,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: " text-primary" }, [
+    return _c("thead", { staticClass: "text-primary" }, [
       _c("tr", [
         _c("th", [_vm._v("Code")]),
         _vm._v(" "),
@@ -1144,6 +1399,52 @@ var staticRenderFns = [
       _c("td", { attrs: { colspan: "4", align: "center" } }, [
         _vm._v("No Classes Found")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Add New Class")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("\n              Save changes\n            ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n              Close\n            ")]
+      )
     ])
   }
 ]

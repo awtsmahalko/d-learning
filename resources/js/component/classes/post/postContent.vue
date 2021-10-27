@@ -134,7 +134,7 @@ export default {
   methods: {
     async getComment() {
       await this.axios
-        .get("/api/post/comment", {
+        .get(baseUrl + "/api/post/comment", {
           params: {
             user_id: sessionUserId,
             post_id: this.postId,
@@ -151,7 +151,7 @@ export default {
     sendComment() {
       if (this.comment.message != "") {
         this.axios
-          .post("/api/post/comment/add", this.comment)
+          .post(baseUrl + "/api/post/comment/add", this.comment)
           .then((response) => {
             this.getComment();
             this.comment.message = "";

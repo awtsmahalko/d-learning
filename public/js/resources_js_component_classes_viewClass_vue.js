@@ -343,7 +343,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get("/api/post/comment", {
+                return _this.axios.get(baseUrl + "/api/post/comment", {
                   params: {
                     user_id: sessionUserId,
                     post_id: _this.postId
@@ -367,7 +367,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       if (this.comment.message != "") {
-        this.axios.post("/api/post/comment/add", this.comment).then(function (response) {
+        this.axios.post(baseUrl + "/api/post/comment/add", this.comment).then(function (response) {
           _this2.getComment();
 
           _this2.comment.message = "";
@@ -546,7 +546,7 @@ var options = {
 
           _this.axios({
             method: "POST",
-            url: "/api/uploadPostAttachment",
+            url: baseUrl + "/api/uploadPostAttachment",
             data: formData,
             headers: {
               "Content-Type": "multipart/form-data"
@@ -560,7 +560,7 @@ var options = {
         revert: function revert(uniqueFileId, load, error) {
           _this.axios({
             method: "DELETE",
-            url: "/api/deletePostAttachment",
+            url: baseUrl + "/api/deletePostAttachment",
             data: {
               file: uniqueFileId,
               classId: _this.post.class_id
@@ -583,7 +583,7 @@ var options = {
     var _this2 = this;
 
     this.post.class_id = this.$route.params.id;
-    this.axios.get("/api/class/".concat(this.$route.params.id)).then(function (res) {
+    this.axios.get(baseUrl + "/api/class/".concat(this.$route.params.id)).then(function (res) {
       _this2.classData = res.data;
     });
   },
@@ -608,7 +608,7 @@ var options = {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this3.axios.get("/api/post", {
+                return _this3.axios.get(baseUrl + "/api/post", {
                   params: {
                     user_id: sessionUserId,
                     class_id: _this3.$route.params.id
@@ -639,7 +639,7 @@ var options = {
         $("input[name='file']").each(function () {
           postFileValue.push($(this).val());
         });
-        this.axios.post("/api/post", {
+        this.axios.post(baseUrl + "/api/post", {
           postData: this.post,
           postAttachData: postFileValue
         }).then(function (response) {
