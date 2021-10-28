@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-const pre_url = baseUrl == '' ? "" : "/dlearning/public";
+const pre_url = "/dlearning/public";
 export default {
   name: "card-title",
   props: ["classesId"],
