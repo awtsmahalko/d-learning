@@ -1,8 +1,8 @@
 <template>
   <div class="iframe-container">
     <meta charset="utf-8">
-    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.9/css/bootstrap.css" />
-    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.9/css/react-select.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.9.9/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.9.9/css/react-select.css" />
 
     <meta name="format-detection" content="telephone=no">
   </div>
@@ -27,7 +27,7 @@ var API_KEY = 'xE4RMY1iRDCbzXL0hfgQ_A';
 var API_SECRET = 'zdxTw3HhPPWFStKXNQ3IY5JrYOkcbyfb06zC';
 
 var role = sessionCategory == 'T' ? 1 : 0;
-var url = "http://127.0.0.1:8000/video/view/";
+var url = baseUrl == '' ? "http://127.0.0.1:8000/video/view/": "https://juancoder.com/dlearning/video/view/";
 
 export default {
   name: "ZoomFrame",

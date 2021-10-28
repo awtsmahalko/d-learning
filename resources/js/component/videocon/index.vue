@@ -9,7 +9,7 @@
           @click="alert(clas.id)"
         >
           <div class="card card-stats">
-            <div class="card-header card-header-warning card-header-icon">
+            <div class="card-header card-header-primary card-header-icon">
               <div class="card-icon">
                 <i class="material-icons">videocam</i>
               </div>

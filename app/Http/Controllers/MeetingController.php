@@ -50,7 +50,7 @@ class MeetingController extends Controller
     public function api()
     {
         $apiZoom = ZoomApiController::createZoomMeeting();
-        return response()->json($apiZoom->id);
+        return response()->json($apiZoom);
     }
 
     public function show($id)

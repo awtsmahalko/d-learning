@@ -10,6 +10,12 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ $_REQUEST['public'] }}/img/apple-icon.png">
     <link rel="icon" type="image/png" href="{{ $_REQUEST['public'] }}/img/favicon.png">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+
+    <?php if ($_REQUEST['baseUrl'] == '') { ?>
+        <meta http-equiv="origin-trial" content="Am01xjFqpxOImHK8gajNHIO/9EFQDJWrQLU0EmlKWHBW5XXDYazLgMkyNzsqI2lZczgyVtWELZo0ItcK8RAEFAIAAABgeyJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAiLCJmZWF0dXJlIjoiVW5yZXN0cmljdGVkU2hhcmVkQXJyYXlCdWZmZXIiLCJleHBpcnkiOjE2NTg4Nzk5OTl9">
+    <?php } else { ?>
+        <meta http-equiv="origin-trial" content="ApGj5uJHFroHyhR9pmEGY7NGGkOoEBZ3q8xpNRzJnXIWStJ3al/haDgZog6T3tMF7ZaMoNkT4p76/qTi+yHp0QAAAAB3eyJvcmlnaW4iOiJodHRwczovL2p1YW5jb2Rlci5jb206NDQzIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjU4ODc5OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=">
+    <?php } ?>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
