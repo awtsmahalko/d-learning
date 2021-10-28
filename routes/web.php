@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-if ("PROD" == "LOCAL") {
+if ("PROD" == "PROD") {
 	$_REQUEST['public'] = asset("public/material");
 	$_REQUEST['mixAppBlade'] = asset('public/js/app.js');
 	$_REQUEST['baseUrl'] = "/dlearning";

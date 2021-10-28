@@ -13,7 +13,7 @@ Vue.use(VueAxios, axios);
 
 const router = new VueRouter({
     mode: "history",
-    // base: "/dlearning/",
+    base: "/dlearning/",
     routes: routes,
     linkActiveClass: "active"
 });
