@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+const pre_url = baseUrl == '' ? "" : "/dlearning/public";
 export default {
   name: "card-title",
   props: ["classesId"],
@@ -28,7 +29,7 @@ export default {
         name: "",
         code: "",
       },
-      image: "background-image:url("+ baseUrl+"/material/img/class.jpg)",
+      image: "background-image:url("+ pre_url+"/material/img/class.jpg)",
     };
   },
   created() {
