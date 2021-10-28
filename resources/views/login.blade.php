@@ -24,7 +24,7 @@
     @csrf
   </form>
   <div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('{{ $_REQUEST['public'] }}/img/login.jpg'); background-size: cover; background-position: top center;align-items: center;" data-color="purple">
+    <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('{{ $_REQUEST[public] }}/img/login.jpg'); background-size: cover; background-position: top center;align-items: center;" data-color="purple">
       <div class="container" style="height: auto;">
         <div class="row align-items-center">
           <div class="col-lg-6 col-md-6 col-sm-8 ml-auto mr-auto">
