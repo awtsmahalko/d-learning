@@ -315,7 +315,7 @@ export default {
   font-size: 14px;
   font-weight: 800;
   margin-bottom: 2px;
-  white-space: break-spaces;
+  /* white-space: break-spaces; */
 }
 
 .dropdown-toggle::after {
