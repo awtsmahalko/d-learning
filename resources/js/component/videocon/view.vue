@@ -204,7 +204,6 @@ export default {
       axios
         .post(baseUrl + "/api/video/create", this.meeting)
         .then((response) => {
-          console.log(response.data);
           $("#btn-submit").prop("disabled", false);
           this.fetchMeetings();
           $("#exampleModal").modal("hide");
@@ -240,7 +239,6 @@ export default {
       axios
         .get(baseUrl + `/api/video/${id}`)
         .then((response) => {
-          console.log(response);
           this.meeting = response.data;
           // this.meeting.scheduled_at = new Date(response.data.scheduled_at).toISOString();
           // this.meeting.scheduled_at = new Date(response.data.scheduled_at).toLocaleString().slice(0, 19);
@@ -264,7 +262,6 @@ export default {
             axios
               .delete(baseUrl + `/api/video/${id}`)
               .then((response) => {
-                console.log(response);
                 _this.fetchMeetings();
                 success_delete();
               })

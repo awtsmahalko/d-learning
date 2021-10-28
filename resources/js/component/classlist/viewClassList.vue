@@ -180,7 +180,6 @@ export default {
           },
         })
         .then((data) => {
-          //alert(data);
           this.students = data.data;
         })
         .catch((error) => {
@@ -195,8 +194,6 @@ export default {
           },
         })
         .then((data) => {
-          //alert(data);
-          console.log(data.data);
           this.studentsList = data.data;
         })
         .catch((error) => {
@@ -233,7 +230,6 @@ export default {
             axios
               .delete(baseUrl + `/api/deleteStudentsList/${id}`)
               .then((response) => {
-                console.log(response);
                 _this.fetchStudentsList();
                 success_delete();
               })

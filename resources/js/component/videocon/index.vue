@@ -59,12 +59,10 @@ export default {
           },
         })
         .then((data) => {
-          console.log(data.data);
-          //alert(data);
           this.classes = data.data;
         })
         .catch((error) => {
-          alert(error);
+          console.log(error);
         });
     },
   },
