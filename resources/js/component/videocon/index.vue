@@ -6,7 +6,6 @@
           class="col-lg-4 col-md-6 col-sm-6"
           v-for="(clas, key) in classes"
           :key="key"
-          @click="alert(clas.id)"
         >
           <div class="card card-stats">
             <div class="card-header card-header-primary card-header-icon">
