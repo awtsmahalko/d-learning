@@ -65,11 +65,9 @@ __webpack_require__.r(__webpack_exports__);
           category: sessionCategory
         }
       }).then(function (data) {
-        console.log(data.data); //alert(data);
-
         _this.classes = data.data;
       })["catch"](function (error) {
-        alert(error);
+        console.log(error);
       });
     }
   }
@@ -177,7 +175,7 @@ var render = function() {
                       "div",
                       {
                         staticClass:
-                          "card-header card-header-warning card-header-icon"
+                          "card-header card-header-primary card-header-icon"
                       },
                       [
                         _vm._m(0, true),

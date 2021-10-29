@@ -40,3 +40,7 @@ Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 's
 Route::get('/studentsList/students', [App\Http\Controllers\ClassListController::class, 'students']);
 Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, 'addStudent']);
 Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);
+
+
+Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class, 'indexActivity']);
+Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);

@@ -45,7 +45,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "classList",
   data: function data() {
@@ -71,11 +70,9 @@ __webpack_require__.r(__webpack_exports__);
           type: "V"
         }
       }).then(function (data) {
-        console.log(data.data); //alert(data);
-
         _this.classes = data.data;
       })["catch"](function (error) {
-        alert(error);
+        console.log(error);
       });
     }
   }
@@ -176,22 +173,14 @@ var render = function() {
             _vm._l(_vm.classes, function(clas, key) {
               return _c(
                 "div",
-                {
-                  key: key,
-                  staticClass: "col-lg-4 col-md-6 col-sm-6",
-                  on: {
-                    click: function($event) {
-                      return _vm.alert(clas.id)
-                    }
-                  }
-                },
+                { key: key, staticClass: "col-lg-4 col-md-6 col-sm-6" },
                 [
                   _c("div", { staticClass: "card card-stats" }, [
                     _c(
                       "div",
                       {
                         staticClass:
-                          "card-header card-header-warning card-header-icon"
+                          "card-header card-header-primary card-header-icon"
                       },
                       [
                         _vm._m(0, true),

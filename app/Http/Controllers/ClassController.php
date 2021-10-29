@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Classes;
+use App\Models\ClassActivity;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -79,5 +80,31 @@ class ClassController extends Controller
         $class->delete();
 
         return response()->json('Class deleted!');
+    }
+
+    public function indexActivity(Request $request)
+    {
+        $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->get();
+
+        return response()->json($activities);
+    }
+
+    public function createActivity(Request $request)
+    {
+        $form_data = array(
+            'user_id' => $request->user_id,
+            'class_id' => $request->class_id,
+            'title' => $request->title,
+            'instruction' => $request->instructions,
+            'points' => $request->points,
+            'duedate' => $request->duedate,
+            'status' => 1
+        );
+        $classactivity = ClassActivity::create($form_data);
+
+        return response()->json([
+            'message' => 'Class Activity Created Successfully!!',
+            'class' => $classactivity
+        ]);
     }
 }

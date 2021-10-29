@@ -74,7 +74,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.join {\r\n  padding: 5px;\n}\n.join-card {\r\n  margin-top: 50px;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  padding: 20px;\r\n  width: 30%;\r\n  height: 50%;\r\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);\n}\n.join-header {\r\n  border-bottom: 1px solid #d7dae2;\r\n  padding: 20px;\r\n  margin-bottom: 20px;\n}\n.form-item {\r\n  display: block;\r\n  padding: 5px;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.join {\n  padding: 5px;\n}\n.join-card {\n  margin-top: 50px;\n  margin-left: auto;\n  margin-right: auto;\n  padding: 20px;\n  width: 30%;\n  height: 50%;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);\n}\n.join-header {\n  border-bottom: 1px solid #d7dae2;\n  padding: 20px;\n  margin-bottom: 20px;\n}\n.form-item {\n  display: block;\n  padding: 5px;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

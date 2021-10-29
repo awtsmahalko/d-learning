@@ -207,10 +207,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 }).then(function (response) {
                   _this.classes = response.data;
-                  console.log(response.data);
                 })["catch"](function (error) {
                   console.log(error);
-                  _this.classes = [];
                 });
 
               case 2:

@@ -10,9 +10,9 @@
       </button>
     </div>
     <div class="col-md-12">
-      <div class="card my-2">
+      <!-- start loop -->
+      <div class="card my-2" v-for="(activity, key) in activities" :key="key">
         <div style="width: 100%padding: 11px;">
-          <!-- start loop -->
           <div class="col-md-12">
             <div class="d-flex">
               <div class="flex-shrink-0" style="padding: 11px">
@@ -32,14 +32,32 @@
                   width: 100%;
                 "
               >
-                <div class="mx-2" style="display: flex; flex-direction: column">
-                  <h6 class="card-title mb-0">
-                    <b class="comment" id="post-user"
-                      >Teacher Rino Posted a new classwork: Assignment #1</b
-                    >
-                  </h6>
-                  <small class="text-muted mt-0"> Posted Aug 15, 2018 </small>
-                </div>
+                <router-link
+                  :to="{
+                    name: 'activityView',
+                    params: {
+                      class_id: activity.class_id,
+                      activity_id: activity.id,
+                    },
+                  }"
+                >
+                  <div
+                    class="mx-2"
+                    style="display: flex; flex-direction: column"
+                  >
+                    <h6 class="card-title mb-0">
+                      <b class="comment" id="post-user"
+                        >{{ activity.user.fname }} Posted a new classwork:
+                        {{ activity.title }}</b
+                      >
+                    </h6>
+                    <small class="text-muted mt-0">
+                      Posted
+                      {{ new Date(activity.created_at).toLocaleString() }}
+                    </small>
+                  </div>
+                </router-link>
+
                 <div>
                   <button
                     class="btn btn-sm btn-secondary dropdown-toggle"
@@ -65,9 +83,9 @@
               </div>
             </div>
           </div>
-          <!-- end loop -->
         </div>
       </div>
+      <!-- end loop -->
     </div>
 
     <!-- modal -->
@@ -84,7 +102,7 @@
         style="max-width: 80% !important"
       >
         <div class="modal-content">
-          <form @submit.prevent="createClasswork">
+          <form id="modal_new_activity" @submit.prevent="createClasswork">
             <div class="modal-header">
               <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
               <h5 class="modal-title" id="createClassworkModal">
@@ -110,15 +128,16 @@
                             <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group bmd-form-group">
-                                  <textarea
+                                  <label class="bmd-label-floating"
+                                    >Title</label
+                                  >
+                                  <input
+                                    type="text"
+                                    v-model="newActivity.title"
                                     class="form-control"
-                                    placeholder="Title"
-                                    rows="1"
-                                    spellcheck="false"
-                                  ></textarea>
+                                  />
                                 </div>
                                 <div class="form-group bmd-form-group">
-                                  <!-- <label>Share to your class</label> -->
                                   <textarea
                                     class="form-control summernote"
                                     id="snnewactivity"
@@ -151,20 +170,25 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 py-3" style="border-left: 1px solid #ddd">
+                <div
+                  class="col-md-4 py-4 mt-2"
+                  style="border-left: 1px solid #ddd"
+                >
                   <div class="col-md-12">
                     <div class="form-group bmd-form-group">
+                      <label class="bmd-label-floating">Points</label>
                       <input
-                        type="text"
+                        type="number"
+                        v-model="newActivity.points"
                         class="form-control"
-                        placeholder="points"
                       />
                     </div>
                     <div class="form-group bmd-form-group">
+                      <label class="bmd-label-floating">Due Date</label>
                       <input
-                        type="text"
+                        type="date"
+                        v-model="newActivity.duedate"
                         class="form-control"
-                        placeholder="due date"
                       />
                     </div>
                   </div>
@@ -222,6 +246,7 @@ export default {
     return {
       classData: {},
       newActivityFiles: [],
+      activities: [],
       newActivity: {
         user_id: sessionUserId,
         class_id: "",
@@ -283,20 +308,53 @@ export default {
       });
   },
   mounted() {
+    this.getActivity();
     const vm = this;
 
-    // options.callbacks = {
-    //   onChange(contents) {
-    //     vm.newActivity.instructions = contents;
-    //   },
-    // };
+    options.callbacks = {
+      onChange(contents) {
+        vm.newActivity.instructions = contents;
+      },
+    };
 
     $("textarea#snnewactivity").summernote(options);
     $("textarea#snnewactivity").summernote("code", "<br>");
   },
   methods: {
+    async getActivity() {
+      await this.axios
+        .get(baseUrl + "/api/class/activity/view", {
+          params: {
+            user_id: sessionUserId,
+            class_id: this.$route.params.id,
+          },
+        })
+        .then((response) => {
+          this.activities = response.data;
+          // this.postsAttachments = response.data.post_attachments;
+          console.log(this.activities);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.activities = [];
+        });
+    },
     popClassworkModal() {
       $("#createClassworkModal").modal("show");
+    },
+    createClasswork() {
+      // console.log(this.newActivity);
+      this.axios
+        .post(baseUrl + "/api/class/activity/add", this.newActivity)
+        .then((response) => {
+          this.getActivity();
+          $("#createClassworkModal").modal("hide");
+          $("#modal_new_activity").trigger("reset");
+          alert(response.data.message);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     handleFilePondInit: function () {
       console.log("new activity FilePond has initialized");
