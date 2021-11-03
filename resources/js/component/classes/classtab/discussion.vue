@@ -65,15 +65,28 @@
           </div>
         </div>
         <div v-if="posts.length > 0">
-          <div v-for="(post, key) in posts" :key="key" class="card">
-            <postContent
-              :userposted="post.user.fname"
-              :dateposted="post.created_at"
-              :descriptionposted="post.description"
-              :postsAttachments="post.post_attachments"
-              :classCode="classData.code"
-              :postId="post.id"
-            />
+          <div v-for="(post, key) in posts" :key="key">
+            <div v-if="post.module === 'POST'" class="card">
+              <postContent
+                :userposted="post.user.fname"
+                :dateposted="post.created_at"
+                :descriptionposted="post.description"
+                :postsAttachments="post.post_attachments"
+                :classCode="classData.code"
+                :postId="post.id"
+              />
+            </div>
+            <div v-else>
+              <postContentCw
+                :title="post.title"
+                :classCode="classData.code"
+                :postId="post.id"
+                :teacher="post.user.fname"
+                :postedDate="post.created_at"
+                :class_id="post.class_id"
+                :activity_id="post.cw_id"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -83,6 +96,7 @@
 <script>
 import postAttachment from "./../post/postAttachment.vue";
 import postContent from "./../post/postContent.vue";
+import postContentCw from "./../post/postContentClassWork.vue";
 
 // Import Vue FilePond
 import vueFilePond from "vue-filepond";
@@ -245,6 +259,7 @@ export default {
     postAttachment,
     postContent,
     FilePond,
+    postContentCw,
   },
 };
 </script>

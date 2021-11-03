@@ -46,7 +46,7 @@
           role="tabpanel"
           aria-labelledby="pills-instruction-tab"
         >
-          asd
+          <activityInstruction />
         </div>
         <div
           class="tab-pane fade"
@@ -54,7 +54,7 @@
           role="tabpanel"
           aria-labelledby="pills-student-work-tab"
         >
-          223
+          <activityStudentWork />
         </div>
         <div
           class="tab-pane fade"
@@ -62,12 +62,25 @@
           role="tabpanel"
           aria-labelledby="pills-my-work-tab"
         >
-          43434
+          <activityMyWork />
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+import activityInstruction from "./activitytab/instruction.vue";
+import activityStudentWork from "./activitytab/studentwork.vue";
+import activityMyWork from "./activitytab/mywork.vue";
+
+export default {
+  components: {
+    activityInstruction,
+    activityStudentWork,
+    activityMyWork,
+  },
+};
+</script>
 <style scoped>
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {

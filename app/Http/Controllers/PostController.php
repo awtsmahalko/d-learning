@@ -6,17 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\File;
 use App\Models\Classes;
+use App\Models\ClassActivity;
 use App\Models\Post;
 use App\Models\TemporaryPostAttachments;
 use App\Models\PostAttachments;
 use App\Models\PostComments;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $post = Post::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user', 'postAttachments')->get();
-        return response()->json($post);
+        $classwork = ClassActivity::select('class_id', DB::raw("'0' AS id"), 'id AS cw_id', DB::raw("title AS title"), "instruction AS description", 'created_at', 'user_id', DB::raw("'CW' AS module"))->where('class_id', $request->class_id);
+
+        $post = Post::select('class_id', 'id AS id', DB::raw("'0' AS cw_id"), DB::raw("'' AS title"), "description AS description", 'created_at', 'user_id', DB::raw("'POST' AS module"))->where('class_id', $request->class_id)->with('user', 'postAttachments');
+
+        return response()->json($post->union($classwork)->orderByDesc('created_at')->get());
     }
 
     public function store(Request $request)
