@@ -31,6 +31,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+var pre_url = baseUrl == '' ? "" : "/dlearning/public";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "card-title",
   props: ["classesId"],
@@ -40,9 +41,7 @@ __webpack_require__.r(__webpack_exports__);
         name: "",
         code: ""
       },
-      image: {
-        backgroundImage: "/material/img/class.jpg"
-      }
+      image: "background-image:url(" + pre_url + "/material/img/class.jpg)"
     };
   },
   created: function created() {
@@ -251,7 +250,6 @@ __webpack_require__.r(__webpack_exports__);
           user_id: sessionUserId
         }
       }).then(function (data) {
-        //alert(data);
         _this2.students = data.data;
       })["catch"](function (error) {
         console.log(error);
@@ -265,8 +263,6 @@ __webpack_require__.r(__webpack_exports__);
           class_id: this.$route.params.id
         }
       }).then(function (data) {
-        //alert(data);
-        console.log(data.data);
         _this3.studentsList = data.data;
       })["catch"](function (error) {
         console.log(error);
@@ -301,8 +297,6 @@ __webpack_require__.r(__webpack_exports__);
         preConfirm: function preConfirm() {
           return new Promise(function (resolve) {
             axios["delete"](baseUrl + "/api/deleteStudentsList/".concat(id)).then(function (response) {
-              console.log(response);
-
               _this.fetchStudentsList();
 
               success_delete();
@@ -339,7 +333,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.card.card-background .full-background[data-v-33f3ef42] {\r\n  background-position: 50%;\r\n  background-size: cover;\r\n  margin-bottom: 30px;\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  border-radius: 0.75rem;\n}\n.card .card-background[data-v-33f3ef42] {\r\n  align-items: center;\n}\n.card-background[data-v-33f3ef42] {\r\n  height: 200px;\r\n  margin-top: 0px;\r\n  margin-bottom: 0px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card.card-background .full-background[data-v-33f3ef42] {\n  background-position: 50%;\n  background-size: cover;\n  margin-bottom: 30px;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  border-radius: 0.75rem;\n}\n.card .card-background[data-v-33f3ef42] {\n  align-items: center;\n}\n.card-background[data-v-33f3ef42] {\n  height: 200px;\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -362,7 +356,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.card.card-background .full-background[data-v-a1cf8790] {\r\n  background-position: 50%;\r\n  background-size: cover;\r\n  margin-bottom: 30px;\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  border-radius: 0.75rem;\n}\n.card .card-background[data-v-a1cf8790] {\r\n  align-items: center;\n}\n.card-background[data-v-a1cf8790] {\r\n  height: 200px;\r\n  margin-top: 0px;\r\n  margin-bottom: 0px;\n}\n.btn-width[data-v-a1cf8790] {\r\n  width: 100%;\n}\n.filepond--wrapper[data-v-a1cf8790] {\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card.card-background .full-background[data-v-a1cf8790] {\n  background-position: 50%;\n  background-size: cover;\n  margin-bottom: 30px;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  border-radius: 0.75rem;\n}\n.card .card-background[data-v-a1cf8790] {\n  align-items: center;\n}\n.card-background[data-v-a1cf8790] {\n  height: 200px;\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.btn-width[data-v-a1cf8790] {\n  width: 100%;\n}\n.filepond--wrapper[data-v-a1cf8790] {\n  border: 1px solid #ccc;\n  border-radius: 4px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -964,10 +958,7 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-md-12" }, [
       _c("div", { staticClass: "card card-background" }, [
-        _c("div", {
-          staticClass: "full-background",
-          staticStyle: { "background-image": "url(/material/img/class.jpg)" }
-        }),
+        _c("div", { staticClass: "full-background", style: _vm.image }),
         _vm._v(" "),
         _c("div", { staticClass: "card-body pt-12" }, [
           _c("h2", { staticClass: "text-white font-weight-bold pt-2" }, [

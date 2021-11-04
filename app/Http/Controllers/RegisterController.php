@@ -50,4 +50,61 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function updateProfile(Request $request){
+        $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'email' => 'required',
+            'username' => 'required',
+        ]);
+        
+        $data = array(
+            'fname' => $request->fname,
+            'mname' => $request->mname,
+            'lname' => $request->lname,
+            'email' => $request->email,
+            'username' => $request->username,
+        );
+    
+
+        $users = User::find($request->id);
+        
+        $users = $users->update($data);
+
+        return response()->json($users);
+    }
+
+    public function updatePassword(Request $request){
+
+        $user_id = $request->id;
+        $old_password = $request->old_password;
+        $new_password = $request->new_password;
+        $confirm_new_password = $request->confirm_new_password;
+
+        // get password
+        $pw = User::find($user_id, ['password']);
+
+        $data = array(
+            'password' => Hash::make($confirm_new_password)
+        );
+
+
+        if(Hash::check($old_password, $pw->password) != 1){
+            $response = "Incorrect password. Please try again.";
+        }else if($new_password != $confirm_new_password){
+            $response = "Passwords did not matched. Please try again.";
+        }else{
+            $users = User::find($user_id);
+            $sql = $users->update($data);
+            if($sql){
+                $response = 1;
+            }else{
+                $response = "Error in sql query.";
+            }
+
+        }
+
+        return response()->json($response);
+    }
 }

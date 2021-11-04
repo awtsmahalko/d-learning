@@ -13,6 +13,9 @@ const VideConView = () => import('./component/videocon/view')
 const VideConJoin = () => import('./component/videocon/join')
 const VideConMeeting = () => import('./component/videocon/meeting')
 
+// profile
+const ProfileView = () => import('./component/profile/indexProfile')
+
 const baseUrl = "";
 export const routes = [
     {
@@ -69,5 +72,10 @@ export const routes = [
         name:"classlistView",
         path:baseUrl+"/class-list/view/:id",
         component:ClassListView
+    },
+    {
+        name:"profileView",
+        path:baseUrl+"/profile",
+        component:ProfileView
     }
 ]

@@ -12,7 +12,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
-                    <a class="navbar-brand" href="#">Title</a>
+                    <a class="navbar-brand" href="#"><!--Title--></a>
                 </div>
                 <button
                     class="navbar-toggler"
@@ -43,14 +43,11 @@
                             </a>
                             <div
                                 class="dropdown-menu dropdown-menu-right"
-                                aria-labelledby="navbarDropdownProfile"
-                            >
-                                <a class="dropdown-item" href="#"
-                                    >Profile</a
-                                >
-                                <a class="dropdown-item" href="#"
-                                    >Settings</a
-                                >
+                                aria-labelledby="navbarDropdownProfile">
+                                
+                                <router-link to="/profile">
+                                  <a class="dropdown-item" href="#">Profile</a>
+                                </router-link>
                                 <div class="dropdown-divider"></div>
                                 <a
                                     class="dropdown-item"

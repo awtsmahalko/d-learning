@@ -15,8 +15,16 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 /*!********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/component/classes/classtab/classWork.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************************************************************************************************************************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_filepond__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-filepond */ "./node_modules/vue-filepond/dist/vue-filepond.js");
+/* harmony import */ var vue_filepond__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_filepond__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var filepond_dist_filepond_min_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! filepond/dist/filepond.min.css */ "./node_modules/filepond/dist/filepond.min.css");
 //
 //
 //
@@ -84,6 +92,234 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// Import Vue FilePond
+ // Import FilePond styles
+
+ // Import FilePond plugins
+// Please note that you need to install these plugins separately
+// Create component
+
+var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_0___default()();
+var options = {
+  placeholder: "Instructions (optional)",
+  toolbar: [// ["font", ["bold", "underline", "clear"]],
+  // ["color", ["color"]],
+  ["style", ["style"]], ["font", ["bold", "underline", "clear"]], ["para", ["ul", "ol", "paragraph"]]],
+  disableDragAndDrop: true,
+  spellCheck: true
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "class-work",
+  data: function data() {
+    return {
+      classData: {},
+      newActivityFiles: [],
+      newActivity: {
+        user_id: sessionUserId,
+        class_id: "",
+        title: "",
+        points: "",
+        duedate: "",
+        instructions: "<br>"
+      },
+      server: {
+        process: function process(fieldName, file, metadata, load, error) {// const formData = new FormData();
+          // formData.append("file", file, file.name);
+          // formData.append("classId", this.newActivity.class_id);
+          // this.axios({
+          //   method: "POST",
+          //   url: baseUrl + "/api/uploadPostAttachment",
+          //   data: formData,
+          //   headers: {
+          //     "Content-Type": "multipart/form-data",
+          //   },
+          // })
+          //   .then((response) => {
+          //     load(response.data);
+          //   })
+          //   .catch(() => {
+          //     error();
+          //   });
+        },
+        revert: function revert(uniqueFileId, load, error) {// this.axios({
+          //   method: "DELETE",
+          //   url: baseUrl + "/api/deletePostAttachment",
+          //   data: {
+          //     file: uniqueFileId,
+          //     classId: this.newActivity.class_id,
+          //   },
+          // })
+          //   .then((response) => {
+          //     load();
+          //   })
+          //   .catch(() => {
+          //     error();
+          //   });
+          // // Can call the error method if something is wrong, should exit after
+          // error("oh my goodness");
+          // // Should call the load method when done, no parameters required
+          // load();
+        }
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.newActivity.class_id = this.$route.params.id;
+    this.axios.get(baseUrl + "/api/class/".concat(this.$route.params.id)).then(function (res) {
+      _this.classData = res.data;
+    });
+  },
+  mounted: function mounted() {
+    var vm = this; // options.callbacks = {
+    //   onChange(contents) {
+    //     vm.newActivity.instructions = contents;
+    //   },
+    // };
+
+    $("textarea#snnewactivity").summernote(options);
+    $("textarea#snnewactivity").summernote("code", "<br>");
+  },
+  methods: {
+    popClassworkModal: function popClassworkModal() {
+      $("#createClassworkModal").modal("show");
+    },
+    handleFilePondInit: function handleFilePondInit() {
+      console.log("new activity FilePond has initialized"); // example of instance method call on pond reference
+
+      this.$refs.napond.getFiles(); // console.log(this.$refs.napond.getFiles());
+    }
+  },
+  components: {
+    FilePond: FilePond
+  }
+});
 
 /***/ }),
 
@@ -718,14 +954,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.axios.post(baseUrl + "/api/post/comment/add", this.comment).then(function (response) {
           _this2.getComment();
 
-          _this2.comment.message = ""; // alert("comment is posted");
+          _this2.comment.message = "";
         })["catch"](function (error) {
-          alert("comment is not posted");
           console.log(error);
         });
-      } else {
-        alert("Compose anything to comment");
-      }
+      } else {}
     }
   }
 });
@@ -871,7 +1104,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.comment[data-v-780ca990] {\r\n  font-size: 14px;\r\n  font-weight: 800;\r\n  margin-bottom: 2px;\r\n  white-space: break-spaces;\n}\n.dropdown-toggle[data-v-780ca990]::after {\r\n  content: none !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.comment[data-v-780ca990] {\n  font-size: 14px;\n  font-weight: 800;\n  margin-bottom: 2px;\n  /* white-space: break-spaces; */\n}\n.dropdown-toggle[data-v-780ca990]::after {\n  content: none !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -895,7 +1128,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.card.card-background .full-background[data-v-6c78345e] {\r\n  background-position: 50%;\r\n  background-size: cover;\r\n  margin-bottom: 30px;\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  border-radius: 0.75rem;\n}\n.card .card-background[data-v-6c78345e] {\r\n  align-items: center;\n}\n.card-background[data-v-6c78345e] {\r\n  height: 200px;\r\n  margin-top: 0px;\r\n  margin-bottom: 0px;\n}\n.btn-width[data-v-6c78345e] {\r\n  width: 100%;\n}\n.filepond--wrapper[data-v-6c78345e] {\r\n  border: 1px solid #ccc;\r\n  border-radius: 4px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card.card-background .full-background[data-v-6c78345e] {\n  background-position: 50%;\n  background-size: cover;\n  margin-bottom: 30px;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  border-radius: 0.75rem;\n}\n.card .card-background[data-v-6c78345e] {\n  align-items: center;\n}\n.card-background[data-v-6c78345e] {\n  height: 200px;\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.btn-width[data-v-6c78345e] {\n  width: 100%;\n}\n.filepond--wrapper[data-v-6c78345e] {\n  border: 1px solid #ccc;\n  border-radius: 4px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -919,7 +1152,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.file-attachment[data-v-40acf2a9] {\r\n  border: 1px solid #c4c0c0;\r\n  margin: 5px;\n}\n.post-description[data-v-40acf2a9] {\r\n  color: #5a5a5a;\r\n  font-weight: 410;\n}\n.attachment-remove[data-v-40acf2a9] {\r\n  cursor: default;\n}\n.attachment-remove-icon[data-v-40acf2a9] {\r\n  font-size: 1.1rem;\r\n  color: #f44336;\r\n  padding: 0.40625rem 1.25rem;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.file-attachment[data-v-40acf2a9] {\n  border: 1px solid #c4c0c0;\n  margin: 5px;\n}\n.post-description[data-v-40acf2a9] {\n  color: #5a5a5a;\n  font-weight: 410;\n}\n.attachment-remove[data-v-40acf2a9] {\n  cursor: default;\n}\n.attachment-remove-icon[data-v-40acf2a9] {\n  font-size: 1.1rem;\n  color: #f44336;\n  padding: 0.40625rem 1.25rem;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -943,7 +1176,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.comment[data-v-0027afc9] {\r\n  font-size: 14px;\r\n  font-weight: 400;\r\n  margin-bottom: 2px;\r\n  white-space: break-spaces;\n}\n.dropdown-toggle[data-v-0027afc9]::after {\r\n  content: none !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.comment[data-v-0027afc9] {\n  font-size: 14px;\n  font-weight: 400;\n  margin-bottom: 2px;\n  white-space: break-spaces;\n}\n.dropdown-toggle[data-v-0027afc9]::after {\n  content: none !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -967,7 +1200,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.post-description[data-v-6b9458e3] {\r\n  color: #5a5a5a;\r\n  font-weight: 410;\r\n  font-size: 16px;\n}\n.dropdown-toggle[data-v-6b9458e3]::after {\r\n  content: none !important;\n}\n.post-avatar[data-v-6b9458e3] {\r\n  border: 1px solid #c4c0c0;\r\n  border-radius: 3px;\n}\n.card-footer[data-v-6b9458e3] {\r\n  border-top: 1px solid #ddd !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.post-description[data-v-6b9458e3] {\n  color: #5a5a5a;\n  font-weight: 410;\n  font-size: 16px;\n}\n.dropdown-toggle[data-v-6b9458e3]::after {\n  content: none !important;\n}\n.post-avatar[data-v-6b9458e3] {\n  border: 1px solid #c4c0c0;\n  border-radius: 3px;\n}\n.card-footer[data-v-6b9458e3] {\n  border-top: 1px solid #ddd !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -991,7 +1224,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-pills .nav-link.active[data-v-304810ec],\r\n.nav-pills .show > .nav-link[data-v-304810ec] {\r\n  background-color: #9c27b0;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-pills .nav-link.active[data-v-304810ec],\n.nav-pills .show > .nav-link[data-v-304810ec] {\n  background-color: #9c27b0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -15284,9 +15517,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _classWork_vue_vue_type_template_id_780ca990_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./classWork.vue?vue&type=template&id=780ca990&scoped=true& */ "./resources/js/component/classes/classtab/classWork.vue?vue&type=template&id=780ca990&scoped=true&");
 /* harmony import */ var _classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classWork.vue?vue&type=script&lang=js& */ "./resources/js/component/classes/classtab/classWork.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
-/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[__WEBPACK_IMPORT_KEY__]
-/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
 /* harmony import */ var _classWork_vue_vue_type_style_index_0_id_780ca990_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./classWork.vue?vue&type=style&index=0&id=780ca990&scoped=true&lang=css& */ "./resources/js/component/classes/classtab/classWork.vue?vue&type=style&index=0&id=780ca990&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -15569,11 +15799,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./classWork.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/component/classes/classtab/classWork.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
-/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
-/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default())); 
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_classWork_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -15870,149 +16096,363 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container mt-3" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-md btn-primary",
+          attrs: { type: "submit" },
+          on: { click: _vm.popClassworkModal }
+        },
+        [
+          _c("span", { staticClass: "material-icons" }, [_vm._v(" add ")]),
+          _vm._v(" Create\n    ")
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "createClassworkModal",
+          role: "dialog",
+          "aria-labelledby": "createClassworkModal",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog",
+            staticStyle: { "max-width": "80% !important" },
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.createClasswork.apply(null, arguments)
+                    }
+                  }
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body py-0" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-8" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-12" }, [
+                            _c("div", { staticClass: "card" }, [
+                              _c("div", { staticClass: "card-body" }, [
+                                _c(
+                                  "form",
+                                  {
+                                    on: {
+                                      submit: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.submitPost.apply(
+                                          null,
+                                          arguments
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _vm._m(2),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "col-md-12",
+                                          staticStyle: {
+                                            "border-top": "2px solid #ddd"
+                                          }
+                                        },
+                                        [
+                                          _c("div", { staticClass: "row" }, [
+                                            _c(
+                                              "div",
+                                              { staticClass: "col-md-12 mt-1" },
+                                              [
+                                                _c("file-pond", {
+                                                  ref: "napond",
+                                                  attrs: {
+                                                    name: "file",
+                                                    "label-idle":
+                                                      "Drop attachment here...",
+                                                    "allow-multiple": true,
+                                                    files: _vm.newActivityFiles,
+                                                    server: _vm.server
+                                                  },
+                                                  on: {
+                                                    init: _vm.handleFilePondInit
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(3)
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4)
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container mt-3" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-md btn-primary", attrs: { type: "submit" } },
-          [
-            _c("span", { staticClass: "material-icons" }, [_vm._v(" add ")]),
-            _vm._v(" Create\n    ")
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card my-2" }, [
-          _c("div", { staticStyle: { width: "100%padding: 11px" } }, [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("div", { staticClass: "d-flex" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "flex-shrink-0",
-                    staticStyle: { padding: "11px" }
-                  },
-                  [
-                    _c("img", {
-                      staticClass: "avatar rounded-circle me-3",
-                      staticStyle: { width: "40px", height: "40px" },
-                      attrs: {
-                        alt: "Image placeholder",
-                        src: "http://via.placeholder.com/300x180"
-                      }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticStyle: {
-                      display: "flex",
-                      "flex-direction": "row",
-                      "justify-content": "space-between",
-                      "align-items": "center",
-                      width: "100%"
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "card my-2" }, [
+        _c("div", { staticStyle: { width: "100%padding: 11px" } }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "d-flex" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "flex-shrink-0",
+                  staticStyle: { padding: "11px" }
+                },
+                [
+                  _c("img", {
+                    staticClass: "avatar rounded-circle me-3",
+                    staticStyle: { width: "40px", height: "40px" },
+                    attrs: {
+                      alt: "Image placeholder",
+                      src: "http://via.placeholder.com/300x180"
                     }
-                  },
-                  [
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticStyle: {
+                    display: "flex",
+                    "flex-direction": "row",
+                    "justify-content": "space-between",
+                    "align-items": "center",
+                    width: "100%"
+                  }
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "mx-2",
+                      staticStyle: {
+                        display: "flex",
+                        "flex-direction": "column"
+                      }
+                    },
+                    [
+                      _c("h6", { staticClass: "card-title mb-0" }, [
+                        _c(
+                          "b",
+                          {
+                            staticClass: "comment",
+                            attrs: { id: "post-user" }
+                          },
+                          [
+                            _vm._v(
+                              "Teacher Rino Posted a new classwork: Assignment #1"
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("small", { staticClass: "text-muted mt-0" }, [
+                        _vm._v(" Posted Aug 15, 2018 ")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", [
                     _c(
-                      "div",
+                      "button",
                       {
-                        staticClass: "mx-2",
-                        staticStyle: {
-                          display: "flex",
-                          "flex-direction": "column"
+                        staticClass: "btn btn-sm btn-secondary dropdown-toggle",
+                        attrs: {
+                          id: "navbarDropdownMenuLink1",
+                          "data-toggle": "dropdown",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
                         }
                       },
                       [
-                        _c("h6", { staticClass: "card-title mb-0" }, [
-                          _c(
-                            "b",
-                            {
-                              staticClass: "comment",
-                              attrs: { id: "post-user" }
-                            },
-                            [_vm._v("Assignment #1")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("small", { staticClass: "text-muted mt-0" }, [
-                          _vm._v(" Posted Aug 15, 2018 ")
-                        ])
+                        _c("i", {
+                          staticClass: "fa fa-ellipsis-v text-lg text-muted",
+                          attrs: { "aria-hidden": "true" }
+                        })
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "btn btn-sm btn-secondary dropdown-toggle",
-                          attrs: {
-                            id: "navbarDropdownMenuLink1",
-                            "data-toggle": "dropdown",
-                            "aria-haspopup": "true",
-                            "aria-expanded": "false"
-                          }
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "dropdown-menu dropdown-menu-end me-sm-n4 me-n3",
+                        staticStyle: {
+                          right: "auto !important",
+                          left: "0 !important"
                         },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-ellipsis-v text-lg text-muted",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "dropdown-menu dropdown-menu-end me-sm-n4 me-n3",
-                          staticStyle: {
-                            right: "auto !important",
-                            left: "0 !important"
+                        attrs: { "aria-labelledby": "navbarDropdownMenuLink1" }
+                      },
+                      [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { href: "#" }
                           },
-                          attrs: {
-                            "aria-labelledby": "navbarDropdownMenuLink1"
-                          }
-                        },
-                        [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "dropdown-item",
-                              attrs: { href: "#" }
-                            },
-                            [_vm._v("Edit")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass: "dropdown-item",
-                              attrs: { href: "#" }
-                            },
-                            [_vm._v("Delete")]
-                          )
-                        ]
-                      )
-                    ])
-                  ]
-                )
-              ])
+                          [_vm._v("Edit")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      ]
+                    )
+                  ])
+                ]
+              )
             ])
           ])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "createClassworkModal" } },
+        [_vm._v("\n              New Activity\n            ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "form-group bmd-form-group" }, [
+        _c("textarea", {
+          staticClass: "form-control",
+          attrs: { placeholder: "Title", rows: "1", spellcheck: "false" }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group bmd-form-group" }, [
+        _c("textarea", {
+          staticClass: "form-control summernote",
+          attrs: { id: "snnewactivity", required: "" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "col-md-4 py-3",
+        staticStyle: { "border-left": "1px solid #ddd" }
+      },
+      [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "form-group bmd-form-group" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "points" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group bmd-form-group" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "due date" }
+            })
+          ])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("\n              Save changes\n            ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n              Close\n            ")]
+      )
     ])
   }
 ]
@@ -16222,20 +16662,11 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-12 text-right" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-sm btn-primary",
-                  on: { click: _vm.showAddModal }
-                },
-                [_vm._v("\n              Add Student\n            ")]
-              )
-            ]),
+            _vm._m(1),
             _vm._v(" "),
             _c("div", { staticClass: "table-responsive" }, [
               _c("table", { staticClass: "table" }, [
-                _vm._m(1),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("tbody", [
                   _c("tr", [
@@ -16286,6 +16717,16 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("p", { staticClass: "card-category" }, [
         _vm._v("List of students enrolled in this class")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 text-right" }, [
+      _c("button", { staticClass: "btn btn-sm btn-primary" }, [
+        _vm._v("Add Student")
       ])
     ])
   },
@@ -16901,7 +17342,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "content pt-0" }, [
-    _c("div", { staticClass: "container-fluid pt-0" }, [
+    _c("div", { staticClass: "container pt-0" }, [
       _vm._m(0),
       _vm._v(" "),
       _c(

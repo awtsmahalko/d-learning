@@ -40,3 +40,7 @@ Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 's
 Route::get('/studentsList/students', [App\Http\Controllers\ClassListController::class, 'students']);
 Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, 'addStudent']);
 Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);
+
+// profile
+Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
+Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
