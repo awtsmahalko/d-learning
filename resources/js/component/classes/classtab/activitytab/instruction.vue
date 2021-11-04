@@ -37,10 +37,10 @@
                       Posted •
                       {{ new Date(activities.created_at).toLocaleString() }}
                     </p>
-                    <h6
+                    <p
                       class="instructionDescription"
                       v-html="activities.instruction"
-                    ></h6>
+                    ></p>
                     <div
                       style="
                         display: flex;
@@ -162,6 +162,6 @@ export default {
 .instructionDescription {
   color: #505050;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
 }
 </style>

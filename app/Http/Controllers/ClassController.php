@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Classes;
 use App\Models\ClassActivity;
+use App\Models\ClassActivityDetail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -139,18 +140,21 @@ class ClassController extends Controller
                 }
             }
 
-            // // insert to temporary table in database
-            // $tmpPostAttachment = TemporaryPostAttachments::create([
-            //     'folder' => $folder,
-            //     'filename' => $filename,
-            //     'filesize' => $filesize,
-            //     'filetype' => $fileType,
-            //     'thumbnail' => $thumbnail
-            // ]);
+            // insert to temporary table in database
+            $tmpPostAttachment = ClassActivityDetail::create([
+                'class_activity_id' => $request->activityId,
+                'user_id' => $request->userId,
+                'folder' => $folder,
+                'filename' => $filename,
+                'filesize' => $filesize,
+                'filetype' => $fileType,
+                'thumbnail' => $thumbnail,
+                'status' => 'T'
+            ]);
 
-            //if ($tmpPostAttachment) {
-            $file->storeAs('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/tmp/' . $folder, $filename);
-            //}
+            if ($tmpPostAttachment) {
+                $file->storeAs('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/tmp/' . $folder, $filename);
+            }
 
             return $folder;
         }

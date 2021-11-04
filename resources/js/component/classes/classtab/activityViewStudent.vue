@@ -185,6 +185,7 @@ export default {
           formData.append("file", file, file.name);
           formData.append("classId", this.$route.params.class_id);
           formData.append("activityId", this.$route.params.activity_id);
+          formData.append("userId", this.session.user_id);
           this.axios({
             method: "POST",
             url: baseUrl + "/api/class/activity/uploadStudentWork",
