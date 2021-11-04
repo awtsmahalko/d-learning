@@ -107,4 +107,54 @@ class ClassController extends Controller
             'class' => $classactivity
         ]);
     }
+
+    public function activityDetail(Request $request)
+    {
+        $activity = ClassActivity::find($request->activityId);
+
+        return response()->json($activity);
+    }
+
+    public function uploadStudentWork(Request $request)
+    {
+        $classCode = Classes::find($request->classId);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = date('his') . '-' . $file->getClientOriginalName();
+            $filesize = $file->getSize();
+            $fileType = $file->getClientOriginalExtension();
+            $folder = uniqid() . '-' . now()->timestamp;
+
+            $fileThumbs = ["XLS", "DOCX", "CSV", "TXT", "ZIP", "EXE", "XLSX", "PPT", "PPTX"];
+            $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
+
+            if (in_array(strtoupper($fileType), $fileThumbs)) {
+                $thumbnail = "../../storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+            } else {
+                if (in_array(strtoupper($fileType), $imgThumbs)) {
+                    $thumbnail = '../../storage/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $filename;
+                } else {
+                    $thumbnail = "../../storage/file_extension_icon/FILE.png";
+                }
+            }
+
+            // // insert to temporary table in database
+            // $tmpPostAttachment = TemporaryPostAttachments::create([
+            //     'folder' => $folder,
+            //     'filename' => $filename,
+            //     'filesize' => $filesize,
+            //     'filetype' => $fileType,
+            //     'thumbnail' => $thumbnail
+            // ]);
+
+            //if ($tmpPostAttachment) {
+            $file->storeAs('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/tmp/' . $folder, $filename);
+            //}
+
+            return $folder;
+        }
+
+        return '';
+    }
 }

@@ -5,7 +5,7 @@
         <!-- start loop -->
         <div class="card my-2">
           <div style="width: 100%">
-            <div class="col-md-12">
+            <div class="col-md-12 pt-2">
               <div class="d-flex">
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
@@ -29,18 +29,18 @@
                     style="display: flex; flex-direction: column; width: 100%"
                   >
                     <h3 class="card-title mb-0">
-                      <b class="comment" id="post-user">Assignment #1</b>
+                      <b class="comment" id="post-user">{{
+                        activities.title
+                      }}</b>
                     </h3>
                     <p class="text-muted mt-0 normalText">
-                      Posted • Aug 15, 2018
+                      Posted •
+                      {{ new Date(activities.created_at).toLocaleString() }}
                     </p>
-                    <h6 class="instructionDescription">
-                      ahdkjahskjdhkahdkjahksjdhk hkahkjdhkah kajhksdjhakshdkah
-                      kjahkdhakshdkjahksdjh kajkhdkajhkdhka haiosdo iuiqwke
-                      asdoiiha hoaiuwhajhsdoqiwyeokashd lkahdoqiwueakshd
-                      qoiuweoqljhfkjshdfb oqiweoiqjhfkjsdhf
-                      oqiweolkhlfhsdfiuehqjhwejh iooiquwejhfjsdhf
-                    </h6>
+                    <h6
+                      class="instructionDescription"
+                      v-html="activities.instruction"
+                    ></h6>
                     <div
                       style="
                         display: flex;
@@ -48,14 +48,24 @@
                         justify-content: space-between;
                         align-items: center;
                         width: 100%;
+                        margin-top: 12px;
                       "
                     >
-                      <p class="additionalLabel"><b>100 points</b></p>
-                      <p class="additionalLabel"><b>Due: 1970-00-01</b></p>
+                      <p class="additionalLabel">
+                        <b>{{ activities.points }} points</b>
+                      </p>
+                      <p class="additionalLabel">
+                        <b
+                          >Due:
+                          {{
+                            new Date(activities.duedate).toLocaleDateString()
+                          }}</b
+                        >
+                      </p>
                     </div>
                   </div>
 
-                  <div>
+                  <div v-if="session.category === 'T'">
                     <button
                       class="btn btn-sm btn-secondary dropdown-toggle"
                       id="navbarDropdownMenuLink1"
@@ -87,6 +97,49 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: ["activityid"],
+  data() {
+    return {
+      activities: [],
+      activity: {
+        user_id: sessionUserId,
+        id: "",
+      },
+      session: {
+        user_id: sessionUserId,
+        category: sessionCategory,
+      },
+    };
+  },
+  created() {
+    this.activity.id = this.activityid;
+  },
+  mounted() {
+    this.getActivity();
+  },
+  methods: {
+    async getActivity() {
+      await this.axios
+        .get(baseUrl + "/api/class/activity/detail", {
+          params: {
+            user_id: sessionUserId,
+            activityId: this.activityid,
+          },
+        })
+        .then((response) => {
+          this.activities = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.activities = [];
+        });
+    },
+  },
+};
+</script>
+
 <style scoped>
 .comment {
   margin-bottom: 2px;

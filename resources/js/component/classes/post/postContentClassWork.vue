@@ -18,28 +18,59 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                align-items: center;
+                align-items: baseline;
                 width: 100%;
+                margin-top: 3px;
+                margin-bottom: 5px;
               "
             >
-              <router-link
-                :to="{
-                  name: 'activityView',
-                  params: { class_id: class_id, activity_id: activity_id },
-                }"
-              >
-                <div class="mx-2" style="display: flex; flex-direction: column">
-                  <h6 class="card-title mb-0">
-                    <b class="comment" id="post-user"
-                      >{{ teacher }} Posted a new classwork: {{ title }}</b
-                    >
-                  </h6>
-                  <small class="text-muted mt-0">
-                    Posted
-                    {{ new Date(postedDate).toLocaleString() }}
-                  </small>
-                </div>
-              </router-link>
+              <!-- sessionCategory -->
+              <div v-if="session.category === 'T'">
+                <router-link
+                  :to="{
+                    name: 'activityViewTeacher',
+                    params: { class_id: class_id, activity_id: activity_id },
+                  }"
+                >
+                  <div
+                    class="mx-2"
+                    style="display: flex; flex-direction: column"
+                  >
+                    <h6 class="card-title mb-0">
+                      <b class="comment" id="post-user"
+                        >{{ teacher }} Posted a new classwork: {{ title }}</b
+                      >
+                    </h6>
+                    <small class="text-muted mt-0">
+                      Posted
+                      {{ new Date(postedDate).toLocaleString() }}
+                    </small>
+                  </div>
+                </router-link>
+              </div>
+              <div v-else>
+                <router-link
+                  :to="{
+                    name: 'activityViewStudent',
+                    params: { class_id: class_id, activity_id: activity_id },
+                  }"
+                >
+                  <div
+                    class="mx-2"
+                    style="display: flex; flex-direction: column"
+                  >
+                    <h6 class="card-title mb-0">
+                      <b class="comment" id="post-user"
+                        >{{ teacher }} Posted a new classwork: {{ title }}</b
+                      >
+                    </h6>
+                    <small class="text-muted mt-0">
+                      Posted
+                      {{ new Date(postedDate).toLocaleString() }}
+                    </small>
+                  </div>
+                </router-link>
+              </div>
 
               <div>
                 <button
@@ -82,6 +113,14 @@ export default {
     "class_id",
     "activity_id",
   ],
+  data() {
+    return {
+      session: {
+        user_id: sessionUserId,
+        category: sessionCategory,
+      },
+    };
+  },
 };
 </script>
 

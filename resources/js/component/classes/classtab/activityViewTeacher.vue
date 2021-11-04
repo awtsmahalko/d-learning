@@ -1,6 +1,21 @@
 <template>
   <div class="content pt-0">
     <div class="container pt-0">
+      <div class="col-md-12">
+        <div class="row">
+          <router-link
+            :to="{
+              name: 'classView',
+              params: { id: this.$route.params.class_id },
+            }"
+            class="btn btn-sm btn-primary"
+            style="background-color: #9c27b0; border-color: #9c27b0"
+          >
+            <span class="material-icons"> arrow_back </span>
+            Back
+          </router-link>
+        </div>
+      </div>
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <a
@@ -26,18 +41,6 @@
             >Student's work</a
           >
         </li>
-        <li class="nav-item" role="presentation">
-          <a
-            class="nav-link"
-            id="pills-my-work-tab"
-            data-toggle="pill"
-            href="#pills-my-work"
-            role="tab"
-            aria-controls="pills-my-work"
-            aria-selected="false"
-            >My work</a
-          >
-        </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
         <div
@@ -46,7 +49,7 @@
           role="tabpanel"
           aria-labelledby="pills-instruction-tab"
         >
-          <activityInstruction />
+          <activityInstruction :activityid="this.$route.params.activity_id" />
         </div>
         <div
           class="tab-pane fade"
@@ -54,15 +57,7 @@
           role="tabpanel"
           aria-labelledby="pills-student-work-tab"
         >
-          <activityStudentWork />
-        </div>
-        <div
-          class="tab-pane fade"
-          id="pills-my-work"
-          role="tabpanel"
-          aria-labelledby="pills-my-work-tab"
-        >
-          <activityMyWork />
+          <activityStudentWork :activityid="this.$route.params.activity_id" />
         </div>
       </div>
     </div>
@@ -71,13 +66,11 @@
 <script>
 import activityInstruction from "./activitytab/instruction.vue";
 import activityStudentWork from "./activitytab/studentwork.vue";
-import activityMyWork from "./activitytab/mywork.vue";
 
 export default {
   components: {
     activityInstruction,
     activityStudentWork,
-    activityMyWork,
   },
 };
 </script>

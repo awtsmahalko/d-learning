@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClassActivity extends Model
+class ClassActivityDetail extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'class_id',
-        'title',
-        'instruction',
-        'points',
-        'duedate',
+        'activity_id',
+        'user_id',
+        'folder',
+        'filename',
+        'filesize',
+        'filetype',
+        'thumbnail',
         'status'
     ];
 
@@ -24,8 +26,8 @@ class ClassActivity extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function activity_details()
+    public function activity()
     {
-        return $this->hasMany(ClassActivityDetail::class);
+        return $this->belongsTo(ClassActivity::class);
     }
 }

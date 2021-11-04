@@ -12,7 +12,8 @@ const VideCon = () => import('./component/videocon/index')
 const VideConView = () => import('./component/videocon/view')
 const VideConJoin = () => import('./component/videocon/join')
 const VideConMeeting = () => import('./component/videocon/meeting')
-const ActivityView = () => import('./component/classes/classtab/activityView')
+const ActivityViewTeacher = () => import('./component/classes/classtab/activityViewTeacher')
+const ActivityViewStudent = () => import('./component/classes/classtab/activityViewStudent')
 
 const baseUrl = "";
 export const routes = [
@@ -38,7 +39,7 @@ export const routes = [
     },
     {
         name: 'classView',
-        path: baseUrl + '/class/view/:id',
+        path: baseUrl + '/class/:id',
         component: ClassesView
     },
     {
@@ -72,8 +73,13 @@ export const routes = [
         component: ClassListView
     },
     {
-        name: 'activityView',
-        path: baseUrl + '/class/view/:class_id/activity/:activity_id',
-        component: ActivityView
+        name: 'activityViewTeacher',
+        path: baseUrl + '/class/:class_id/T/activity/:activity_id',
+        component: ActivityViewTeacher
+    },
+    {
+        name: 'activityViewStudent',
+        path: baseUrl + '/class/:class_id/S/activity/:activity_id',
+        component: ActivityViewStudent
     },
 ]
