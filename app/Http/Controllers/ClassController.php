@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use App\Models\ClassActivity;
 use App\Models\ClassActivityDetail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -160,5 +161,47 @@ class ClassController extends Controller
         }
 
         return '';
+    }
+
+    public function submitStudentWork(Request $request)
+    {
+        $class = Classes::find($request->classId);
+        $statusUnSubmitted = ClassActivityDetail::where('class_activity_id', $request->activityId)->first();
+
+        if ($statusUnSubmitted->status == 'C') {
+            $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->user_id)->update(['status' => 'S']);
+        } else {
+            foreach ($request->submitStudentData as $studentWorkFile) {
+                if ($studentWorkFile != null) {
+                    $tempSwFile = ClassActivityDetail::where('folder', $studentWorkFile)->first();
+
+                    if (Storage::exists('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename)) {
+                        Storage::move('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename, 'public/classactivity/' . $class->code . "/" . $request->activityId . '/' . $tempSwFile->filename);
+
+                        $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->update(['status' => 'S']);
+
+                        Storage::deleteDirectory('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder);
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => 'Post Created Successfully!!'
+        ]);
+    }
+
+    public function studentworkdata(Request $request)
+    {
+        $studentWork = ClassActivityDetail::where('class_activity_id', $request->activity_id)->where('user_id', $request->user_id)->get();
+
+        return response()->json($studentWork);
+    }
+
+    public function unsubmitStudentWork(Request $request)
+    {
+        $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->userId)->update(['status' => 'C']);
+
+        return response()->json($updateResponse);
     }
 }

@@ -46,3 +46,6 @@ Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class,
 Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
 Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
 Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassController::class, 'uploadStudentWork']);
+Route::post('/class/activity/submitStudentWork', [App\Http\Controllers\ClassController::class, 'submitStudentWork']);
+Route::get('/class/activity/studentworkdata', [App\Http\Controllers\ClassController::class, 'studentworkdata']);
+Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassController::class, 'unsubmitStudentWork']);

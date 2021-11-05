@@ -25,7 +25,7 @@
                 <!-- start loop -->
                 <div class="card my-2">
                   <div style="width: 100%">
-                    <div class="col-md-12 pt-2">
+                    <div class="col-md-12 p-3">
                       <div class="d-flex">
                         <div
                           style="
@@ -37,7 +37,6 @@
                           "
                         >
                           <div
-                            class="mx-2 py-2"
                             style="
                               display: flex;
                               flex-direction: column;
@@ -47,17 +46,23 @@
                             <h3 class="card-title mb-0">
                               <b class="comment" id="post-user">Your work</b>
                             </h3>
-                            <div class="col-md-12 px-0">
-                              <div class="row">
+                            <form @submit.prevent="submitWork">
+                              <div class="col-md-12 px-0">
                                 <div
                                   class="col-md-12"
                                   style="border-bottom: 2px solid #ddd"
                                 >
                                   <file-pond
+                                    v-show="
+                                      studentWork.length > 0
+                                        ? studentWork[0].status != 'S'
+                                        : true
+                                    "
                                     name="file"
                                     ref="swpond"
                                     label-idle="Drop your work here..."
                                     v-bind:allow-multiple="true"
+                                    credits="false"
                                     :files="studentActivityFiles"
                                     :server="server"
                                     v-on:init="handleFilePondInit"
@@ -66,63 +71,98 @@
                                 <div
                                   class="card file-attachment"
                                   style="margin: 3px; margin-top: 5px"
+                                  v-for="(sw, key) in studentWork"
+                                  :key="key"
                                 >
-                                  <div class="row">
+                                  <div
+                                    class="col-md-12 py-2"
+                                    style="
+                                      display: flex;
+                                      flex-direction: row;
+                                      align-items: center;
+                                    "
+                                  >
                                     <div
-                                      class="col-md-12 py-2"
+                                      class="pl-2"
                                       style="
                                         display: flex;
-                                        flex-direction: row;
-                                        align-items: center;
+                                        flex-direction: column;
+                                        width: 80%;
                                       "
                                     >
-                                      <div
-                                        class="pl-2"
+                                      <h4
+                                        class="card-title mb-0"
                                         style="
-                                          display: flex;
-                                          flex-direction: column;
-                                          width: 80%;
+                                          text-overflow: ellipsis;
+                                          width: 100%;
+                                          white-space: nowrap;
+                                          overflow: hidden;
+                                          margin: 0px;
+                                          font-size: 14px;
+                                        "
+                                        data-toggle="tooltip"
+                                        data-placement="bottom"
+                                        title="test"
+                                      >
+                                        <b id="post-user">{{ sw.filename }}</b>
+                                      </h4>
+                                      <small
+                                        class="card-category mt-0 text-muted"
+                                      >
+                                        {{ sw.filetype }}
+                                      </small>
+                                    </div>
+                                    <div class="ms-auto">
+                                      <a
+                                        class="attachment-remove"
+                                        v-show="
+                                          sw.status == 'S'
+                                            ? (showRemoveFile = false)
+                                            : (showRemoveFile = true)
                                         "
                                       >
-                                        <h4
-                                          class="card-title mb-0"
-                                          style="
-                                            text-overflow: ellipsis;
-                                            width: 100%;
-                                            white-space: nowrap;
-                                            overflow: hidden;
-                                            margin: 0px;
-                                            font-size: 14px;
+                                        <i
+                                          class="
+                                            material-icons
+                                            attachment-remove-icon
                                           "
-                                          data-toggle="tooltip"
-                                          data-placement="bottom"
-                                          title="test"
+                                          >close</i
                                         >
-                                          <b id="post-user">attachment name</b>
-                                        </h4>
-                                        <small
-                                          class="card-category mt-0 text-muted"
-                                        >
-                                          PNG
-                                        </small>
-                                      </div>
-                                      <div class="ms-auto">
-                                        <a class="attachment-remove">
-                                          <i
-                                            class="
-                                              material-icons
-                                              attachment-remove-icon
-                                            "
-                                            >close</i
-                                          >
-                                        </a>
-                                      </div>
+                                      </a>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                              <div
+                                v-show="
+                                  studentWork.length > 0
+                                    ? studentWork[0].status != 'S'
+                                    : true
+                                "
+                                style="
+                                  display: flex;
+                                  flex-direction: row;
+                                  justify-content: space-between;
+                                  align-items: center;
+                                  width: 100%;
+                                  margin-top: 12px;
+                                "
+                              >
+                                <button
+                                  type="submit"
+                                  class="btn btn-sm btn-success"
+                                  style="width: 100%"
+                                >
+                                  Submit
+                                </button>
+                              </div>
+                            </form>
                             <div
+                              v-show="
+                                studentWork.length > 0
+                                  ? studentWork[0].status == 'S'
+                                  : false
+                              "
                               style="
                                 display: flex;
                                 flex-direction: row;
@@ -133,10 +173,11 @@
                               "
                             >
                               <button
-                                class="btn btn-sm btn-success"
+                                class="btn btn-sm btn-danger"
                                 style="width: 100%"
+                                v-on:click="unsubmitWork"
                               >
-                                Submit
+                                Unsubmit
                               </button>
                             </div>
                           </div>
@@ -173,7 +214,9 @@ export default {
   data() {
     return {
       is_teacher: false,
+      showRemoveFile: true,
       classData: {},
+      studentWork: [],
       studentActivityFiles: [],
       session: {
         user_id: sessionUserId,
@@ -234,30 +277,67 @@ export default {
   },
   mounted() {
     this.is_teacher = sessionCategory == "T" ? true : false;
+    this.getStudentWork();
   },
   methods: {
-    submitPost() {
+    async getStudentWork() {
+      await this.axios
+        .get(baseUrl + "/api/class/activity/studentworkdata", {
+          params: {
+            user_id: sessionUserId,
+            class_id: this.$route.params.class_id,
+            activity_id: this.$route.params.activity_id,
+          },
+        })
+        .then((response) => {
+          this.studentWork = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.studentWork = [];
+        });
+    },
+    submitWork() {
       var swFileValue = [];
       $("input[name='file']").each(function () {
         swFileValue.push($(this).val());
       });
-      console.log(swFileValue);
 
-      //   this.axios
-      //     .post(baseUrl + "/api/post", {
-      //       postData: this.post,
-      //       postAttachData: swFileValue,
-      //     })
-      //     .then((response) => {
-      //       this.$refs.swpond.removeFiles();
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
+      this.axios
+        .post(baseUrl + "/api/class/activity/submitStudentWork", {
+          submitStudentData: swFileValue,
+          user_id: sessionUserId,
+          classId: this.$route.params.class_id,
+          activityId: this.$route.params.activity_id,
+        })
+        .then((response) => {
+          // console.log(swFileValue);
+          this.$refs.swpond.removeFiles();
+          this.showRemoveFile = false;
+          this.getStudentWork();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     handleFilePondInit: function () {
       // example of instance method call on pond reference
       this.$refs.swpond.getFiles();
+    },
+    unsubmitWork() {
+      this.axios
+        .post(baseUrl + "/api/class/activity/unsubmitStudentWork", {
+          classId: this.$route.params.class_id,
+          activityId: this.$route.params.activity_id,
+          userId: sessionUserId,
+        })
+        .then((response) => {
+          this.showRemoveFile = true;
+          this.getStudentWork();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   components: {

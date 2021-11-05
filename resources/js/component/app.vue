@@ -1,84 +1,101 @@
 <template>
   <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-background-color="white">
+    <div
+      class="sidebar sideImage"
+      data-color="purple"
+      data-background-color="white"
+    >
       <div class="logo">
-        <a href="https://creative-tim.com/" class="simple-text logo-normal">
-          D-Learning
-        </a>
+        <a href="/" class="simple-text logo-normal"> D-Learning </a>
       </div>
-      <sidebar :sessionCat='sessionCat'></sidebar>
+      <sidebar :sessionCat="sessionCat"></sidebar>
     </div>
     <div class="main-panel">
-      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-wrapper">
-                    <a class="navbar-brand" href="#">Title</a>
-                </div>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    aria-controls="navigation-index"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
+      <nav
+        class="
+          navbar navbar-expand-lg navbar-transparent navbar-absolute
+          fixed-top
+        "
+      >
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="#">{{ $route.meta.title }}</a>
+          </div>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            aria-controls="navigation-index"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link"
+                  href="#pablo"
+                  id="navbarDropdownProfile"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 >
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="navbar-toggler-icon icon-bar"></span>
-                    <span class="navbar-toggler-icon icon-bar"></span>
-                    <span class="navbar-toggler-icon icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a
-                                class="nav-link"
-                                href="#pablo"
-                                id="navbarDropdownProfile"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                            >
-                                <i class="material-icons">person</i>
-                                <p class="d-lg-none d-md-block">Account</p>
-                            </a>
-                            <div
-                                class="dropdown-menu dropdown-menu-right"
-                                aria-labelledby="navbarDropdownProfile"
-                            >
-                                <a class="dropdown-item" href="#"
-                                    >Profile</a
-                                >
-                                <a class="dropdown-item" href="#"
-                                    >Settings</a
-                                >
-                                <div class="dropdown-divider"></div>
-                                <a
-                                    class="dropdown-item"
-                                    href="#"
-                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                                    >Log out</a
-                                >
-                            </div>
-                        </li>
-                    </ul>
+                  <i class="material-icons">person</i>
+                  <p class="d-lg-none d-md-block">Account</p>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="navbarDropdownProfile"
+                >
+                  <a class="dropdown-item" href="#">Profile</a>
+                  <a class="dropdown-item" href="#">Settings</a>
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                    >Log out</a
+                  >
                 </div>
-            </div>
-            </nav>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
       <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
-import sidebar from './sidebar.vue';
+import sidebar from "./sidebar.vue";
 export default {
-  props:["authCategory"],
-  data(){
+  props: ["authCategory"],
+  data() {
     return {
-      sessionCat:''
-    }
+      sessionCat: "",
+    };
   },
-  created(){
-    this.sessionCat = sessionCategory == 'T' ? true : false;
+  created() {
+    this.sessionCat = sessionCategory == "T" ? true : false;
   },
-  components: { sidebar },};
+  components: { sidebar },
+};
 </script>
+<style scoped>
+.sideImage {
+  background-image: url(http://127.0.0.1:8000/material/img/login.jpg);
+  background-size: cover;
+  background-position: bottom center;
+  background-color: rgb(28 4 32 / 75%);
+  background-blend-mode: multiply;
+}
+
+.sidebar .logo .simple-text {
+  color: #fff;
+}
+</style>

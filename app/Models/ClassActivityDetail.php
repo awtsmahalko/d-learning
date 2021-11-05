@@ -10,8 +10,8 @@ class ClassActivityDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+        'class_activity_id',
         'user_id',
-        'activity_id',
         'user_id',
         'folder',
         'filename',

@@ -20,66 +20,79 @@ export const routes = [
     {
         name: 'home',
         path: baseUrl + '/',
-        component: Welcome
+        component: Welcome,
+        meta: { title: 'Home' }
     },
     {
         name: 'class',
         path: baseUrl + '/class',
-        component: Classes
+        component: Classes,
+        meta: { title: 'Class' }
     },
     {
         name: 'classAdd',
         path: baseUrl + '/class/add',
-        component: ClassesAdd
+        component: ClassesAdd,
+        meta: { title: 'Add Class' }
     },
     {
         name: 'classEdit',
         path: baseUrl + '/class/edit/:id',
-        component: ClassesEdit
+        component: ClassesEdit,
+        meta: { title: 'Edit Class' }
     },
     {
         name: 'classView',
         path: baseUrl + '/class/:id',
-        component: ClassesView
+        component: ClassesView,
+        meta: { title: 'View Class' }
     },
     {
         name: 'video',
         path: baseUrl + '/video',
-        component: VideCon
+        component: VideCon,
+        meta: { title: 'Video Conferencing' }
     },
     {
         name: 'videoView',
         path: baseUrl + '/video/view/:id',
-        component: VideConView
+        component: VideConView,
+        meta: { title: 'View Meeting' }
     },
     {
         name: 'videoJoin',
         path: baseUrl + '/video/join',
-        component: VideConJoin
+        component: VideConJoin,
+        meta: { title: 'Join Meeting' }
     },
     {
         name: 'meeting',
         path: baseUrl + '/video/meeting/:id',
-        component: VideConMeeting
+        component: VideConMeeting,
+        meta: { title: 'Meeting' }
     },
     {
         name: "classlist",
         path: baseUrl + "/class-list",
-        component: ClassList
+        component: ClassList,
+        meta: { title: 'List of Students' }
     },
     {
         name: "classlistView",
         path: baseUrl + "/class-list/view/:id",
-        component: ClassListView
+        component: ClassListView,
+        meta: { title: 'Class List' }
     },
     {
         name: 'activityViewTeacher',
         path: baseUrl + '/class/:class_id/T/activity/:activity_id',
-        component: ActivityViewTeacher
+        component: ActivityViewTeacher,
+        meta: { title: 'Activity' }
     },
     {
         name: 'activityViewStudent',
         path: baseUrl + '/class/:class_id/S/activity/:activity_id',
-        component: ActivityViewStudent
+        component: ActivityViewStudent,
+        meta: { title: 'Activity' }
     },
 ]

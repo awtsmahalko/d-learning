@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-3">
-    <div class="col-md-12">
+    <div class="col-md-12" v-show="is_teacher">
       <button
         type="submit"
         class="btn btn-md btn-primary"
@@ -367,7 +367,7 @@ export default {
         .then((response) => {
           this.activities = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          console.log(this.activities);
+          // console.log(this.activities);
         })
         .catch((error) => {
           console.log(error);
@@ -392,7 +392,7 @@ export default {
         });
     },
     handleFilePondInit: function () {
-      console.log("new activity FilePond has initialized");
+      // console.log("new activity FilePond has initialized");
       // example of instance method call on pond reference
       this.$refs.napond.getFiles();
       // console.log(this.$refs.napond.getFiles());

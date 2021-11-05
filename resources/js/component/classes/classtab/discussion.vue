@@ -45,6 +45,7 @@
                         ref="pond"
                         label-idle="Drop attachment here..."
                         v-bind:allow-multiple="true"
+                        credits="false"
                         :files="myFiles"
                         :server="server"
                         v-on:init="handleFilePondInit"
