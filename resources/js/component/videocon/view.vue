@@ -43,15 +43,33 @@
                         </td>
                         <td>{{ meet.status }}</td>
                         <td class="text-right">
-                          <div class="btn-group" role="group">
+                          <div v-show="is_teacher" class="btn-group" role="group">
+                            <button
+                              v-show="meet.status == 'F' ? true : false"
+                              class="btn btn-sm btn-warning"
+                              @click="fetchAttendee(meet.id)"
+                            >
+                              <i class="material-icons">people</i> Attendees
+                            </button>
+                            <button
+                              v-show="meet.status == 'P' ? true : false"
+                              class="btn btn-sm btn-info"
+                              @click="finishMeeting(meet.id)"
+                            >
+                              <i class="material-icons">check_circle</i> FINISH MEETING
+                            </button>
+                          </div>
+                          <div v-show="meet.status != 'F' ? true : false" class="btn-group" role="group">
                             <router-link
                               class="btn btn-sm btn-primary"
                               :to="{
                                 name: 'meeting',
-                                query: {
-                                  meetingId: meet.number,
-                                  password: meet.password,
-                                },
+                                params:{
+                                  id:meet.id,
+                                  number:meet.number,
+                                  password:meet.password,
+                                  class_id:meet.class_id
+                                }
                               }"
                               ><span class="material-icons">videocam</span>
                               {{ is_teacher ? "Start" : "Join" }}</router-link
@@ -279,6 +297,36 @@ export default {
       this.meeting.description = "";
       this.meeting.scheduled_at = "";
     },
+    finishMeeting(id){
+      var _this = this;
+      swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, finish it!",
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+          return new Promise(function (resolve) {
+            axios
+              .post(baseUrl + `/api/video/${id}/edit`)
+              .then((response) => {
+                _this.fetchMeetings();
+                success_update();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          });
+        },
+        allowOutsideClick: false,
+      });
+    },
+    fetchAttendee(id){
+
+    }
   },
   created() {
     this.is_teacher = sessionCategory == "T" ? true : false;

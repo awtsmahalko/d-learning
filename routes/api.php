@@ -24,6 +24,8 @@ Route::get('/video', [App\Http\Controllers\MeetingController::class, 'index']);
 Route::get('/video/api', [App\Http\Controllers\MeetingController::class, 'api']);
 Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'create']);
 Route::get('/video/{id}', [App\Http\Controllers\MeetingController::class, 'show']);
+Route::post('/video/{id}/edit', [App\Http\Controllers\MeetingController::class, 'updateStatus']);
+Route::post('/video/join', [App\Http\Controllers\MeetingController::class, 'join']);
 Route::delete('/video/{id}', [App\Http\Controllers\MeetingController::class, 'destroy']);
 
 
