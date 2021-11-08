@@ -85,6 +85,12 @@ class MeetingController extends Controller
         return response()->json($attendee);
     }
 
+    public function attendee($id)
+    {
+        $attendees = Attendee::join('users', 'attendees.user_id', '=', 'users.id')->where('meeting_id', $id)->orderBy('users.category', 'DESC')->select('attendees.*', 'users.fname', 'users.mname', 'users.lname', 'users.category')->get();
+        return response()->json($attendees);
+    }
+
     public function destroy($id)
     {
         $meeting = Meeting::find($id);
