@@ -238,7 +238,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this3 = this;
 
       axios.post(baseUrl + "/api/class", this.form_class).then(function (response) {
-        console.log(response);
+        // console.log(response);
         $("#addModal").modal("hide");
 
         _this3.getClasses();
