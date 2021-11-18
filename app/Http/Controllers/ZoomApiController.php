@@ -8,7 +8,7 @@ class ZoomApiController extends Controller
 {
     public static function createZoomMeeting($meetingConfig = [])
     {
-        $jwtToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InhFNFJNWTFpUkRDYnpYTDBoZmdRX0EiLCJleHAiOjE2MzU0NzU4ODgsImlhdCI6MTYzNDg3MTA4OX0.m4bsyRxsQ5G67uDdTtn-dD3qfBdBzpk6ZTqN0CMz3N0';
+        $jwtToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InhFNFJNWTFpUkRDYnpYTDBoZmdRX0EiLCJleHAiOjE2NDA5NjYzNDAsImlhdCI6MTYzNTkyNjEwNH0.xQObZJQKLD2xRpDpX1jQ4kVUCNhxKIat-Tcncs3iihs';
 
         $requestBody = [
             'topic'         => $meetingConfig['topic']  ?? 'PHP General Talk',

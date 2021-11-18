@@ -1,7 +1,7 @@
 <template>
   <div class="meeting">
     <div class="container-zoom">
-      <ZoomFrame :meetId="$route.params.id" :nickname="nickname" :meetingId="meetingId" :password="password"/>
+      <ZoomFrame :meetId="meetId" :meetingId="meetingId" :password="password" :classId="classId"/>
     </div>
   </div>
 </template>
@@ -13,19 +13,36 @@ export default {
   name: "app",
   data: function () {
       return {
-          nickname: '',
-          meetingId: '',
-          password: '',
+        meetId:'',
+        meetingId:'',
+        classId:'',
+        password:''
       }
   },
   components: {
     ZoomFrame,
   },
   created : function (){
-      this.nickname = sessionFullname;
-      this.meetingId = this.$route.query.meetingId;
-      this.password = this.$route.query.password;
-  }
+      this.meetId = this.$route.params.id;
+      this.meetingId = this.$route.params.number;
+      this.password = this.$route.params.password;
+      this.classId = this.$route.params.class_id;
+  },
+  methods : {
+     fetchCredential(){
+      axios
+        .get(baseUrl + "/api/video/"+this.meetId)
+        .then((response) => {
+          this.meetingId = response.data.number;
+          this.password = response.data.password;
+
+          console.log(this.meetingId);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  },
 };
 </script>
 

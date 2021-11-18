@@ -10,10 +10,12 @@ const ClassListView = () => import('./component/classlist/viewClassList');
 
 const VideCon = () => import('./component/videocon/index')
 const VideConView = () => import('./component/videocon/view')
-const VideConJoin = () => import('./component/videocon/join')
 const VideConMeeting = () => import('./component/videocon/meeting')
 const ActivityViewTeacher = () => import('./component/classes/classtab/activityViewTeacher')
 const ActivityViewStudent = () => import('./component/classes/classtab/activityViewStudent')
+
+// profile
+const ProfileView = () => import('./component/profile/indexProfile')
 
 const baseUrl = "";
 export const routes = [
@@ -60,16 +62,9 @@ export const routes = [
         meta: { title: 'View Meeting' }
     },
     {
-        name: 'videoJoin',
-        path: baseUrl + '/video/join',
-        component: VideConJoin,
-        meta: { title: 'Join Meeting' }
-    },
-    {
         name: 'meeting',
-        path: baseUrl + '/video/meeting/:id',
-        component: VideConMeeting,
-        meta: { title: 'Meeting' }
+        path: '/video/meeting/:id/:number/:password/:class_id',
+        component: VideConMeeting
     },
     {
         name: "classlist",
@@ -95,4 +90,9 @@ export const routes = [
         component: ActivityViewStudent,
         meta: { title: 'Activity' }
     },
+    {
+        name: "profileView",
+        path: baseUrl + "/profile",
+        component: ProfileView
+    }
 ]
