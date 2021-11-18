@@ -86,7 +86,9 @@ class ClassController extends Controller
 
     public function indexActivity(Request $request)
     {
-        $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->get();
+        $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
+            $q->where('user_id', '=', $request->user_id);
+        }])->get();
 
         return response()->json($activities);
     }

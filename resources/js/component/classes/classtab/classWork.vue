@@ -71,7 +71,11 @@
                   >
                     <div
                       class="mx-2"
-                      style="display: flex; flex-direction: column"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        padding-top: 6px;
+                      "
                     >
                       <h6 class="card-title mb-0">
                         <b class="comment" id="post-user"
@@ -85,6 +89,16 @@
                       </small>
                     </div>
                   </router-link>
+                </div>
+
+                <div v-show="is_teacher == false ? true : false">
+                  <div
+                    v-show="activity.activity_details_count > 0 ? true : false"
+                  >
+                    <span style="color: green; font-weight: 500"
+                      >SUBMITTED</span
+                    >
+                  </div>
                 </div>
 
                 <div v-show="is_teacher">

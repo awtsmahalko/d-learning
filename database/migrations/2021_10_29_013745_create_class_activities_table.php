@@ -18,7 +18,7 @@ class CreateClassActivitiesTable extends Migration
             $table->foreignId("user_id")->constrained();
             $table->foreignId("class_id")->constrained();
             $table->string('title');
-            $table->string('instruction');
+            $table->text('instruction');
             $table->decimal('points', 12, 3);
             $table->dateTime('duedate');
             $table->string('status', 1);
