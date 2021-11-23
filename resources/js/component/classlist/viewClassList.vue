@@ -1,11 +1,14 @@
 <template>
   <div class="content pt-0">
     <div class="container-fluid pt-0">
-      <card-title :classesId="studlist.class_id"></card-title>
+      <card-title
+        v-show="is_teacher"
+        :classesId="studlist.class_id"
+      ></card-title>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header card-header-primary">
+            <div v-show="is_teacher" class="card-header card-header-primary">
               <h4 class="card-title">Class list</h4>
               <p class="card-category">
                 Here you can manage your list of students
@@ -15,6 +18,7 @@
               <div class="row">
                 <div class="col-12 text-right">
                   <button
+                    v-show="is_teacher"
                     class="btn btn-sm btn-primary"
                     v-on:click="showAddModal"
                   >
@@ -28,7 +32,7 @@
                         <th>#</th>
                         <th>Student Name</th>
                         <th>Date Joined</th>
-                        <th class="text-right">Actions</th>
+                        <th v-show="is_teacher" class="text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody v-if="studentsList.length > 0">
@@ -46,8 +50,9 @@
                         <td>
                           {{ new Date(list.created_at).toLocaleString() }}
                         </td>
-                        <td>
+                        <td v-show="is_teacher">
                           <button
+                            v-show="is_teacher"
                             class="btn btn-sm btn-danger"
                             @click="removeStudent(list.id)"
                           >
@@ -144,6 +149,7 @@ export default {
   name: "view-class-list",
   data() {
     return {
+      is_teacher: false,
       studentsList: [],
       students: [],
       studlist: {
@@ -157,6 +163,8 @@ export default {
     this.fetchStudentsList();
   },
   mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
+
     $(".select2").select2();
     this.fetchStudentsList();
     this.fetchStudents();

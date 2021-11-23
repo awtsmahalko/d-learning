@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use App\Models\ClassActivity;
 use App\Models\ClassActivityDetail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -205,5 +206,17 @@ class ClassController extends Controller
         $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->userId)->update(['status' => 'C']);
 
         return response()->json($updateResponse);
+    }
+
+    public function indexStudentWork(Request $request)
+    {
+        $studentSubmitted = ClassActivityDetail::select('user_id', DB::raw('COUNT(*) as total'))
+            ->where('class_activity_id', $request->activityId)
+            ->groupBy('user_id')
+            ->having('total', '>', 0)
+            ->with('user')
+            ->get();
+
+        return response()->json($studentSubmitted);
     }
 }

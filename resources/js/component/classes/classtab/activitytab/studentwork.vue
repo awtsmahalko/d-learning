@@ -3,7 +3,11 @@
     <div class="col-md-12">
       <div class="row">
         <!-- start loop -->
-        <div class="card my-2">
+        <div
+          class="card my-2"
+          v-for="(studentWork, key) in studentWorks"
+          :key="key"
+        >
           <div style="width: 100%padding: 11px;">
             <div class="col-md-12">
               <div class="d-flex">
@@ -24,31 +28,19 @@
                     width: 100%;
                   "
                 >
-                  <router-link
-                    :to="{
-                      name: 'activityViewTeacher',
-                      params: {
-                        class_id: 1,
-                        activity_id: 1,
-                      },
-                    }"
+                  <div
+                    class="mx-2"
+                    style="display: flex; flex-direction: column"
                   >
-                    <div
-                      class="mx-2"
-                      style="display: flex; flex-direction: column"
-                    >
-                      <h6 class="card-title mb-0">
-                        <b class="comment" id="post-user"
-                          >{{ "judywen" }} Posted a new classwork:
-                          {{ "Submitted" }}</b
-                        >
-                      </h6>
-                      <small class="text-muted mt-0">
-                        Posted
-                        {{ new Date("2021-11-18 01:37:37").toLocaleString() }}
-                      </small>
-                    </div>
-                  </router-link>
+                    <h6 class="card-title mb-0">
+                      <b class="comment" id="post-user">{{
+                        studentWork.user.fname
+                      }}</b>
+                    </h6>
+                    <small class="text-muted mt-0">
+                      FILES : {{ studentWork.total }}
+                    </small>
+                  </div>
 
                   <div>
                     <button
@@ -84,35 +76,26 @@
 </template>
 <script>
 export default {
-  name: "class-work",
+  name: "student-work",
+  props: ["activityid"],
   data() {
     return {
       is_teacher: false,
       classData: {},
       newActivityFiles: [],
-      activities: [],
+      studentWorks: [],
       session: {
         user_id: sessionUserId,
         category: sessionCategory,
       },
-      newActivity: {
+      activity: {
         user_id: sessionUserId,
-        class_id: "",
-        title: "",
-        points: "",
-        duedate: "",
-        instructions: "<br>",
+        id: "",
       },
     };
   },
   created() {
-    this.newActivity.class_id = this.$route.params.id;
-
-    this.axios
-      .get(baseUrl + `/api/class/${this.$route.params.id}`)
-      .then((res) => {
-        this.classData = res.data;
-      });
+    this.activity.id = this.activityid;
   },
   mounted() {
     this.is_teacher = sessionCategory == "T" ? true : false;
@@ -120,21 +103,28 @@ export default {
   },
   methods: {
     async getActivity() {
+      // alert(
+      //   sessionUserId +
+      //     " :: " +
+      //     this.activity.id +
+      //     " :: " +
+      //     this.$route.params.id
+      // );
       await this.axios
-        .get(baseUrl + "/api/class/activity/view", {
+        .get(baseUrl + "/api/class/activity/studentswork", {
           params: {
             user_id: sessionUserId,
-            class_id: this.$route.params.id,
+            activityId: this.activityid,
           },
         })
         .then((response) => {
-          this.activities = response.data;
+          this.studentWorks = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          // console.log(this.activities);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
-          this.activities = [];
+          this.studentWorks = [];
         });
     },
   },

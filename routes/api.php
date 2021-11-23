@@ -52,6 +52,7 @@ Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassCont
 Route::post('/class/activity/submitStudentWork', [App\Http\Controllers\ClassController::class, 'submitStudentWork']);
 Route::get('/class/activity/studentworkdata', [App\Http\Controllers\ClassController::class, 'studentworkdata']);
 Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassController::class, 'unsubmitStudentWork']);
+Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController::class, 'indexStudentWork']);
 
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
