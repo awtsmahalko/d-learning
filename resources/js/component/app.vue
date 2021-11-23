@@ -89,7 +89,7 @@ export default {
 </script>
 <style scoped>
 .sideImage {
-  background-image: url(http://127.0.0.1:8000/material/img/login.jpg);
+  background-image: url("/dlearning/public/material/img/login.jpg");
   background-size: cover;
   background-position: bottom center;
   background-color: rgb(28 4 32 / 75%);

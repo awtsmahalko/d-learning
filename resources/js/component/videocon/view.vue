@@ -41,9 +41,13 @@
                         <td>
                           {{ new Date(meet.scheduled_at).toLocaleString() }}
                         </td>
-                        <td>{{ meet.status }}</td>
+                        <td>{{ meet.status == "F" ? "Ended" : "Active" }}</td>
                         <td class="text-right">
-                          <div v-show="is_teacher" class="btn-group" role="group">
+                          <div
+                            v-show="is_teacher"
+                            class="btn-group"
+                            role="group"
+                          >
                             <button
                               v-show="meet.status == 'F' ? true : false"
                               class="btn btn-sm btn-warning"
@@ -56,20 +60,25 @@
                               class="btn btn-sm btn-info"
                               @click="finishMeeting(meet.id)"
                             >
-                              <i class="material-icons">check_circle</i> FINISH MEETING
+                              <i class="material-icons">check_circle</i> FINISH
+                              MEETING
                             </button>
                           </div>
-                          <div v-show="meet.status != 'F' ? true : false" class="btn-group" role="group">
+                          <div
+                            v-show="meet.status != 'F' ? true : false"
+                            class="btn-group"
+                            role="group"
+                          >
                             <router-link
                               class="btn btn-sm btn-primary"
                               :to="{
                                 name: 'meeting',
-                                params:{
-                                  id:meet.id,
-                                  number:meet.number,
-                                  password:meet.password,
-                                  class_id:meet.class_id
-                                }
+                                params: {
+                                  id: meet.id,
+                                  number: meet.number,
+                                  password: meet.password,
+                                  class_id: meet.class_id,
+                                },
                               }"
                               ><span class="material-icons">videocam</span>
                               {{ is_teacher ? "Start" : "Join" }}</router-link
@@ -297,7 +306,7 @@ export default {
       this.meeting.description = "";
       this.meeting.scheduled_at = "";
     },
-    finishMeeting(id){
+    finishMeeting(id) {
       var _this = this;
       swal({
         title: "Are you sure?",
@@ -324,9 +333,7 @@ export default {
         allowOutsideClick: false,
       });
     },
-    fetchAttendee(id){
-
-    }
+    fetchAttendee(id) {},
   },
   created() {
     this.is_teacher = sessionCategory == "T" ? true : false;
