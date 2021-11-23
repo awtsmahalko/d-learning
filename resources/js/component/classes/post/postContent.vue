@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="d-flex">
-            <div class="flex-shrink-0" style="margin-top: 4px">
+            <div class="flex-shrink-0" style="padding: 11px">
               <img
                 alt="Image placeholder"
                 class="avatar rounded-circle me-3"

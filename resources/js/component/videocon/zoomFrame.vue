@@ -33,27 +33,24 @@ export default {
   name: "ZoomFrame",
   data: function() {
     return {
+      nickname:'',
       src: "",
       meetConfig: {},
       signature: {}
     };
   },
-  props: {
-    nickname: String,
-    meetingId: String,
-    password: String,
-    meetId: String
-  },
+  props: ['meetId','meetingId','password','classId'],
   created: function() {
+    this.nickname = sessionFullname;
     // Meeting config object
     this.meetConfig = {
-      signatureEndpoint: url+this.meetId,
+      signatureEndpoint: url+this.classId,
       apiKey: API_KEY,
       apiSecret: API_SECRET,
       meetingNumber: this.meetingId,
       userName: this.nickname,
       passWord: this.password,
-      leaveUrl: url+this.meetId,
+      leaveUrl: url+this.classId,
       role: role
     };
 
@@ -69,6 +66,8 @@ export default {
       }
     });
 
+    var _this = this;
+
     // join function
     ZoomMtg.init({
       leaveUrl: this.meetConfig.leaveUrl,
@@ -83,6 +82,7 @@ export default {
           passWord: this.meetConfig.passWord,
           success: function(res) {
             // eslint-disable-next-line
+            _this.attendMeeting();
             console.log("join meeting success");
           },
           error: function(res) {
@@ -96,6 +96,19 @@ export default {
         console.log(res);
       }
     });
+  },
+  methods:{
+    attendMeeting(){
+      axios.post(baseUrl+"/api/video/join",{
+        user_id:sessionUserId,
+        meeting_id:this.meetId
+      }).then( res => {
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
   },
   mounted: function() {}
 };

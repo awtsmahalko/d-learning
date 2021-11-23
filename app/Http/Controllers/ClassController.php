@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Classes;
+use App\Models\ClassActivity;
+use App\Models\ClassActivityDetail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -79,5 +83,140 @@ class ClassController extends Controller
         $class->delete();
 
         return response()->json('Class deleted!');
+    }
+
+    public function indexActivity(Request $request)
+    {
+        $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
+            $q->where('user_id', '=', $request->user_id);
+        }])->get();
+
+        return response()->json($activities);
+    }
+
+    public function createActivity(Request $request)
+    {
+        $form_data = array(
+            'user_id' => $request->user_id,
+            'class_id' => $request->class_id,
+            'title' => $request->title,
+            'instruction' => $request->instructions,
+            'points' => $request->points,
+            'duedate' => $request->duedate,
+            'status' => 1
+        );
+        $classactivity = ClassActivity::create($form_data);
+
+        return response()->json([
+            'message' => 'Class Activity Created Successfully!!',
+            'class' => $classactivity
+        ]);
+    }
+
+    public function activityDetail(Request $request)
+    {
+        $activity = ClassActivity::find($request->activityId);
+
+        return response()->json($activity);
+    }
+
+    public function uploadStudentWork(Request $request)
+    {
+        $classCode = Classes::find($request->classId);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = date('his') . '-' . $file->getClientOriginalName();
+            $filesize = $file->getSize();
+            $fileType = $file->getClientOriginalExtension();
+            $folder = uniqid() . '-' . now()->timestamp;
+
+            $fileThumbs = ["XLS", "DOCX", "CSV", "TXT", "ZIP", "EXE", "XLSX", "PPT", "PPTX"];
+            $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
+
+            if (in_array(strtoupper($fileType), $fileThumbs)) {
+                $thumbnail = "../../storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+            } else {
+                if (in_array(strtoupper($fileType), $imgThumbs)) {
+                    $thumbnail = '../../storage/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $filename;
+                } else {
+                    $thumbnail = "../../storage/file_extension_icon/FILE.png";
+                }
+            }
+
+            // insert to temporary table in database
+            $tmpPostAttachment = ClassActivityDetail::create([
+                'class_activity_id' => $request->activityId,
+                'user_id' => $request->userId,
+                'folder' => $folder,
+                'filename' => $filename,
+                'filesize' => $filesize,
+                'filetype' => $fileType,
+                'thumbnail' => $thumbnail,
+                'status' => 'T'
+            ]);
+
+            if ($tmpPostAttachment) {
+                $file->storeAs('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/tmp/' . $folder, $filename);
+            }
+
+            return $folder;
+        }
+
+        return '';
+    }
+
+    public function submitStudentWork(Request $request)
+    {
+        $class = Classes::find($request->classId);
+        $statusUnSubmitted = ClassActivityDetail::where('class_activity_id', $request->activityId)->first();
+
+        if ($statusUnSubmitted->status == 'C') {
+            $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->user_id)->update(['status' => 'S']);
+        } else {
+            foreach ($request->submitStudentData as $studentWorkFile) {
+                if ($studentWorkFile != null) {
+                    $tempSwFile = ClassActivityDetail::where('folder', $studentWorkFile)->first();
+
+                    if (Storage::exists('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename)) {
+                        Storage::move('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename, 'public/classactivity/' . $class->code . "/" . $request->activityId . '/' . $tempSwFile->filename);
+
+                        $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->update(['status' => 'S']);
+
+                        Storage::deleteDirectory('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder);
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => 'Post Created Successfully!!'
+        ]);
+    }
+
+    public function studentworkdata(Request $request)
+    {
+        $studentWork = ClassActivityDetail::where('class_activity_id', $request->activity_id)->where('user_id', $request->user_id)->get();
+
+        return response()->json($studentWork);
+    }
+
+    public function unsubmitStudentWork(Request $request)
+    {
+        $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->userId)->update(['status' => 'C']);
+
+        return response()->json($updateResponse);
+    }
+
+    public function indexStudentWork(Request $request)
+    {
+        $studentSubmitted = ClassActivityDetail::select('user_id', DB::raw('COUNT(*) as total'))
+            ->where('class_activity_id', $request->activityId)
+            ->groupBy('user_id')
+            ->having('total', '>', 0)
+            ->with('user')
+            ->get();
+
+        return response()->json($studentSubmitted);
     }
 }

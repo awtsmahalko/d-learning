@@ -195,7 +195,7 @@ export default {
       axios
         .post(baseUrl + "/api/class", this.form_class)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           $("#addModal").modal("hide");
           this.getClasses();
           success_add();

@@ -72,7 +72,7 @@
 <script>
 import discussionTab from "./classtab/discussion.vue";
 import classWorkTab from "./classtab/classWork.vue";
-import peopleTab from "./classtab/people.vue";
+import peopleTab from "../classlist/viewClassList.vue";
 
 export default {
   components: {

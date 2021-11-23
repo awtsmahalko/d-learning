@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\ZoomApiController;
+use App\Models\Attendee;
 use App\Models\ClassList;
 use App\Models\Meeting;
 
@@ -57,6 +58,37 @@ class MeetingController extends Controller
     {
         $meeting = Meeting::find($id);
         return response()->json($meeting);
+    }
+
+    public function updateStatus($id)
+    {
+        $form_data = array(
+            'status' => 'F',
+        );
+
+        $meeting = Meeting::find($id);
+        $meeting = $meeting->update($form_data);
+
+        return response()->json($meeting);
+    }
+
+    public function join(Request $request)
+    {
+
+        $data = array(
+            'meeting_id' => $request->meeting_id,
+            'user_id' => $request->user_id
+        );
+
+        $attendee = Attendee::updateOrCreate($data);
+
+        return response()->json($attendee);
+    }
+
+    public function attendee($id)
+    {
+        $attendees = Attendee::join('users', 'attendees.user_id', '=', 'users.id')->where('meeting_id', $id)->orderBy('users.category', 'DESC')->select('attendees.*', 'users.fname', 'users.mname', 'users.lname', 'users.category')->get();
+        return response()->json($attendees);
     }
 
     public function destroy($id)

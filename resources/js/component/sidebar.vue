@@ -42,3 +42,9 @@ export default {
   created() {},
 };
 </script>
+<style scoped>
+.sidebar .nav li a,
+.sidebar .nav li .dropdown-menu a {
+  color: #ffffff;
+}
+</style>

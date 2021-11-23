@@ -15,7 +15,8 @@ class Meeting extends Model
         'number',
         'password',
         'join_url',
-        'class_id'
+        'class_id',
+        'status'
     ];
 
     public function user()

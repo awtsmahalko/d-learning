@@ -24,6 +24,9 @@ Route::get('/video', [App\Http\Controllers\MeetingController::class, 'index']);
 Route::get('/video/api', [App\Http\Controllers\MeetingController::class, 'api']);
 Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'create']);
 Route::get('/video/{id}', [App\Http\Controllers\MeetingController::class, 'show']);
+Route::post('/video/{id}/edit', [App\Http\Controllers\MeetingController::class, 'updateStatus']);
+Route::get('/video/attendee/{id}', [App\Http\Controllers\MeetingController::class, 'attendee']);
+Route::post('/video/join', [App\Http\Controllers\MeetingController::class, 'join']);
 Route::delete('/video/{id}', [App\Http\Controllers\MeetingController::class, 'destroy']);
 
 
@@ -40,3 +43,17 @@ Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 's
 Route::get('/studentsList/students', [App\Http\Controllers\ClassListController::class, 'students']);
 Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, 'addStudent']);
 Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);
+
+
+Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class, 'indexActivity']);
+Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
+Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
+Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassController::class, 'uploadStudentWork']);
+Route::post('/class/activity/submitStudentWork', [App\Http\Controllers\ClassController::class, 'submitStudentWork']);
+Route::get('/class/activity/studentworkdata', [App\Http\Controllers\ClassController::class, 'studentworkdata']);
+Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassController::class, 'unsubmitStudentWork']);
+Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController::class, 'indexStudentWork']);
+
+// profile
+Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
+Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
