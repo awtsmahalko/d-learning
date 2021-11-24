@@ -21,6 +21,7 @@ class CreateClassActivitiesTable extends Migration
             $table->text('instruction');
             $table->decimal('points', 12, 3);
             $table->dateTime('duedate');
+            $table->string('category', 1);
             $table->string('status', 1);
             $table->timestamps();
         });

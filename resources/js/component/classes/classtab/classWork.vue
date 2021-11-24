@@ -48,8 +48,14 @@
                     >
                       <h6 class="card-title mb-0">
                         <b class="comment" id="post-user"
-                          >{{ activity.user.fname }} Posted a new classwork:
-                          {{ activity.title }}</b
+                          >{{ activity.user.fname }} Posted a new
+                          {{
+                            activity.category == "A"
+                              ? "ACTIVITY"
+                              : activity.category == "E"
+                              ? "EXAM"
+                              : "QUIZ"
+                          }}: {{ activity.title }}</b
                         >
                       </h6>
                       <small class="text-muted mt-0">
@@ -79,8 +85,8 @@
                     >
                       <h6 class="card-title mb-0">
                         <b class="comment" id="post-user"
-                          >{{ activity.user.fname }} Posted a new classwork:
-                          {{ activity.title }}</b
+                          >{{ activity.user.fname }} Posted a
+                          {{ activity.category }}: {{ activity.title }}</b
                         >
                       </h6>
                       <small class="text-muted mt-0">
@@ -181,6 +187,20 @@
                                   />
                                 </div>
                                 <div class="form-group bmd-form-group">
+                                  <label class="bmd-label-floating"
+                                    >Title</label
+                                  >
+                                  <select
+                                    class="form-control"
+                                    name="title"
+                                    id="title"
+                                  >
+                                    <option value="P">Prelem</option>
+                                    <option value="M">Midterm</option>
+                                    <option value="E">Enterm</option>
+                                  </select>
+                                </div>
+                                <div class="form-group bmd-form-group">
                                   <textarea
                                     class="form-control summernote"
                                     id="snnewactivity"
@@ -218,6 +238,18 @@
                   style="border-left: 1px solid #ddd"
                 >
                   <div class="col-md-12">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-floating">Category</label>
+                      <select
+                        class="form-control"
+                        name="cw_category"
+                        id="cw_category"
+                      >
+                        <option value="A">Activity</option>
+                        <option value="E">Exam</option>
+                        <option value="Q">Quiz</option>
+                      </select>
+                    </div>
                     <div class="form-group bmd-form-group">
                       <label class="bmd-label-floating">Points</label>
                       <input

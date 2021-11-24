@@ -38,7 +38,14 @@
                   >
                     <h6 class="card-title mb-0">
                       <b class="comment" id="post-user"
-                        >{{ teacher }} Posted a new classwork: {{ title }}</b
+                        >{{ teacher }} Posted a new
+                        {{
+                          cw_category == "A"
+                            ? "ACTIVITY"
+                            : cw_category == "E"
+                            ? "EXAM"
+                            : "QUIZ"
+                        }}: {{ title }}</b
                       >
                     </h6>
                     <small class="text-muted mt-0">
@@ -61,7 +68,14 @@
                   >
                     <h6 class="card-title mb-0">
                       <b class="comment" id="post-user"
-                        >{{ teacher }} Posted a new classwork: {{ title }}</b
+                        >{{ teacher }} Posted a new
+                        {{
+                          cw_category == "A"
+                            ? "ACTIVITY"
+                            : cw_category == "E"
+                            ? "EXAM"
+                            : "QUIZ"
+                        }}: {{ title }}</b
                       >
                     </h6>
                     <small class="text-muted mt-0">
@@ -112,6 +126,7 @@ export default {
     "postedDate",
     "class_id",
     "activity_id",
+    "cw_category",
   ],
   data() {
     return {

@@ -34,7 +34,14 @@
                       }}</b>
                     </h3>
                     <p class="text-muted mt-0 normalText">
-                      Posted •
+                      <b>{{
+                        activities.category == "A"
+                          ? "ACTIVITY"
+                          : activities.category == "E"
+                          ? "EXAM"
+                          : "QUIZ"
+                      }}</b>
+                      : Posted •
                       {{ new Date(activities.created_at).toLocaleString() }}
                     </p>
                     <p

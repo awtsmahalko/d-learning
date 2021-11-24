@@ -82,6 +82,7 @@
                 :title="post.title"
                 :classCode="classData.code"
                 :postId="post.id"
+                :cw_category="post.category"
                 :teacher="post.user.fname"
                 :postedDate="post.created_at"
                 :class_id="post.class_id"
