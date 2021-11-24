@@ -87,12 +87,12 @@ class PostController extends Controller
             $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
 
             if (in_array(strtoupper($fileType), $fileThumbs)) {
-                $thumbnail = "../../storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+                $thumbnail = $_REQUEST['baseUrl'] . "/public/storage/file_extension_icon/" . strtoupper($fileType) . '.png';
             } else {
                 if (in_array(strtoupper($fileType), $imgThumbs)) {
-                    $thumbnail = '../../storage/postattachment/' . $classCode->code . '/' . $filename;
+                    $thumbnail = $_REQUEST['baseUrl'] . '/public/storage/postattachment/' . $classCode->code . '/' . $filename;
                 } else {
-                    $thumbnail = "../../storage/file_extension_icon/FILE.png";
+                    $thumbnail = $_REQUEST['baseUrl'] . "/public/storage/file_extension_icon/FILE.png";
                 }
             }
 

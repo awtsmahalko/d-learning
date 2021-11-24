@@ -209,6 +209,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -217,6 +222,7 @@ __webpack_require__.r(__webpack_exports__);
   name: "view-class-list",
   data: function data() {
     return {
+      is_teacher: false,
       studentsList: [],
       students: [],
       studlist: {
@@ -230,6 +236,7 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchStudentsList();
   },
   mounted: function mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
     $(".select2").select2();
     this.fetchStudentsList();
     this.fetchStudents();
@@ -648,12 +655,46 @@ var render = function() {
       "div",
       { staticClass: "container-fluid pt-0" },
       [
-        _c("card-title", { attrs: { classesId: _vm.studlist.class_id } }),
+        _c("card-title", {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.is_teacher,
+              expression: "is_teacher"
+            }
+          ],
+          attrs: { classesId: _vm.studlist.class_id }
+        }),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.is_teacher,
+                      expression: "is_teacher"
+                    }
+                  ],
+                  staticClass: "card-header card-header-primary"
+                },
+                [
+                  _c("h4", { staticClass: "card-title" }, [
+                    _vm._v("Class list")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-category" }, [
+                    _vm._v(
+                      "\n              Here you can manage your list of students\n            "
+                    )
+                  ])
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "row" }, [
@@ -661,6 +702,14 @@ var render = function() {
                     _c(
                       "button",
                       {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.is_teacher,
+                            expression: "is_teacher"
+                          }
+                        ],
                         staticClass: "btn btn-sm btn-primary",
                         on: { click: _vm.showAddModal }
                       },
@@ -674,7 +723,31 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "table-responsive" }, [
                     _c("table", { staticClass: "table" }, [
-                      _vm._m(1),
+                      _c("thead", { staticClass: "text-primary" }, [
+                        _c("tr", [
+                          _c("th", [_vm._v("#")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Student Name")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Date Joined")]),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.is_teacher,
+                                  expression: "is_teacher"
+                                }
+                              ],
+                              staticClass: "text-right"
+                            },
+                            [_vm._v("Actions")]
+                          )
+                        ])
+                      ]),
                       _vm._v(" "),
                       _vm.studentsList.length > 0
                         ? _c(
@@ -709,34 +782,55 @@ var render = function() {
                                   )
                                 ]),
                                 _vm._v(" "),
-                                _c("td", [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-sm btn-danger",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.removeStudent(list.id)
-                                        }
+                                _c(
+                                  "td",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: _vm.is_teacher,
+                                        expression: "is_teacher"
                                       }
-                                    },
-                                    [
-                                      _c(
-                                        "span",
-                                        { staticClass: "material-icons" },
-                                        [_vm._v("remove_circle")]
-                                      ),
-                                      _vm._v(
-                                        "\n                          Remove\n                        "
-                                      )
                                     ]
-                                  )
-                                ])
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.is_teacher,
+                                            expression: "is_teacher"
+                                          }
+                                        ],
+                                        staticClass: "btn btn-sm btn-danger",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.removeStudent(list.id)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          { staticClass: "material-icons" },
+                                          [_vm._v("remove_circle")]
+                                        ),
+                                        _vm._v(
+                                          "\n                          Remove\n                        "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
                               ])
                             }),
                             0
                           )
-                        : _c("tbody", [_vm._m(2)])
+                        : _c("tbody", [_vm._m(0)])
                     ])
                   ])
                 ])
@@ -776,7 +870,7 @@ var render = function() {
                   }
                 },
                 [
-                  _vm._m(3),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-body" }, [
                     _c("div", { staticClass: "form-group bmd-form-group" }, [
@@ -819,7 +913,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(4)
+                  _vm._m(2)
                 ]
               )
             ])
@@ -830,36 +924,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header card-header-primary" }, [
-      _c("h4", { staticClass: "card-title" }, [_vm._v("Class list")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "card-category" }, [
-        _vm._v(
-          "\n              Here you can manage your list of students\n            "
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "text-primary" }, [
-      _c("tr", [
-        _c("th", [_vm._v("#")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Student Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Date Joined")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-right" }, [_vm._v("Actions")])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

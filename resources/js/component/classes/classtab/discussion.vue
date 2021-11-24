@@ -22,7 +22,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
+        <div v-show="is_teacher" class="card">
           <div class="card-body">
             <form @submit.prevent="submitPost">
               <div class="row">
@@ -128,6 +128,7 @@ export default {
   name: "view-class",
   data() {
     return {
+      is_teacher: false,
       classData: {},
       posts: [],
       post: {
@@ -191,6 +192,8 @@ export default {
       });
   },
   mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
+
     this.getPosts();
     const vm = this;
 

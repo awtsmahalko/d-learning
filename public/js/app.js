@@ -2458,7 +2458,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.sideImage[data-v-ce638dfe] {\n  background-image: url(http://127.0.0.1:8000/material/img/login.jpg);\n  background-size: cover;\n  background-position: bottom center;\n  background-color: rgb(28 4 32 / 75%);\n  background-blend-mode: multiply;\n}\n.sidebar .logo .simple-text[data-v-ce638dfe] {\n  color: #fff;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sideImage[data-v-ce638dfe] {\n  background-image: url(\"/dlearning/public/material/img/login.jpg\");\n  background-size: cover;\n  background-position: bottom center;\n  background-color: rgb(28 4 32 / 75%);\n  background-blend-mode: multiply;\n}\n.sidebar .logo .simple-text[data-v-ce638dfe] {\n  color: #fff;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -20556,9 +20556,13 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "container-fluid" }, [
-              _vm._m(1),
+              _c("div", { staticClass: "navbar-wrapper" }, [
+                _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
+                  _vm._v(_vm._s(_vm.$route.meta.title))
+                ])
+              ]),
               _vm._v(" "),
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "div",
@@ -20566,7 +20570,7 @@ var render = function() {
                 [
                   _c("ul", { staticClass: "navbar-nav" }, [
                     _c("li", { staticClass: "nav-item dropdown" }, [
-                      _vm._m(3),
+                      _vm._m(2),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -20628,14 +20632,6 @@ var staticRenderFns = [
         { staticClass: "simple-text logo-normal", attrs: { href: "/" } },
         [_vm._v(" D-Learning ")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navbar-wrapper" }, [
-      _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } })
     ])
   },
   function() {

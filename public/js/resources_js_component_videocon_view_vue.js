@@ -270,6 +270,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "video-view",
@@ -744,7 +753,13 @@ var render = function() {
                                   )
                                 ]),
                                 _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(meet.status))]),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      meet.status == "F" ? "Ended" : "Active"
+                                    )
+                                  )
+                                ]),
                                 _vm._v(" "),
                                 _c("td", { staticClass: "text-right" }, [
                                   _c(
@@ -825,7 +840,7 @@ var render = function() {
                                             [_vm._v("check_circle")]
                                           ),
                                           _vm._v(
-                                            " FINISH MEETING\n                          "
+                                            " FINISH\n                            MEETING\n                          "
                                           )
                                         ]
                                       )
