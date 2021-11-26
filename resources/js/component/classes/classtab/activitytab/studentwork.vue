@@ -243,7 +243,7 @@ export default {
           this.getHeaderActivity();
           $("#scoringModal").modal("hide");
           $("#modal_addScore").trigger("reset");
-          alert(response.data.message);
+          alertMe(response.data.message);
         })
         .catch((error) => {
           console.log(error);

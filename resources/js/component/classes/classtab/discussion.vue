@@ -253,7 +253,7 @@ export default {
             console.log(error);
           });
       } else {
-        alert("Compose anything to share to the class");
+        alertMe("Compose anything to share to the class");
       }
     },
     handleFilePondInit: function () {

@@ -105,6 +105,10 @@
             //alert('Something is wrong. Failed to execute query. Please try again.');
         }
 
+        function alertMe(data) {
+            swal("Message", data, "info");
+        }
+
         function checkAll(ele, ref) {
             var checkboxes = document.getElementsByClassName(ref);
             if (ele.checked) {

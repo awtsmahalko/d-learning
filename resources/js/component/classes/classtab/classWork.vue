@@ -454,7 +454,7 @@ export default {
           this.getActivity();
           $("#createClassworkModal").modal("hide");
           $("#modal_new_activity").trigger("reset");
-          alert(response.data.message);
+          alertMe(response.data.message);
         })
         .catch((error) => {
           console.log(error);

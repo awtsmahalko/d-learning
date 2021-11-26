@@ -11,7 +11,6 @@ use App\Models\ClassList;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\ClassActivityMaterial;
-use App\Models\ClassActivityScoring;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -370,6 +369,8 @@ class ClassController extends Controller
         $points = ($score != null) ? (($score->points != 0) ? $score->points : 0) : 0;
 
         return response()->json($points);
+    }
+
     public function studentWork(Request $request)
     {
         $classActivity = ClassActivity::selectRaw('SUM(points) as total_points')
