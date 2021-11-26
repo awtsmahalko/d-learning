@@ -22,6 +22,11 @@ class ClassActivityScoring extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+
     public function activity()
     {
         return $this->belongsTo(ClassActivity::class);

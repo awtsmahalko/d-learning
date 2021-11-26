@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use App\Models\ClassActivity;
 use App\Models\ClassActivityDetail;
+use App\Models\ClassActivityScoring;
+use App\Models\ClassList;
+use App\Models\User;
+use App\Models\Attendance;
 use App\Models\ClassActivityMaterial;
 use App\Models\ClassActivityScoring;
 use Illuminate\Support\Facades\DB;
@@ -248,6 +252,35 @@ class ClassController extends Controller
         return response()->json($studentSubmitted);
     }
 
+    public function attendance(Request $request)
+    {
+        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.lname', 'users.mname', 'users.fname')->with('attendance')->get();
+        return response()->json($students_list);
+    }
+
+    public function attendanceModalStudents(Request $request)
+    {
+        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.id', 'users.lname', 'users.mname', 'users.fname')->with('attendance')->get();
+        return response()->json($students_list);
+    }
+
+    public function attendanceAddRecord(Request $request)
+    {
+        foreach ($request->student as $user_id => $status) {
+            if (isset($status)) {
+                $students_list[] = $status;
+                $form_data = array(
+                    'date' => date("Y-m-d", strtotime($request->date)),
+                    'user_id' => $user_id,
+                    'status' => $status,
+                    'class_id' => $request->class_id
+                );
+                Attendance::create($form_data);
+            }
+        }
+        return response()->json($students_list);
+    }
+
     public function uploadClassworkAttachment(Request $request)
     {
         $classCode = Classes::find($request->classId);
@@ -337,5 +370,52 @@ class ClassController extends Controller
         $points = ($score != null) ? (($score->points != 0) ? $score->points : 0) : 0;
 
         return response()->json($points);
+    public function studentWork(Request $request)
+    {
+        $classActivity = ClassActivity::selectRaw('SUM(points) as total_points')
+            ->where('class_id', '=', $request->class_id)
+            ->where('category', '=', $request->category)
+            ->get();
+
+        $total_points = (float) $classActivity[0]['total_points'];
+        $student_list = ClassActivityScoring::join("class_activities", 'class_activities.id', '=', 'class_activity_scorings.class_activity_id')
+            ->selectRaw("SUM(class_activity_scorings.points) AS earned_points,class_activity_scorings.user_id,$total_points AS total_points")
+            ->where("class_activities.category", "=", $request->category)
+            ->where("class_activities.class_id", "=", $request->class_id)
+            ->groupBy("class_activity_scorings.user_id")
+            ->orderByRaw('SUM(class_activity_scorings.points) desc')
+            ->with('user:id,fname,mname,lname')
+            ->get();
+        return response()->json($student_list);
+    }
+
+    public function teacherWork(Request $request)
+    {
+        $works = ClassActivity::select('id', 'title')
+            ->where('class_id', '=', $request->class_id)
+            ->where('category', '=', $request->category)
+            ->get();
+
+
+        $classActivity = ClassActivity::selectRaw('SUM(points) as total_points')
+            ->where('class_id', '=', $request->class_id)
+            ->where('category', '=', $request->category)
+            ->get();
+
+        $total_points = (float) $classActivity[0]['total_points'];
+        $student_list = ClassActivityScoring::join("class_activities", 'class_activities.id', '=', 'class_activity_scorings.class_activity_id')
+            ->selectRaw("SUM(class_activity_scorings.points) AS earned_points,class_activity_scorings.user_id,$total_points AS total_points")
+            ->where("class_activities.category", "=", $request->category)
+            ->where("class_activities.class_id", "=", $request->class_id)
+            ->groupBy("class_activity_scorings.user_id")
+            ->orderByRaw('SUM(class_activity_scorings.points) desc')
+            ->with('user:id,fname,mname,lname')
+            ->get();
+
+        $response = array(
+            'works' => $works,
+            'student_list' => $student_list
+        );
+        return response()->json($response);
     }
 }
