@@ -54,6 +54,11 @@ Route::get('/class/activity/studentworkdata', [App\Http\Controllers\ClassControl
 Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassController::class, 'unsubmitStudentWork']);
 Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController::class, 'indexStudentWork']);
 
+//atendance
+Route::get('/class/attendance/view', [App\Http\Controllers\ClassController::class, 'attendance']);
+Route::get('/attendance/modal/students', [App\Http\Controllers\ClassController::class, 'attendanceModalStudents']);
+Route::post('/attendance/add/record', [App\Http\Controllers\ClassController::class, 'attendanceAddRecord']);
+
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
 Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
