@@ -29,12 +29,11 @@ Route::get('/video/attendee/{id}', [App\Http\Controllers\MeetingController::clas
 Route::post('/video/join', [App\Http\Controllers\MeetingController::class, 'join']);
 Route::delete('/video/{id}', [App\Http\Controllers\MeetingController::class, 'destroy']);
 
-
+// discussion :: post
 Route::get('/post', [App\Http\Controllers\PostController::class, 'index']);
 Route::post('/post', [App\Http\Controllers\PostController::class, 'store']);
 Route::post('/post/comment/add', [App\Http\Controllers\PostController::class, 'commentStore']);
 Route::get('/post/comment', [App\Http\Controllers\PostController::class, 'commentData']);
-
 Route::post('/uploadPostAttachment', [App\Http\Controllers\PostController::class, 'uploadAtachment']);
 Route::delete('/deletePostAttachment', [App\Http\Controllers\PostController::class, 'deletePostAttachment']);
 
@@ -44,15 +43,22 @@ Route::get('/studentsList/students', [App\Http\Controllers\ClassListController::
 Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, 'addStudent']);
 Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);
 
-
+// activity
 Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class, 'indexActivity']);
 Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
 Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
+
+// activity :: studentwork
 Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassController::class, 'uploadStudentWork']);
 Route::post('/class/activity/submitStudentWork', [App\Http\Controllers\ClassController::class, 'submitStudentWork']);
 Route::get('/class/activity/studentworkdata', [App\Http\Controllers\ClassController::class, 'studentworkdata']);
 Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassController::class, 'unsubmitStudentWork']);
 Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController::class, 'indexStudentWork']);
+
+// activity :: classwork
+Route::post('/class/activity/uploadClassworkAttachment', [App\Http\Controllers\ClassController::class, 'uploadClassworkAttachment']);
+Route::delete('/class/activity/revertClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'revertClassWorkMaterial']);
+Route::delete('/class/activity/deleteClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'deleteClassWorkMaterial']);
 
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);

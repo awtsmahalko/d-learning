@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- start loop -->
-    <div class="card">
+    <div class="card" style="margin-bottom: 15px; margin-top: 15px">
       <div style="width: 100%padding: 11px;">
         <div class="col-md-12">
           <div class="d-flex">

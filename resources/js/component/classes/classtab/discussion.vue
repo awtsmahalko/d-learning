@@ -22,7 +22,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div v-show="is_teacher" class="card">
+        <div v-show="is_teacher" class="card" style="margin-bottom: 15px">
           <div class="card-body">
             <form @submit.prevent="submitPost">
               <div class="row">
@@ -67,7 +67,11 @@
         </div>
         <div v-if="posts.length > 0">
           <div v-for="(post, key) in posts" :key="key">
-            <div v-if="post.module === 'POST'" class="card">
+            <div
+              v-if="post.module === 'POST'"
+              class="card"
+              style="margin-bottom: 15px; margin-top: 15px"
+            >
               <postContent
                 :userposted="post.user.fname"
                 :dateposted="post.created_at"

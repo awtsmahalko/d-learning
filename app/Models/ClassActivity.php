@@ -16,6 +16,7 @@ class ClassActivity extends Model
         'instruction',
         'points',
         'duedate',
+        'category',
         'status'
     ];
 
@@ -27,5 +28,10 @@ class ClassActivity extends Model
     public function activity_details()
     {
         return $this->hasMany(ClassActivityDetail::class);
+    }
+
+    public function activity_material()
+    {
+        return $this->hasMany(ClassActivityMaterial::class);
     }
 }
