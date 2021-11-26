@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use App\Models\ClassActivity;
 use App\Models\ClassActivityDetail;
+use App\Models\ClassList;
+use App\Models\User;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -218,5 +221,31 @@ class ClassController extends Controller
             ->get();
 
         return response()->json($studentSubmitted);
+    }
+
+    public function attendance(Request $request)
+    {
+        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.lname', 'users.mname', 'users.fname')->with('attendance')->get();
+        return response()->json($students_list);
+    }
+
+    public function attendanceModalStudents(Request $request)
+    {
+        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.id', 'users.lname', 'users.mname', 'users.fname')->with('attendance')->get();
+        return response()->json($students_list);
+    }
+
+    public function attendanceAddRecord(Request $request)
+    {
+        // foreach ($request->student as $user_id => $status) {
+        //     // $form_data = array(
+        //     //     'date' => date("Y-m-d", strtotime($request->date)),
+        //     //     'user_id' => $user_id,
+        //     //     'status' => $status,
+        //     //     'class_id' => 1
+        //     // );
+        //     $students_list[] = $user_id; //Attendance::create($form_data);
+        // }
+        return response()->json($request);
     }
 }
