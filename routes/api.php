@@ -59,6 +59,12 @@ Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController
 Route::get('/class/attendance/view', [App\Http\Controllers\ClassController::class, 'attendance']);
 Route::get('/attendance/modal/students', [App\Http\Controllers\ClassController::class, 'attendanceModalStudents']);
 Route::post('/attendance/add/record', [App\Http\Controllers\ClassController::class, 'attendanceAddRecord']);
+
+//leaderboard
+Route::get('/leaderboard/student/work', [App\Http\Controllers\ClassController::class, 'studentWork']);
+Route::get('/leaderboard/teacher/work', [App\Http\Controllers\ClassController::class, 'teacherWork']);
+
+
 // activity :: classwork
 Route::post('/class/activity/uploadClassworkAttachment', [App\Http\Controllers\ClassController::class, 'uploadClassworkAttachment']);
 Route::delete('/class/activity/revertClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'revertClassWorkMaterial']);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Classes;
 use App\Models\ClassActivity;
 use App\Models\ClassActivityDetail;
+use App\Models\ClassActivityScoring;
 use App\Models\ClassList;
 use App\Models\User;
 use App\Models\Attendance;
@@ -264,16 +265,19 @@ class ClassController extends Controller
 
     public function attendanceAddRecord(Request $request)
     {
-        // foreach ($request->student as $user_id => $status) {
-        //     // $form_data = array(
-        //     //     'date' => date("Y-m-d", strtotime($request->date)),
-        //     //     'user_id' => $user_id,
-        //     //     'status' => $status,
-        //     //     'class_id' => 1
-        //     // );
-        //     $students_list[] = $user_id; //Attendance::create($form_data);
-        // }
-        return response()->json($request);
+        foreach ($request->student as $user_id => $status) {
+            if (isset($status)) {
+                $students_list[] = $status;
+                $form_data = array(
+                    'date' => date("Y-m-d", strtotime($request->date)),
+                    'user_id' => $user_id,
+                    'status' => $status,
+                    'class_id' => $request->class_id
+                );
+                Attendance::create($form_data);
+            }
+        }
+        return response()->json($students_list);
     }
 
     public function uploadClassworkAttachment(Request $request)
@@ -339,5 +343,54 @@ class ClassController extends Controller
         Storage::deleteDirectory('public/classactivity/materials/' . $classCode->code . '/' . $activityId . '/' . $filename);
 
         ClassActivityMaterial::where('id', $request->material_id)->delete();
+    }
+
+    public function studentWork(Request $request)
+    {
+        $classActivity = ClassActivity::selectRaw('SUM(points) as total_points')
+            ->where('class_id', '=', $request->class_id)
+            ->where('category', '=', $request->category)
+            ->get();
+
+        $total_points = (float) $classActivity[0]['total_points'];
+        $student_list = ClassActivityScoring::join("class_activities", 'class_activities.id', '=', 'class_activity_scorings.class_activity_id')
+            ->selectRaw("SUM(class_activity_scorings.points) AS earned_points,class_activity_scorings.user_id,$total_points AS total_points")
+            ->where("class_activities.category", "=", $request->category)
+            ->where("class_activities.class_id", "=", $request->class_id)
+            ->groupBy("class_activity_scorings.user_id")
+            ->orderByRaw('SUM(class_activity_scorings.points) desc')
+            ->with('user:id,fname,mname,lname')
+            ->get();
+        return response()->json($student_list);
+    }
+
+    public function teacherWork(Request $request)
+    {
+        $works = ClassActivity::select('id', 'title')
+            ->where('class_id', '=', $request->class_id)
+            ->where('category', '=', $request->category)
+            ->get();
+
+
+        $classActivity = ClassActivity::selectRaw('SUM(points) as total_points')
+            ->where('class_id', '=', $request->class_id)
+            ->where('category', '=', $request->category)
+            ->get();
+
+        $total_points = (float) $classActivity[0]['total_points'];
+        $student_list = ClassActivityScoring::join("class_activities", 'class_activities.id', '=', 'class_activity_scorings.class_activity_id')
+            ->selectRaw("SUM(class_activity_scorings.points) AS earned_points,class_activity_scorings.user_id,$total_points AS total_points")
+            ->where("class_activities.category", "=", $request->category)
+            ->where("class_activities.class_id", "=", $request->class_id)
+            ->groupBy("class_activity_scorings.user_id")
+            ->orderByRaw('SUM(class_activity_scorings.points) desc')
+            ->with('user:id,fname,mname,lname')
+            ->get();
+
+        $response = array(
+            'works' => $works,
+            'student_list' => $student_list
+        );
+        return response()->json($response);
     }
 }

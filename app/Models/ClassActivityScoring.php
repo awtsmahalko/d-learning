@@ -12,6 +12,7 @@ class ClassActivityScoring extends Model
     protected $fillable = [
         'class_activity_id',
         'user_id',
+        'class_id',
         'points',
         'status'
     ];
@@ -19,6 +20,11 @@ class ClassActivityScoring extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
     }
 
     public function activity()

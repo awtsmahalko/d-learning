@@ -38,6 +38,30 @@
             >People</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="pills-leaderboard-tab"
+            data-toggle="pill"
+            href="#pills-leaderboard"
+            role="tab"
+            aria-controls="pills-leaderboard"
+            aria-selected="false"
+            >Leaderboard</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="pills-attendance-tab"
+            data-toggle="pill"
+            href="#pills-attendance"
+            role="tab"
+            aria-controls="pills-attendance"
+            aria-selected="false"
+            >Attendance</a
+          >
+        </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
         <div
@@ -64,6 +88,22 @@
         >
           <peopleTab />
         </div>
+        <div
+          class="tab-pane fade"
+          id="pills-leaderboard"
+          role="tabpanel"
+          aria-labelledby="pills-leaderboard-tab"
+        >
+        <leaderboard-index></leaderboard-index>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="pills-attendance"
+          role="tabpanel"
+          aria-labelledby="pills-attendance-tab"
+        >
+        <attendance-index />
+        </div>
       </div>
     </div>
   </div>
@@ -73,16 +113,21 @@
 import discussionTab from "./classtab/discussion.vue";
 import classWorkTab from "./classtab/classWork.vue";
 import peopleTab from "../classlist/viewClassList.vue";
+import AttendanceIndex from './classtab/attendance/attendanceIndex.vue';
+import LeaderboardIndex from './classtab/leaderboard/leaderboardIndex.vue';
 
 export default {
   components: {
     discussionTab,
     classWorkTab,
     peopleTab,
+    AttendanceIndex,
+    LeaderboardIndex
   },
 };
 </script>
-<style scoped>
+<style scoped,
+LeaderboardIndex>
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: #9c27b0;

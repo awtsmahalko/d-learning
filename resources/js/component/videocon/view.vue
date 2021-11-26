@@ -203,6 +203,62 @@
         </div>
       </div>
     </div>
+        <!-- Modal containing dynamic form for adding/updating user details. -->
+    <div
+      class="modal fade"
+      id="attendeeModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="attendeeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
+            <h5
+              class="modal-title"
+              id="attendeeModalLabel"
+            >
+              <i class="material-icons">people</i>  Meeting Participants
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class="text-primary">
+                    <tr>
+                      <th>#</th>
+                      <th>Attendee</th>
+                      <th>Joined Time</th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="attendees.length > 0">
+                    <tr v-for="(attendee, key) in attendees" :key="key">
+                      <td>{{ attendee.id }}</td>
+                      <td>{{ attendee.fname + ' ' + attendee.mname + ' ' + attendee.lname }} {{ attendee.category == 'T'?'(Host)':''}}</td>
+                      <td>{{ new Date(attendee.created_at).toLocaleString() }}</td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="4" align="center">No Attendees Found</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -223,6 +279,7 @@ export default {
         scheduled_at: "",
       },
       meetings: [],
+      attendees : [],
     };
   },
   methods: {
@@ -333,7 +390,17 @@ export default {
         allowOutsideClick: false,
       });
     },
-    fetchAttendee(id) {},
+    fetchAttendee(id) {
+      $("#attendeeModal").modal("show");
+      this.attendees = [];
+        axios
+        .get(baseUrl + `/api/video/attendee/${id}`)
+        .then((response) => {
+          console.log(response);
+          this.attendees = response.data;
+        })
+        .catch((error) => {});
+    },
   },
   created() {
     this.is_teacher = sessionCategory == "T" ? true : false;
