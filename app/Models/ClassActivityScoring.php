@@ -12,6 +12,7 @@ class ClassActivityScoring extends Model
     protected $fillable = [
         'class_activity_id',
         'user_id',
+        'class_id',
         'points',
         'status'
     ];

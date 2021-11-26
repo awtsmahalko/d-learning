@@ -54,6 +54,8 @@ Route::post('/class/activity/submitStudentWork', [App\Http\Controllers\ClassCont
 Route::get('/class/activity/studentworkdata', [App\Http\Controllers\ClassController::class, 'studentworkdata']);
 Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassController::class, 'unsubmitStudentWork']);
 Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController::class, 'indexStudentWork']);
+Route::post('/class/activity/addScore', [App\Http\Controllers\ClassController::class, 'addScore']);
+Route::get('/class/activity/getScore', [App\Http\Controllers\ClassController::class, 'getScore']);
 
 // activity :: classwork
 Route::post('/class/activity/uploadClassworkAttachment', [App\Http\Controllers\ClassController::class, 'uploadClassworkAttachment']);

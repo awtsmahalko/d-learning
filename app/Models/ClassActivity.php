@@ -34,4 +34,9 @@ class ClassActivity extends Model
     {
         return $this->hasMany(ClassActivityMaterial::class);
     }
+
+    public function activity_scoring()
+    {
+        return $this->hasMany(ClassActivityScoring::class);
+    }
 }

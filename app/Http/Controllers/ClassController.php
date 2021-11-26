@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\ClassActivity;
 use App\Models\ClassActivityDetail;
 use App\Models\ClassActivityMaterial;
+use App\Models\ClassActivityScoring;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -142,7 +143,7 @@ class ClassController extends Controller
 
     public function activityDetail(Request $request)
     {
-        $activity = ClassActivity::where('id', $request->activityId)->with('activity_material')->first();
+        $activity = ClassActivity::where('id', $request->activityId)->with('activity_material', 'activity_scoring')->first();
 
         return response()->json($activity);
     }
@@ -310,5 +311,31 @@ class ClassController extends Controller
         Storage::deleteDirectory('public/classactivity/materials/' . $classCode->code . '/' . $activityId . '/' . $filename);
 
         ClassActivityMaterial::where('id', $request->material_id)->delete();
+    }
+
+    public function addScore(Request $request)
+    {
+        $form_data = array(
+            'class_activity_id' => $request->id,
+            'user_id' => $request->student_id,
+            'class_id' => $request->class_id,
+            'points' => $request->student_score,
+            'status' => 'S',
+        );
+        $classactivity = ClassActivityScoring::updateOrCreate(['user_id' => $request->student_id], $form_data);
+
+        return response()->json([
+            'message' => 'Score added Successfully!!',
+            'class' => $classactivity
+        ]);
+    }
+
+    public function getScore(Request $request)
+    {
+        $score = ClassActivityScoring::where('user_id', $request->student_id)->where('class_activity_id', $request->activityId)->first();
+
+        $points = ($score != null) ? (($score->points != 0) ? $score->points : 0) : 0;
+
+        return response()->json($points);
     }
 }

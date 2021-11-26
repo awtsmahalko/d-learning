@@ -60,8 +60,12 @@
                       aria-labelledby="navbarDropdownMenuLink1"
                       style="right: auto !important; left: 0 !important"
                     >
-                      <a class="dropdown-item" href="#">Add Score</a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a
+                        class="dropdown-item"
+                        @click="openScoringModal(studentWork.user.id)"
+                        >Add Score</a
+                      >
+                      <!-- <a class="dropdown-item" href="#">Delete</a> -->
                     </div>
                   </div>
                 </div>
@@ -72,6 +76,76 @@
         <!-- end loop -->
       </div>
     </div>
+
+    <!-- modal -->
+    <div
+      class="modal fade"
+      id="scoringModal"
+      role="dialog"
+      aria-labelledby="scoringModal"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog"
+        role="document"
+        style="max-width: 40% !important"
+      >
+        <div class="modal-content">
+          <form id="modal_addScore" @submit.prevent="addScore">
+            <div class="modal-header">
+              <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
+              <h5 class="modal-title" id="createClassworkModal">Scoring</h5>
+              <input
+                type="hidden"
+                v-model="activity.student_id"
+                id="student_id"
+              />
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body py-0">
+              <div class="row">
+                <div
+                  class="col-md-12 py-4 mt-2"
+                  style="border-left: 1px solid #ddd"
+                >
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="points">Your score</label>
+                      <input
+                        type="number"
+                        v-model="activity.student_score"
+                        class="form-control"
+                        id="points"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">
+                Save changes
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- end modal -->
   </div>
 </template>
 <script>
@@ -84,6 +158,7 @@ export default {
       classData: {},
       newActivityFiles: [],
       studentWorks: [],
+      classworkHeader: [],
       session: {
         user_id: sessionUserId,
         category: sessionCategory,
@@ -91,6 +166,9 @@ export default {
       activity: {
         user_id: sessionUserId,
         id: "",
+        student_id: "",
+        student_score: "",
+        class_id: "",
       },
     };
   },
@@ -100,16 +178,10 @@ export default {
   mounted() {
     this.is_teacher = sessionCategory == "T" ? true : false;
     this.getActivity();
+    this.getHeaderActivity();
   },
   methods: {
     async getActivity() {
-      // alert(
-      //   sessionUserId +
-      //     " :: " +
-      //     this.activity.id +
-      //     " :: " +
-      //     this.$route.params.id
-      // );
       await this.axios
         .get(baseUrl + "/api/class/activity/studentswork", {
           params: {
@@ -120,11 +192,61 @@ export default {
         .then((response) => {
           this.studentWorks = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
           this.studentWorks = [];
+        });
+    },
+    async getHeaderActivity() {
+      await this.axios
+        .get(baseUrl + "/api/class/activity/detail", {
+          params: {
+            user_id: sessionUserId,
+            activityId: this.activityid,
+          },
+        })
+        .then((response) => {
+          this.classworkHeader = response.data;
+          this.activity.class_id = response.data.class_id;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.classworkHeader = [];
+        });
+    },
+    openScoringModal(id) {
+      this.activity.student_id = id;
+
+      this.axios
+        .get(baseUrl + "/api/class/activity/getScore", {
+          params: {
+            student_id: id,
+            activityId: this.activityid,
+          },
+        })
+        .then((response) => {
+          this.activity.student_score = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      $("#scoringModal").modal("show");
+    },
+    addScore() {
+      this.axios
+        .post(baseUrl + "/api/class/activity/addScore", this.activity)
+        .then((response) => {
+          this.getActivity();
+          this.getHeaderActivity();
+          $("#scoringModal").modal("hide");
+          $("#modal_addScore").trigger("reset");
+          alert(response.data.message);
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
