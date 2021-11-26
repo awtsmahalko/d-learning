@@ -48,8 +48,14 @@
                     >
                       <h6 class="card-title mb-0">
                         <b class="comment" id="post-user"
-                          >{{ activity.user.fname }} Posted a new classwork:
-                          {{ activity.title }}</b
+                          >{{ activity.user.fname }} Posted a new
+                          {{
+                            activity.category == "A"
+                              ? "ACTIVITY"
+                              : activity.category == "E"
+                              ? "EXAM"
+                              : "QUIZ"
+                          }}: {{ activity.title }}</b
                         >
                       </h6>
                       <small class="text-muted mt-0">
@@ -79,8 +85,14 @@
                     >
                       <h6 class="card-title mb-0">
                         <b class="comment" id="post-user"
-                          >{{ activity.user.fname }} Posted a new classwork:
-                          {{ activity.title }}</b
+                          >{{ activity.user.fname }} Posted a new
+                          {{
+                            activity.category == "A"
+                              ? "ACTIVITY"
+                              : activity.category == "E"
+                              ? "EXAM"
+                              : "QUIZ"
+                          }}: {{ activity.title }}</b
                         >
                       </h6>
                       <small class="text-muted mt-0">
@@ -170,15 +182,34 @@
                           <form @submit.prevent="submitPost">
                             <div class="row">
                               <div class="col-md-12">
-                                <div class="form-group bmd-form-group">
+                                <div
+                                  class="form-group bmd-form-group"
+                                  v-show="is_Exam_title ? false : true"
+                                >
                                   <label class="bmd-label-floating"
                                     >Title</label
                                   >
                                   <input
                                     type="text"
-                                    v-model="newActivity.title"
                                     class="form-control"
+                                    v-model="newActivity.text_title"
+                                    name="text_title"
+                                    id="text_title"
                                   />
+                                </div>
+                                <div class="form-group" v-show="is_Exam_title">
+                                  <label for="title">Title</label>
+                                  <select
+                                    class="form-control"
+                                    name="title"
+                                    v-model="newActivity.title"
+                                    id="title"
+                                  >
+                                    <option value="">-- select term --</option>
+                                    <option value="Prelem">Prelem</option>
+                                    <option value="Midterm">Midterm</option>
+                                    <option value="Enterm">Enterm</option>
+                                  </select>
                                 </div>
                                 <div class="form-group bmd-form-group">
                                   <textarea
@@ -218,20 +249,34 @@
                   style="border-left: 1px solid #ddd"
                 >
                   <div class="col-md-12">
-                    <div class="form-group bmd-form-group">
-                      <label class="bmd-label-floating">Points</label>
+                    <div class="form-group">
+                      <label for="cw_category">Category</label>
+                      <select
+                        class="form-control"
+                        v-model="newActivity.cw_category"
+                        @change="displayTitle"
+                      >
+                        <option value="A">Activity</option>
+                        <option value="E">Exam</option>
+                        <option value="Q">Quiz</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="points">Points</label>
                       <input
                         type="number"
                         v-model="newActivity.points"
                         class="form-control"
+                        id="points"
                       />
                     </div>
-                    <div class="form-group bmd-form-group">
-                      <label class="bmd-label-floating">Due Date</label>
+                    <div class="form-group">
+                      <label for="dueDate">Due Date</label>
                       <input
                         type="date"
                         v-model="newActivity.duedate"
                         class="form-control"
+                        id="dueDate"
                       />
                     </div>
                   </div>
@@ -273,8 +318,6 @@ const FilePond = vueFilePond();
 const options = {
   placeholder: "Instructions (optional)",
   toolbar: [
-    // ["font", ["bold", "underline", "clear"]],
-    // ["color", ["color"]],
     ["style", ["style"]],
     ["font", ["bold", "underline", "clear"]],
     ["para", ["ul", "ol", "paragraph"]],
@@ -288,6 +331,7 @@ export default {
   data() {
     return {
       is_teacher: false,
+      is_Exam_title: false,
       classData: {},
       newActivityFiles: [],
       activities: [],
@@ -297,51 +341,55 @@ export default {
       },
       newActivity: {
         user_id: sessionUserId,
+        classworkFiles: [],
         class_id: "",
         title: "",
+        text_title: "",
+        cw_category: "",
         points: "",
         duedate: "",
         instructions: "<br>",
       },
       server: {
         process: (fieldName, file, metadata, load, error) => {
-          // const formData = new FormData();
-          // formData.append("file", file, file.name);
-          // formData.append("classId", this.newActivity.class_id);
-          // this.axios({
-          //   method: "POST",
-          //   url: baseUrl + "/api/uploadPostAttachment",
-          //   data: formData,
-          //   headers: {
-          //     "Content-Type": "multipart/form-data",
-          //   },
-          // })
-          //   .then((response) => {
-          //     load(response.data);
-          //   })
-          //   .catch(() => {
-          //     error();
-          //   });
+          const formData = new FormData();
+          formData.append("file", file, file.name);
+          formData.append("classId", this.newActivity.class_id);
+          console.log(this.$route.params.activity_id);
+          this.axios({
+            method: "POST",
+            url: baseUrl + "/api/class/activity/uploadClassworkAttachment",
+            data: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+            .then((response) => {
+              load(response.data);
+            })
+            .catch(() => {
+              error();
+            });
         },
         revert: (uniqueFileId, load, error) => {
-          // this.axios({
-          //   method: "DELETE",
-          //   url: baseUrl + "/api/deletePostAttachment",
-          //   data: {
-          //     file: uniqueFileId,
-          //     classId: this.newActivity.class_id,
-          //   },
-          // })
-          //   .then((response) => {
-          //     load();
-          //   })
-          //   .catch(() => {
-          //     error();
-          //   });
-          // // Can call the error method if something is wrong, should exit after
-          // error("oh my goodness");
-          // // Should call the load method when done, no parameters required
-          // load();
+          this.axios({
+            method: "DELETE",
+            url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
+            data: {
+              file: uniqueFileId,
+              classId: this.newActivity.class_id,
+            },
+          })
+            .then((response) => {
+              load();
+            })
+            .catch(() => {
+              error();
+            });
+          // Can call the error method if something is wrong, should exit after
+          error("oh my goodness");
+          // Should call the load method when done, no parameters required
+          load();
         },
       },
     };
@@ -356,6 +404,7 @@ export default {
       });
   },
   mounted() {
+    this.is_Exam_title = false;
     this.is_teacher = sessionCategory == "T" ? true : false;
     this.getActivity();
     const vm = this;
@@ -392,7 +441,13 @@ export default {
       $("#createClassworkModal").modal("show");
     },
     createClasswork() {
-      // console.log(this.newActivity);
+      var cwFileValue = [];
+      $("input[name='file']").each(function () {
+        cwFileValue.push($(this).val());
+      });
+
+      this.newActivity.classworkFiles = cwFileValue;
+
       this.axios
         .post(baseUrl + "/api/class/activity/add", this.newActivity)
         .then((response) => {
@@ -404,6 +459,15 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    displayTitle() {
+      if (this.newActivity.cw_category == "E") {
+        this.newActivity.text_title = "";
+        this.is_Exam_title = true;
+      } else {
+        this.newActivity.title = "";
+        this.is_Exam_title = false;
+      }
     },
     handleFilePondInit: function () {
       // console.log("new activity FilePond has initialized");

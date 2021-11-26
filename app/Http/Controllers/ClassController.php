@@ -9,6 +9,7 @@ use App\Models\ClassActivityDetail;
 use App\Models\ClassList;
 use App\Models\User;
 use App\Models\Attendance;
+use App\Models\ClassActivityMaterial;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -99,16 +100,21 @@ class ClassController extends Controller
 
     public function createActivity(Request $request)
     {
+        $title =  ($request->text_title == "") ? $request->title : $request->text_title;
+
         $form_data = array(
             'user_id' => $request->user_id,
             'class_id' => $request->class_id,
-            'title' => $request->title,
+            'title' => $title,
             'instruction' => $request->instructions,
             'points' => $request->points,
             'duedate' => $request->duedate,
+            'category' => $request->cw_category,
             'status' => 1
         );
         $classactivity = ClassActivity::create($form_data);
+
+        $this->moveClassworkMaterials($request, $classactivity->id);
 
         return response()->json([
             'message' => 'Class Activity Created Successfully!!',
@@ -116,9 +122,30 @@ class ClassController extends Controller
         ]);
     }
 
+    public function moveClassworkMaterials($request, $activity_id)
+    {
+        $class = Classes::find($request->class_id);
+
+        foreach ($request->classworkFiles as $classWorkFile) {
+            if ($classWorkFile != null) {
+                $tempSwFile = ClassActivityMaterial::where('folder', $classWorkFile)->first();
+
+                if (Storage::exists('public/classactivity/materials/' . $class->code . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename)) {
+                    Storage::move('public/classactivity/materials/' . $class->code . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename, 'public/classactivity/materials/' . $class->code . "/" . $activity_id . '/' . $tempSwFile->filename);
+
+                    $thumbnail = $_REQUEST['baseUrl'] . '/public/storage/classactivity/materials/' . $class->code . '/' . $activity_id . '/' . $tempSwFile->filename;
+
+                    ClassActivityMaterial::where('id', $tempSwFile->id)->update(['class_activity_id' => $activity_id, 'thumbnail' => $thumbnail, 'status' => 'S']);
+
+                    Storage::deleteDirectory('public/classactivity/materials/' . $class->code . '/tmp/' . $tempSwFile->folder);
+                }
+            }
+        }
+    }
+
     public function activityDetail(Request $request)
     {
-        $activity = ClassActivity::find($request->activityId);
+        $activity = ClassActivity::where('id', $request->activityId)->with('activity_material')->first();
 
         return response()->json($activity);
     }
@@ -247,5 +274,70 @@ class ClassController extends Controller
         //     $students_list[] = $user_id; //Attendance::create($form_data);
         // }
         return response()->json($request);
+    }
+
+    public function uploadClassworkAttachment(Request $request)
+    {
+        $classCode = Classes::find($request->classId);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = date('his') . '-' . $file->getClientOriginalName();
+            $filesize = $file->getSize();
+            $fileType = $file->getClientOriginalExtension();
+            $folder = uniqid() . '-' . now()->timestamp;
+
+            $fileThumbs = ["XLS", "DOCX", "CSV", "TXT", "ZIP", "EXE", "XLSX", "PPT", "PPTX"];
+            $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
+
+            if (in_array(strtoupper($fileType), $fileThumbs)) {
+                $thumbnail = $_REQUEST['baseUrl'] . "/public/storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+            } else {
+                if (in_array(strtoupper($fileType), $imgThumbs)) {
+                    $thumbnail = $_REQUEST['baseUrl'] . '/public/storage/classactivity/' . $classCode->code . '/' . $filename;
+                } else {
+                    $thumbnail = $_REQUEST['baseUrl'] . "/public/storage/file_extension_icon/FILE.png";
+                }
+            }
+
+            // insert to temporary table in database
+            $tmpPostAttachment = ClassActivityMaterial::create([
+                'folder' => $folder,
+                'filename' => $filename,
+                'filesize' => $filesize,
+                'filetype' => $fileType,
+                'thumbnail' => $thumbnail,
+                'status' => 'T'
+            ]);
+
+            if ($tmpPostAttachment) {
+                $file->storeAs('public/classactivity/materials/' . $classCode->code . '/tmp/' . $folder, $filename);
+            }
+
+            return $folder;
+        }
+
+        return '';
+    }
+
+    public function revertClassWorkMaterial(Request $request)
+    {
+        $folder = $request->file;
+        $classCode = Classes::find($request->classId);
+
+        Storage::deleteDirectory('public/classactivity/materials/' . $classCode->code . '/tmp/' . $folder);
+
+        ClassActivityMaterial::where('folder', $folder)->delete();
+    }
+
+    public function deleteClassWorkMaterial(Request $request)
+    {
+        $filename = $request->activity_material[0]['filename'];
+        $activityId = $request->activity_material[0]['class_activity_id'];
+        $classCode = Classes::find($request->activity['class_id']);
+
+        Storage::deleteDirectory('public/classactivity/materials/' . $classCode->code . '/' . $activityId . '/' . $filename);
+
+        ClassActivityMaterial::where('id', $request->material_id)->delete();
     }
 }

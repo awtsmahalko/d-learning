@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassActivitiesTable extends Migration
+class CreateClassActivityScoringsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateClassActivitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_activities', function (Blueprint $table) {
+        Schema::create('class_activity_scorings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("class_activity_id")->constrained();
             $table->foreignId("user_id")->constrained();
-            $table->foreignId("class_id")->constrained();
-            $table->string('title');
-            $table->text('instruction');
             $table->decimal('points', 12, 3);
-            $table->dateTime('duedate');
-            $table->string('category', 1);
             $table->string('status', 1);
             $table->timestamps();
         });
@@ -34,6 +30,6 @@ class CreateClassActivitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_activities');
+        Schema::dropIfExists('class_activity_scorings');
     }
 }

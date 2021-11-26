@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClassActivityDetail extends Model
+class ClassActivityScoring extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'class_activity_id',
         'user_id',
-        'folder',
-        'filename',
-        'filesize',
-        'filetype',
-        'thumbnail',
+        'points',
         'status'
     ];
 

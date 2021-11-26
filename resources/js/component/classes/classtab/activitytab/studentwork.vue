@@ -60,7 +60,7 @@
                       aria-labelledby="navbarDropdownMenuLink1"
                       style="right: auto !important; left: 0 !important"
                     >
-                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Add Score</a>
                       <a class="dropdown-item" href="#">Delete</a>
                     </div>
                   </div>
