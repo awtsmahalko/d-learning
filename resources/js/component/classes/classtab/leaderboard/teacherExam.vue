@@ -9,19 +9,15 @@
                 <thead>
                     <tr>
                         <th>Student's Name</th>
-                        <th>Prelim 100</th>
-                        <th>Midterm 100</th>
-                        <th>End Term 100</th>
+                        <th v-for="(wQ , key) in workNumber" :key="key">{{ wQ.title + ' ' + wQ.points }}</th>
                         <th>Earned Points</th>
                         <th>Total Points</th>
                     </tr>
                 </thead>
                 <tbody v-if="studentWorks.length > 0">
                     <tr v-for="(workData,key) in studentWorks" :key="key">
-                        <td>{{ workData.user.lname + ', ' + workData.user.fname}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ workData.student_name }}</td>
+                        <td v-for="(wQ , ky) in workNumber" :key="ky">{{ workData.work[ky] }}</td>
                         <td>{{ workData.earned_points }}</td>
                         <td>{{ workData.total_points }}</td>
                     </tr>
@@ -36,7 +32,8 @@ export default {
     data(){
         return {
             classId:'',
-            studentWorks:[]
+            studentWorks:[],
+            workNumber:[]
         }
     },
     created(){
@@ -53,6 +50,7 @@ export default {
                 }
             }).then((res) => {
                 this.studentWorks = res.data.student_list;
+                this.workNumber = res.data.works;
             }).catch((error) =>{
                 console.log(error);
             });
