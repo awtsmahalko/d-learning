@@ -16,8 +16,8 @@
                 </thead>
                 <tbody v-if="studentWorks.length > 0">
                     <tr v-for="(workData,key) in studentWorks" :key="key">
-                        <td>{{ workData.user.lname + ', ' + workData.user.fname}}</td>
-                        <td v-for="(wQ , ky) in workNumber" :key="ky"> </td>
+                        <td>{{ workData.student_name }}</td>
+                        <td v-for="(wQ , ky) in workNumber" :key="ky">{{ workData.work[ky] }}</td>
                         <td>{{ workData.earned_points }}</td>
                         <td>{{ workData.total_points }}</td>
                     </tr>

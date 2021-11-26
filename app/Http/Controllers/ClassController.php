@@ -11,7 +11,6 @@ use App\Models\ClassList;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\ClassActivityMaterial;
-use App\Models\ClassActivityScoring;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -355,7 +354,11 @@ class ClassController extends Controller
             'points' => $request->student_score,
             'status' => 'S',
         );
-        $classactivity = ClassActivityScoring::updateOrCreate(['user_id' => $request->student_id], $form_data);
+        $filter = array(
+            'user_id' => $request->student_id,
+            'class_activity_id' => $request->id
+        );
+        $classactivity = ClassActivityScoring::updateOrCreate($filter, $form_data);
 
         return response()->json([
             'message' => 'Score added Successfully!!',
@@ -370,6 +373,8 @@ class ClassController extends Controller
         $points = ($score != null) ? (($score->points != 0) ? $score->points : 0) : 0;
 
         return response()->json($points);
+    }
+
     public function studentWork(Request $request)
     {
         $classActivity = ClassActivity::selectRaw('SUM(points) as total_points')
@@ -391,7 +396,7 @@ class ClassController extends Controller
 
     public function teacherWork(Request $request)
     {
-        $works = ClassActivity::select('id', 'title')
+        $works = ClassActivity::select('id', 'title', 'points')
             ->where('class_id', '=', $request->class_id)
             ->where('category', '=', $request->category)
             ->get();
@@ -403,14 +408,38 @@ class ClassController extends Controller
             ->get();
 
         $total_points = (float) $classActivity[0]['total_points'];
-        $student_list = ClassActivityScoring::join("class_activities", 'class_activities.id', '=', 'class_activity_scorings.class_activity_id')
-            ->selectRaw("SUM(class_activity_scorings.points) AS earned_points,class_activity_scorings.user_id,$total_points AS total_points")
+        $student_list = array();
+        $student_list_ = ClassActivityScoring::join("class_activities", 'class_activities.id', '=', 'class_activity_scorings.class_activity_id')
+            ->selectRaw("SUM(class_activity_scorings.points) AS earned_points,class_activity_scorings.user_id")
             ->where("class_activities.category", "=", $request->category)
             ->where("class_activities.class_id", "=", $request->class_id)
             ->groupBy("class_activity_scorings.user_id")
             ->orderByRaw('SUM(class_activity_scorings.points) desc')
             ->with('user:id,fname,mname,lname')
             ->get();
+
+        foreach ($student_list_ as $list_data) {
+            $list = array(
+                'earned_points' => (float) $list_data['earned_points'],
+                'user_id'       => $list_data['user_id'],
+                'student_name'  => strtoupper($list_data['user']['lname'].', '.$list_data['user']['fname']),
+                'total_points'  => $total_points
+            );
+
+            $list_work = array();
+            foreach ($works as $work_data) {
+                $score = ClassActivityScoring::select('points')
+                    ->where('class_activity_id', '=', $work_data['id'])
+                    ->where('user_id', '=', $list_data['user_id'])
+                    ->get();
+
+                $list_work[] = isset($score[0]['points']) ? (float) $score[0]['points'] : 0;               
+            }
+            
+            $list['work'] = $list_work;
+
+            array_push($student_list,$list);
+        }
 
         $response = array(
             'works' => $works,

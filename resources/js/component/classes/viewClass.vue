@@ -47,6 +47,7 @@
             role="tab"
             aria-controls="pills-leaderboard"
             aria-selected="false"
+            @click="forceUpdateLeaderboard"
             >Leaderboard</a
           >
         </li>
@@ -94,7 +95,7 @@
           role="tabpanel"
           aria-labelledby="pills-leaderboard-tab"
         >
-        <leaderboard-index></leaderboard-index>
+        <leaderboard-index :key="keyLeaderboard" />
         </div>
         <div
           class="tab-pane fade"
@@ -123,6 +124,16 @@ export default {
     peopleTab,
     AttendanceIndex,
     LeaderboardIndex
+  },
+  data() {
+    return {
+      keyLeaderboard: 0,
+    };
+  },
+  methods: {
+    forceUpdateLeaderboard() {
+      this.keyLeaderboard++;
+    },
   },
 };
 </script>
