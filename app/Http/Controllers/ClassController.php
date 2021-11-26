@@ -447,4 +447,20 @@ class ClassController extends Controller
         );
         return response()->json($response);
     }
+
+    public function downloadClassWorkMaterial(Request $request)
+    {
+        $material = ClassActivityMaterial::where('id', $request->material_id)->with('activity')->get();
+
+        dd($material->activity);
+        $class = Classes::find($material->activity->class_id);
+
+        $file= public_path(). '/storage/classactivity/materials/'.  $class->code . '/' . $material->class_activity_id . '/' . $material->filename;
+
+        $headers = [
+            'Content-Type' => 'application/'. $material->filetype,
+        ];
+
+        return response()->download($file, $material->filename, $headers);
+    }
 }

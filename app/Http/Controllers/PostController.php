@@ -17,9 +17,11 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $classwork = ClassActivity::select('class_id', DB::raw("'0' AS id"), 'id AS cw_id', DB::raw("title AS title"), "instruction AS description", 'created_at', 'user_id', DB::raw("'CW' AS module"), DB::raw("category AS category"))->where('class_id', $request->class_id);
+        $classwork = ClassActivity::select('class_id', DB::raw("'0' AS id"), 'id AS cw_id', DB::raw("title AS title"), "instruction AS description", 'created_at', 'user_id', DB::raw("'CW' AS module"), DB::raw("category AS category"))->where('class_id', $request->class_id)->withCount(["activity_details" => function ($q) use ($request) {
+            $q->where('user_id', '=', $request->user_id);
+        }]);
 
-        $post = Post::select('class_id', 'id AS id', DB::raw("'0' AS cw_id"), DB::raw("'' AS title"), "description AS description", 'created_at', 'user_id', DB::raw("'POST' AS module"), DB::raw("'D' AS category"))->where('class_id', $request->class_id)->with('user', 'postAttachments');
+        $post = Post::select('class_id', 'id AS id', DB::raw("'0' AS cw_id"), DB::raw("'' AS title"), "description AS description", 'created_at', 'user_id', DB::raw("'POST' AS module"), DB::raw("'D' AS category"), DB::raw("'0' as activity_details_count"))->where('class_id', $request->class_id)->with('user', 'postAttachments');
 
         return response()->json($post->union($classwork)->orderByDesc('created_at')->get());
     }

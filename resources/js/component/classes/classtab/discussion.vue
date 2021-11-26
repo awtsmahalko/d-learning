@@ -91,6 +91,7 @@
                 :postedDate="post.created_at"
                 :class_id="post.class_id"
                 :activity_id="post.cw_id"
+                :studentSubmitted="post.activity_details_count"
               />
             </div>
           </div>
@@ -223,7 +224,7 @@ export default {
         .then((response) => {
           this.posts = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          // console.log(this.postsAttachments);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

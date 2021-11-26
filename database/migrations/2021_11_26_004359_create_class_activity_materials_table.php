@@ -15,7 +15,7 @@ class CreateClassActivityMaterialsTable extends Migration
     {
         Schema::create('class_activity_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("class_activity_id")->constrained();
+            $table->foreignId("class_activity_id")->nullable()->constrained();
             $table->string('folder');
             $table->string('filename');
             $table->string('filesize');

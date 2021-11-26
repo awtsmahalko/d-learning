@@ -14,15 +14,7 @@
               />
             </div>
             <div
-              style="
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: baseline;
-                width: 100%;
-                margin-top: 3px;
-                margin-bottom: 5px;
-              "
+              style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;"
             >
               <!-- sessionCategory -->
               <div v-if="session.category === 'T'">
@@ -34,7 +26,7 @@
                 >
                   <div
                     class="mx-2"
-                    style="display: flex; flex-direction: column"
+                    style="display: flex; flex-direction: column; padding-top: 6px;"
                   >
                     <h6 class="card-title mb-0">
                       <b class="comment" id="post-user"
@@ -86,26 +78,13 @@
                 </router-link>
               </div>
 
-              <div>
-                <button
-                  class="btn btn-sm btn-secondary dropdown-toggle"
-                  id="navbarDropdownMenuLink1"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i
-                    class="fa fa-ellipsis-v text-lg text-muted"
-                    aria-hidden="true"
-                  ></i>
-                </button>
+              <div v-show="is_teacher == false ? true : false">
                 <div
-                  class="dropdown-menu dropdown-menu-end me-sm-n4 me-n3"
-                  aria-labelledby="navbarDropdownMenuLink1"
-                  style="right: auto !important; left: 0 !important"
+                  v-show="studentSubmitted > 0 ? true : false"
                 >
-                  <a class="dropdown-item" href="#">Edit</a>
-                  <a class="dropdown-item" href="#">Delete</a>
+                  <span style="color: green; font-weight: 500"
+                    >SUBMITTED</span
+                  >
                 </div>
               </div>
             </div>
@@ -127,14 +106,19 @@ export default {
     "class_id",
     "activity_id",
     "cw_category",
+    "studentSubmitted",
   ],
   data() {
     return {
+      is_teacher: false,
       session: {
         user_id: sessionUserId,
         category: sessionCategory,
       },
     };
+  },
+   mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
   },
 };
 </script>

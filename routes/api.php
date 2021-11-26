@@ -66,11 +66,11 @@ Route::post('/attendance/add/record', [App\Http\Controllers\ClassController::cla
 Route::get('/leaderboard/student/work', [App\Http\Controllers\ClassController::class, 'studentWork']);
 Route::get('/leaderboard/teacher/work', [App\Http\Controllers\ClassController::class, 'teacherWork']);
 
-
 // activity :: classwork
 Route::post('/class/activity/uploadClassworkAttachment', [App\Http\Controllers\ClassController::class, 'uploadClassworkAttachment']);
 Route::delete('/class/activity/revertClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'revertClassWorkMaterial']);
-Route::delete('/class/activity/deleteClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'deleteClassWorkMaterial']);
+Route::get('/class/activity/downloadClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'downloadClassWorkMaterial']);
+
 
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);

@@ -21,6 +21,6 @@ class ClassActivityMaterial extends Model
 
     public function activity()
     {
-        return $this->belongsTo(ClassActivity::class);
+        return $this->belongsTo(ClassActivity::class,'class_activity_id' , 'id');
     }
 }

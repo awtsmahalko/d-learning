@@ -507,6 +507,20 @@ export default {
         this.is_Exam_title = false;
       }
     },
+    downloadMaterial(material_id){
+        this.axios
+        .get(baseUrl + "/api/class/activity/downloadClassWorkMaterial", {
+          params: {
+            material_id: material_id,
+          },
+        })
+        .then((response) => {
+          this.getActivity();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     handleFilePondInit: function () {
       // console.log("new activity FilePond has initialized");
       // example of instance method call on pond reference
