@@ -69,6 +69,7 @@ Route::get('/leaderboard/teacher/work', [App\Http\Controllers\ClassController::c
 // activity :: classwork
 Route::post('/class/activity/uploadClassworkAttachment', [App\Http\Controllers\ClassController::class, 'uploadClassworkAttachment']);
 Route::delete('/class/activity/revertClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'revertClassWorkMaterial']);
+Route::delete('/class/activity/deleteClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'deleteClassWorkMaterial']);
 Route::get('/class/activity/downloadClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'downloadClassWorkMaterial']);
 
 

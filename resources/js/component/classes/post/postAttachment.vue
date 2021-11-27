@@ -27,7 +27,7 @@
               >
                 <img
                   :src="attachment.thumbnail"
-                  alt="Card image cap"
+                  :alt="attachment.filename"
                   style="
                     width: 92px;
                     height: 64px;
@@ -43,7 +43,7 @@
                   class="card-title mb-0"
                   style="
                     text-overflow: ellipsis;
-                    width: 151px;
+                    width: 260px;
                     white-space: nowrap;
                     overflow: hidden;
                     margin: 0px;
@@ -59,7 +59,7 @@
                   {{ attachment.filetype }}
                 </small>
               </div>
-              <div class="ms-auto">
+              <div class="ms-auto" v-show="is_teacher">
                 <a class="attachment-remove">
                   <i class="material-icons attachment-remove-icon">close</i>
                 </a>
@@ -74,6 +74,14 @@
 <script>
 export default {
   props: ["postsAttachments", "classCode"],
+  data() {
+    return {
+      is_teacher: false,
+    };
+  },
+  mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
+  },
 };
 </script>
 <style scoped>

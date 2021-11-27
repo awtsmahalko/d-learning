@@ -113,7 +113,8 @@ class ClassController extends Controller
             'category' => $request->cw_category,
             'status' => 1
         );
-        $classactivity = ClassActivity::create($form_data);
+
+        $classactivity = ClassActivity::updateOrCreate($form_data);
 
         $this->moveClassworkMaterials($request, $classactivity->id);
 
@@ -336,8 +337,9 @@ class ClassController extends Controller
 
     public function deleteClassWorkMaterial(Request $request)
     {
-        $filename = $request->activity_material[0]['filename'];
-        $activityId = $request->activity_material[0]['class_activity_id'];
+        //dd($request);
+        $filename = $request->activity['activity_material'][0]['filename'];
+        $activityId = $request->activity['activity_material'][0]['class_activity_id'];
         $classCode = Classes::find($request->activity['class_id']);
 
         Storage::deleteDirectory('public/classactivity/materials/' . $classCode->code . '/' . $activityId . '/' . $filename);
@@ -422,7 +424,7 @@ class ClassController extends Controller
             $list = array(
                 'earned_points' => (float) $list_data['earned_points'],
                 'user_id'       => $list_data['user_id'],
-                'student_name'  => strtoupper($list_data['user']['lname'].', '.$list_data['user']['fname']),
+                'student_name'  => strtoupper($list_data['user']['lname'] . ', ' . $list_data['user']['fname']),
                 'total_points'  => $total_points
             );
 
@@ -433,12 +435,12 @@ class ClassController extends Controller
                     ->where('user_id', '=', $list_data['user_id'])
                     ->get();
 
-                $list_work[] = isset($score[0]['points']) ? (float) $score[0]['points'] : 0;               
+                $list_work[] = isset($score[0]['points']) ? (float) $score[0]['points'] : 0;
             }
-            
+
             $list['work'] = $list_work;
 
-            array_push($student_list,$list);
+            array_push($student_list, $list);
         }
 
         $response = array(
@@ -455,10 +457,10 @@ class ClassController extends Controller
         dd($material->activity);
         $class = Classes::find($material->activity->class_id);
 
-        $file= public_path(). '/storage/classactivity/materials/'.  $class->code . '/' . $material->class_activity_id . '/' . $material->filename;
+        $file = public_path() . '/storage/classactivity/materials/' .  $class->code . '/' . $material->class_activity_id . '/' . $material->filename;
 
         $headers = [
-            'Content-Type' => 'application/'. $material->filetype,
+            'Content-Type' => 'application/' . $material->filetype,
         ];
 
         return response()->download($file, $material->filename, $headers);

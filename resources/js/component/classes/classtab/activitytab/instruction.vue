@@ -97,22 +97,6 @@
                                     {{ material.filetype }}
                                   </small>
                                 </div>
-                                <div class="ms-auto" v-show="is_teacher">
-                                  <a
-                                    class="attachment-remove"
-                                    @click="
-                                      deleteClassworkMaterial(material.id)
-                                    "
-                                  >
-                                    <i
-                                      class="
-                                        material-icons
-                                        attachment-remove-icon
-                                      "
-                                      >close</i
-                                    >
-                                  </a>
-                                </div>
                               </div>
                             </div>
                           </div>
@@ -193,7 +177,7 @@
       class="modal fade"
       id="editClassworkModal"
       role="dialog"
-      aria-labelledby="createClassworkModal"
+      aria-labelledby="editClassworkModal"
       aria-hidden="true"
     >
       <div
@@ -202,12 +186,10 @@
         style="max-width: 80% !important"
       >
         <div class="modal-content">
-          <form id="modal_new_activity" @submit.prevent="createClasswork">
+          <form id="modal_new_activity" @submit.prevent="updateClasswork">
             <div class="modal-header">
               <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
-              <h5 class="modal-title" id="createClassworkModal">
-                New Activity
-              </h5>
+              <h5 class="modal-title" id="editClassworkModal">Details</h5>
               <button
                 type="button"
                 class="close"
@@ -231,9 +213,7 @@
                                   class="form-group bmd-form-group"
                                   v-show="is_Exam_title ? false : true"
                                 >
-                                  <label class="bmd-label-floating"
-                                    >Title</label
-                                  >
+                                  <label for="text_title">Title</label>
                                   <input
                                     type="text"
                                     class="form-control"
@@ -280,6 +260,100 @@
                                       v-on:init="handleFilePondInit"
                                     />
                                   </div>
+
+                                  <!-- attachments -->
+                                  <div
+                                    class="col-md-12"
+                                    style="border-top: 1px solid #ddd"
+                                  >
+                                    <div class="row">
+                                      <!-- loop attachments -->
+                                      <div
+                                        class="col-md-6"
+                                        v-for="(
+                                          material, key
+                                        ) in activities.activity_material"
+                                        :key="key"
+                                      >
+                                        <div class="row">
+                                          <div
+                                            class="card file-attachment"
+                                            style="margin: 3px; margin-top: 5px"
+                                          >
+                                            <div
+                                              class="col-md-12 py-2"
+                                              style="
+                                                display: flex;
+                                                flex-direction: row;
+                                                align-items: center;
+                                                justify-content: space-between;
+                                              "
+                                            >
+                                              <div
+                                                class="pl-2"
+                                                style="
+                                                  display: flex;
+                                                  flex-direction: column;
+                                                  width: 80%;
+                                                "
+                                              >
+                                                <h4
+                                                  class="card-title mb-0"
+                                                  style="
+                                                    text-overflow: ellipsis;
+                                                    width: 100%;
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    margin: 0px;
+                                                    font-size: 14px;
+                                                  "
+                                                  data-toggle="tooltip"
+                                                  data-placement="bottom"
+                                                  title="test"
+                                                >
+                                                  <b id="post-user">{{
+                                                    material.filename
+                                                  }}</b>
+                                                </h4>
+                                                <small
+                                                  class="
+                                                    card-category
+                                                    mt-0
+                                                    text-muted
+                                                  "
+                                                >
+                                                  {{ material.filetype }}
+                                                </small>
+                                              </div>
+                                              <div
+                                                class="ms-auto"
+                                                v-show="is_teacher"
+                                              >
+                                                <a
+                                                  class="attachment-remove"
+                                                  @click="
+                                                    deleteClassworkMaterial(
+                                                      material.id
+                                                    )
+                                                  "
+                                                >
+                                                  <i
+                                                    class="
+                                                      material-icons
+                                                      attachment-remove-icon
+                                                    "
+                                                    >close</i
+                                                  >
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- /loop attachments -->
+                                    </div>
+                                  </div>
+                                  <!-- /attachments -->
                                 </div>
                               </div>
                             </div>
@@ -392,7 +466,7 @@ export default {
         cw_category: "",
         points: "",
         duedate: "",
-        instructions: "<br>",
+        instructions: "",
       },
       session: {
         user_id: sessionUserId,
@@ -402,7 +476,7 @@ export default {
         process: (fieldName, file, metadata, load, error) => {
           const formData = new FormData();
           formData.append("file", file, file.name);
-          formData.append("classId", this.newActivity.class_id);
+          formData.append("classId", this.activityDetail.class_id);
           // console.log(this.$route.params.activity_id);
           this.axios({
             method: "POST",
@@ -425,7 +499,7 @@ export default {
             url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
             data: {
               file: uniqueFileId,
-              classId: this.newActivity.class_id,
+              classId: this.activityDetail.class_id,
             },
           })
             .then((response) => {
@@ -461,6 +535,10 @@ export default {
 
     $("textarea#snactivityDetail").summernote(options);
     $("textarea#snactivityDetail").summernote("code", "<br>");
+
+    $("#dueDate").val(
+      new Date(this.activityDetail.duedate).toLocaleDateString()
+    );
   },
   methods: {
     async getActivity() {
@@ -473,6 +551,29 @@ export default {
         })
         .then((response) => {
           this.activities = response.data;
+          this.activityDetail.class_id = response.data.class_id;
+          console.log(response.data);
+
+          this.activityDetail.instructions = response.data.instruction;
+          $("#snactivityDetail").summernote("reset");
+          $("#snactivityDetail").summernote("code", response.data.instruction);
+
+          this.activityDetail.points = response.data.points;
+          this.activityDetail.duedate = new Date(
+            response.data.duedate
+          ).toLocaleDateString();
+
+          this.activityDetail.cw_category = response.data.category;
+
+          if (response.data.category == "E") {
+            this.activityDetail.title = response.data.title;
+          } else {
+            this.activityDetail.text_title = response.data.title;
+          }
+
+          this.displayTitle();
+
+          console.log(this.activityDetail);
         })
         .catch((error) => {
           console.log(error);
@@ -496,7 +597,28 @@ export default {
         });
     },
     editClassworkModal() {
+      this.getActivity();
       $("#editClassworkModal").modal("show");
+    },
+    updateClasswork() {
+      var cwFileValue = [];
+      $("input[name='file']").each(function () {
+        cwFileValue.push($(this).val());
+      });
+
+      this.activityDetail.classworkFiles = cwFileValue;
+
+      this.axios
+        .post(baseUrl + "/api/class/activity/add", this.activityDetail)
+        .then((response) => {
+          this.$refs.napond.removeFiles();
+          this.getActivity();
+          $("#editClassworkModal").modal("hide");
+          alertMe("Class Activity Updated Successfully.");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     displayTitle() {
       if (this.activityDetail.cw_category == "E") {
@@ -507,8 +629,8 @@ export default {
         this.is_Exam_title = false;
       }
     },
-    downloadMaterial(material_id){
-        this.axios
+    downloadMaterial(material_id) {
+      this.axios
         .get(baseUrl + "/api/class/activity/downloadClassWorkMaterial", {
           params: {
             material_id: material_id,
