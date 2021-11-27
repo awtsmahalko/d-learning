@@ -29,27 +29,10 @@
                   {{ new Date(dateposted).toLocaleString() }}
                 </small>
               </div>
-              <div>
-                <button
-                  class="btn btn-sm btn-secondary dropdown-toggle"
-                  id="navbarDropdownMenuLink1"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i
-                    class="fa fa-ellipsis-v text-lg text-muted"
-                    aria-hidden="true"
-                  ></i>
-                </button>
-                <div
-                  class="dropdown-menu dropdown-menu-end me-sm-n4 me-n3"
-                  aria-labelledby="navbarDropdownMenuLink1"
-                  style="right: auto !important; left: 0 !important"
-                >
-                  <a class="dropdown-item" href="#">Edit</a>
-                  <a class="dropdown-item" href="#">Delete</a>
-                </div>
+              <div v-show="is_teacher">
+                <a class="attachment-remove" @click="deletePost(postId)">
+                  <i class="material-icons attachment-remove-icon">delete</i>
+                </a>
               </div>
             </div>
           </div>
@@ -65,42 +48,109 @@
     </div>
 
     <!-- comments -->
-    <postComment :comments="this.comments" />
+    <postComment :comments="this.comments" :key="componentKey" />
     <!-- comments -->
 
-    <div class="card-footer mx-0 px1">
-      <div class="mx-3" style="width: 100%">
-        <div class="d-flex">
-          <div class="flex-shrink-0">
-            <img
-              alt="Image placeholder"
-              class="avatar rounded-circle me-3 mx-1"
-              src="http://via.placeholder.com/300x180"
-              style="width: 40px; height: 40px"
-            />
-          </div>
-          <div class="flex-grow-1 my-auto" style="width: 100%">
-            <div class="input-group input-group-static px-2">
-              <textarea
-                class="form-control"
-                placeholder="Write your comment"
-                v-model="comment.message"
-                rows="1"
-                spellcheck="false"
-              ></textarea>
+    <div class="card-footer mx-0 px-3 py-0 my-0" style="justify-content: start">
+      <button class="btn btn-sm btn-primary" @click="openCommentModal(postId)">
+        <i class="material-icons text-sm">chat</i> Add comment {{ postId }}
+      </button>
+    </div>
+
+    <!-- modal -->
+    <div
+      class="modal fade"
+      id="newCommentModal"
+      role="dialog"
+      aria-labelledby="newCommentModal"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog"
+        role="document"
+        style="max-width: 50% !important"
+      >
+        <div class="modal-content">
+          <form id="modal_newComment" @submit.prevent="sendComment()">
+            <div class="modal-header">
+              <!-- Show/hide headings dynamically based on /isFormCreateUserMode value (true/false) -->
+              <h5 class="modal-title" id="newCommentModal">New Comment</h5>
+              <input type="hidden" id="hidden_post_id" />
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
-          </div>
-          <button class="btn btn-sm btn-primary" v-on:click="sendComment">
-            <i class="material-icons text-sm">send</i>
-          </button>
+            <div class="modal-body py-0">
+              <div class="row">
+                <div
+                  class="col-md-12 py-4 mt-2"
+                  style="border-left: 1px solid #ddd"
+                >
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="message">Your comment</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="message"
+                        v-model="comment.message"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mt-1">
+                    <file-pond
+                      name="file"
+                      ref="napond"
+                      label-idle="Drop attachment here..."
+                      v-bind:allow-multiple="true"
+                      :files="commentFiles"
+                      :server="server"
+                      v-on:init="handleFilePondInit"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">
+                Post comment
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+    <!-- end modal -->
   </div>
 </template>
 <script>
 import postContentAttachment from "./postAttachment.vue";
 import postComment from "./postComment.vue";
+
+// Import Vue FilePond
+import vueFilePond from "vue-filepond";
+
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
+
+// Import FilePond plugins
+// Please note that you need to install these plugins separately
+
+// Create component
+const FilePond = vueFilePond();
 
 export default {
   props: [
@@ -117,11 +167,56 @@ export default {
   },
   data() {
     return {
+      is_teacher: false,
       comments: [],
+      commentFiles: [],
+      componentKey: 0,
       comment: {
         user_id: sessionUserId,
         post_id: "",
         message: "",
+      },
+      server: {
+        process: (fieldName, file, metadata, load, error) => {
+          const formData = new FormData();
+          formData.append("file", file, file.name);
+          formData.append("classId", this.activityDetail.class_id);
+          // console.log(this.$route.params.activity_id);
+          this.axios({
+            method: "POST",
+            url: baseUrl + "/api/class/activity/uploadClassworkAttachment",
+            data: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+            .then((response) => {
+              load(response.data);
+            })
+            .catch(() => {
+              error();
+            });
+        },
+        revert: (uniqueFileId, load, error) => {
+          this.axios({
+            method: "DELETE",
+            url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
+            data: {
+              file: uniqueFileId,
+              classId: this.activityDetail.class_id,
+            },
+          })
+            .then((response) => {
+              load();
+            })
+            .catch(() => {
+              error();
+            });
+          // Can call the error method if something is wrong, should exit after
+          error("oh my goodness");
+          // Should call the load method when done, no parameters required
+          load();
+        },
       },
     };
   },
@@ -129,15 +224,19 @@ export default {
     this.comment.post_id = this.postId;
   },
   mounted() {
+    this.is_teacher = sessionCategory == "T" ? true : false;
     this.getComment();
   },
   methods: {
+    forceRerender() {
+      this.componentKey += 1;
+    },
     async getComment() {
       await this.axios
         .get(baseUrl + "/api/post/comment", {
           params: {
             user_id: sessionUserId,
-            post_id: this.postId,
+            post_id: this.comment.post_id,
           },
         })
         .then((response) => {
@@ -150,17 +249,61 @@ export default {
     },
     sendComment() {
       if (this.comment.message != "") {
+        this.comment.post_id = $("#hidden_post_id").val();
+
         this.axios
           .post(baseUrl + "/api/post/comment/add", this.comment)
           .then((response) => {
+            this.$parent.getPosts();
             this.getComment();
+            $("#newCommentModal").modal("hide");
             this.comment.message = "";
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
+        alertMe("Compose a message to comment.");
       }
+    },
+    deletePost(id) {
+      var _this = this;
+      swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+          return new Promise(function (resolve) {
+            _this.axios
+              .post(baseUrl + "/api/post/delete", {
+                post_id: id,
+              })
+              .then((response) => {
+                _this.$parent.getPosts();
+                success_delete();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          });
+        },
+        allowOutsideClick: false,
+      });
+    },
+    reloadFun() {
+      this.$parent.getPosts();
+    },
+    openCommentModal(postid) {
+      $("#hidden_post_id").val(postid);
+      $("#newCommentModal").modal("show");
+    },
+    handleFilePondInit: function () {
+      this.$refs.napond.getFiles();
     },
   },
 };
@@ -168,7 +311,6 @@ export default {
 <style scoped>
 .post-description {
   color: #5a5a5a;
-  font-weight: 410;
   font-size: 16px;
 }
 
@@ -183,5 +325,15 @@ export default {
 
 .card-footer {
   border-top: 1px solid #ddd !important;
+}
+
+.attachment-remove {
+  cursor: default;
+}
+
+.attachment-remove-icon {
+  font-size: 1.1rem;
+  color: #f44336;
+  padding: 0.40625rem 1.25rem;
 }
 </style>

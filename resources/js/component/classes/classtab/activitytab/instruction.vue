@@ -88,6 +88,7 @@
                                     data-toggle="tooltip"
                                     data-placement="bottom"
                                     title="test"
+                                    @click="downloadMaterial(material.id)"
                                   >
                                     <b id="post-user">{{
                                       material.filename
@@ -310,6 +311,11 @@
                                                   data-toggle="tooltip"
                                                   data-placement="bottom"
                                                   title="test"
+                                                  @click="
+                                                    downloadMaterial(
+                                                      material.id
+                                                    )
+                                                  "
                                                 >
                                                   <b id="post-user">{{
                                                     material.filename
@@ -458,6 +464,7 @@ export default {
         id: "",
       },
       activityDetail: {
+        id: "",
         user_id: sessionUserId,
         classworkFiles: [],
         class_id: "",
@@ -518,6 +525,7 @@ export default {
   },
   created() {
     this.activity.id = this.activityid;
+    this.activityDetail.id = this.activityid;
     this.activityDetail.class_id = this.$route.params.id;
   },
   mounted() {
@@ -609,12 +617,12 @@ export default {
       this.activityDetail.classworkFiles = cwFileValue;
 
       this.axios
-        .post(baseUrl + "/api/class/activity/add", this.activityDetail)
+        .post(baseUrl + "/api/class/activity/edit", this.activityDetail)
         .then((response) => {
           this.$refs.napond.removeFiles();
           this.getActivity();
           $("#editClassworkModal").modal("hide");
-          alertMe("Class Activity Updated Successfully.");
+          alertMe(response.data.message);
         })
         .catch((error) => {
           console.log(error);
@@ -630,18 +638,14 @@ export default {
       }
     },
     downloadMaterial(material_id) {
-      this.axios
-        .get(baseUrl + "/api/class/activity/downloadClassWorkMaterial", {
-          params: {
-            material_id: material_id,
-          },
-        })
-        .then((response) => {
-          this.getActivity();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      window.open(
+        baseUrl +
+          "/api/class/activity/downloadClassWorkMaterial/" +
+          this.activityDetail.class_id +
+          "/" +
+          material_id,
+        "_blank"
+      );
     },
     handleFilePondInit: function () {
       // console.log("new activity FilePond has initialized");

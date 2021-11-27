@@ -52,6 +52,7 @@
                   data-toggle="tooltip"
                   data-placement="bottom"
                   :title="attachment.filename"
+                  @click="downloadFile(attachment.id)"
                 >
                   <b id="post-user">{{ attachment.filename }}</b>
                 </h4>
@@ -60,7 +61,10 @@
                 </small>
               </div>
               <div class="ms-auto" v-show="is_teacher">
-                <a class="attachment-remove">
+                <a
+                  class="attachment-remove"
+                  @click="deletePostAttachment(attachment.id)"
+                >
                   <i class="material-icons attachment-remove-icon">close</i>
                 </a>
               </div>
@@ -81,6 +85,33 @@ export default {
   },
   mounted() {
     this.is_teacher = sessionCategory == "T" ? true : false;
+  },
+  methods: {
+    deletePostAttachment(attachment_id) {
+      this.axios({
+        method: "DELETE",
+        url: baseUrl + "/api/post/deleteAttachment",
+        data: {
+          attachment_id: attachment_id,
+        },
+      })
+        .then((response) => {
+          this.$parent.reloadFun();
+        })
+        .catch(() => {
+          error();
+        });
+    },
+    downloadFile(post_attachment_id) {
+      window.open(
+        baseUrl +
+          "/api/class/post/downloadAttachment/" +
+          this.classCode +
+          "/" +
+          post_attachment_id,
+        "_blank"
+      );
+    },
   },
 };
 </script>

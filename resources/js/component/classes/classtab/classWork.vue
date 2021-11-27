@@ -112,29 +112,6 @@
                     >
                   </div>
                 </div>
-
-                <div v-show="is_teacher">
-                  <button
-                    class="btn btn-sm btn-secondary dropdown-toggle"
-                    id="navbarDropdownMenuLink1"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i
-                      class="fa fa-ellipsis-v text-lg text-muted"
-                      aria-hidden="true"
-                    ></i>
-                  </button>
-                  <div
-                    class="dropdown-menu dropdown-menu-end me-sm-n4 me-n3"
-                    aria-labelledby="navbarDropdownMenuLink1"
-                    style="right: auto !important; left: 0 !important"
-                  >
-                    <a class="dropdown-item" href="#">Edit</a>
-                    <a class="dropdown-item" href="#">Delete</a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

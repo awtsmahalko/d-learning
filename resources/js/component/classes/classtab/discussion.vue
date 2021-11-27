@@ -66,7 +66,7 @@
           </div>
         </div>
         <div v-if="posts.length > 0">
-          <div v-for="(post, key) in posts" :key="key">
+          <div v-for="post in posts" :key="post.id">
             <div
               v-if="post.module === 'POST'"
               class="card"
@@ -224,7 +224,7 @@ export default {
         .then((response) => {
           this.posts = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

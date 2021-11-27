@@ -24,13 +24,13 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    align-items: center;
                     width: 100%;
+                    padding: 11px;
                   "
                 >
                   <div
                     class="mx-2"
-                    style="display: flex; flex-direction: column"
+                    style="display: flex; flex-direction: column; width: 100%"
                   >
                     <h6 class="card-title mb-0">
                       <b class="comment" id="post-user">{{
@@ -38,8 +38,81 @@
                       }}</b>
                     </h6>
                     <small class="text-muted mt-0">
-                      FILES : {{ studentWork.total }}
+                      <b>FILES :</b> {{ studentWork.total }} | <b>SCORE:</b>
+                      {{ studentWork.score }}
                     </small>
+
+                    <div class="col-md-12" style="border-top: 1px solid #ddd">
+                      <div class="row">
+                        <!-- attachments -->
+                        <div
+                          class="col-md-12"
+                          style="border-top: 1px solid #ddd"
+                        >
+                          <div class="row">
+                            <!-- loop attachments -->
+                            <div
+                              class="col-md-6"
+                              v-for="(studentFile, key) in studentWork.details"
+                              :key="key"
+                            >
+                              <div class="row">
+                                <div
+                                  class="card file-attachment"
+                                  style="margin: 3px; margin-top: 5px"
+                                >
+                                  <div
+                                    class="col-md-12 py-2"
+                                    style="
+                                      display: flex;
+                                      flex-direction: row;
+                                      align-items: center;
+                                      justify-content: space-between;
+                                    "
+                                  >
+                                    <div
+                                      class="pl-2"
+                                      style="
+                                        display: flex;
+                                        flex-direction: column;
+                                        width: 80%;
+                                      "
+                                    >
+                                      <h4
+                                        class="card-title mb-0"
+                                        style="
+                                          text-overflow: ellipsis;
+                                          width: 100%;
+                                          white-space: nowrap;
+                                          overflow: hidden;
+                                          margin: 0px;
+                                          font-size: 14px;
+                                        "
+                                        data-toggle="tooltip"
+                                        data-placement="bottom"
+                                        title="test"
+                                        @click="downloadFile(studentFile.id)"
+                                      >
+                                        <b id="post-user">{{
+                                          studentFile.filename
+                                        }}</b>
+                                      </h4>
+                                      <small
+                                        class="card-category mt-0 text-muted"
+                                      >
+                                        {{ studentFile.filetype }}
+                                      </small>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /loop attachments -->
+                          </div>
+                        </div>
+                        <!-- /attachments -->
+                      </div>
+                    </div>
                   </div>
 
                   <div>
@@ -192,7 +265,7 @@ export default {
         .then((response) => {
           this.studentWorks = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          // console.log(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -248,6 +321,16 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    downloadFile(sw_id) {
+      window.open(
+        baseUrl +
+          "/api/class/activity/downloadStudentWork/" +
+          this.activity.class_id +
+          "/" +
+          sw_id,
+        "_blank"
+      );
     },
   },
 };

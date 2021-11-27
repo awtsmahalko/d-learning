@@ -114,12 +114,37 @@ class ClassController extends Controller
             'status' => 1
         );
 
-        $classactivity = ClassActivity::updateOrCreate($form_data);
+        $classactivity = ClassActivity::create($form_data);
 
         $this->moveClassworkMaterials($request, $classactivity->id);
 
         return response()->json([
             'message' => 'Class Activity Created Successfully!!',
+            'class' => $classactivity
+        ]);
+    }
+
+    public function updateActivity(Request $request)
+    {
+        $title =  ($request->text_title == "") ? $request->title : $request->text_title;
+
+        $form_data = array(
+            'user_id' => $request->user_id,
+            'class_id' => $request->class_id,
+            'title' => $title,
+            'instruction' => $request->instructions,
+            'points' => $request->points,
+            'duedate' => $request->duedate,
+            'category' => $request->cw_category,
+            'status' => 1
+        );
+
+        $classactivity = ClassActivity::where('id', '=', $request->id)->update($form_data);
+
+        $this->moveClassworkMaterials($request, $request->id);
+
+        return response()->json([
+            'message' => 'Class Activity updated Successfully!!',
             'class' => $classactivity
         ]);
     }
@@ -249,12 +274,32 @@ class ClassController extends Controller
             ->with('user')
             ->get();
 
-        return response()->json($studentSubmitted);
+
+        $data = [];
+        foreach ($studentSubmitted as $student) {
+            $files = ClassActivityDetail::where('user_id', $student->user_id)
+                ->where('class_activity_id', $request->activityId)
+                ->get();
+
+            $score = ClassActivityScoring::where('user_id', $student->user_id)->where('class_activity_id', $request->activityId)->first();
+
+            $points = ($score != null) ? (($score->points != 0) ? $score->points : 0) : 0;
+
+            $data[] = [
+                'user_id' => $student->user_id,
+                'total' => $student->total,
+                'user' => $student->user,
+                'details' => $files,
+                'score' => number_format($points, 2),
+            ];
+        }
+
+        return response()->json((object)$data);
     }
 
     public function attendance(Request $request)
     {
-        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.id','users.lname', 'users.mname', 'users.fname')->with('attendance:user_id,status')->get();
+        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.id', 'users.lname', 'users.mname', 'users.fname')->with('attendance:user_id,status')->get();
         return response()->json($students_list);
     }
 
@@ -271,9 +316,9 @@ class ClassController extends Controller
             ->where('date', '=', $date)
             ->count();
 
-        if($counter > 0){
+        if ($counter > 0) {
             $res = 2;
-        }else{
+        } else {
             foreach ($request->student as $user_id => $status) {
                 if (isset($status)) {
                     $students_list[] = $status;
@@ -285,8 +330,8 @@ class ClassController extends Controller
                     );
                     Attendance::create($form_data);
                 }
-            }      
-            $res = 1;      
+            }
+            $res = 1;
         }
 
         return response()->json($res);
@@ -348,14 +393,25 @@ class ClassController extends Controller
 
     public function deleteClassWorkMaterial(Request $request)
     {
-        //dd($request);
         $filename = $request->activity['activity_material'][0]['filename'];
         $activityId = $request->activity['activity_material'][0]['class_activity_id'];
         $classCode = Classes::find($request->activity['class_id']);
 
-        Storage::deleteDirectory('public/classactivity/materials/' . $classCode->code . '/' . $activityId . '/' . $filename);
+        Storage::delete('public/classactivity/materials/' . $classCode->code . '/' . $activityId . '/' . $filename);
 
         ClassActivityMaterial::where('id', $request->material_id)->delete();
+    }
+
+    public function deleteStudentWork(Request $request)
+    {
+        $studentWork = ClassActivityDetail::find($request->activity_detail_id);
+        $classCode = Classes::find($request->classId);
+
+        if (Storage::exists('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $studentWork->filename)) {
+            Storage::delete('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $studentWork->filename);
+        }
+
+        ClassActivityDetail::where('id', $request->activity_detail_id)->delete();
     }
 
     public function addScore(Request $request)
@@ -461,12 +517,10 @@ class ClassController extends Controller
         return response()->json($response);
     }
 
-    public function downloadClassWorkMaterial(Request $request)
+    public function downloadClassWorkMaterial($class_id, $material_id)
     {
-        $material = ClassActivityMaterial::where('id', $request->material_id)->with('activity')->get();
-
-        dd($material->activity);
-        $class = Classes::find($material->activity->class_id);
+        $material = ClassActivityMaterial::where('id', $material_id)->first();
+        $class = Classes::find($class_id);
 
         $file = public_path() . '/storage/classactivity/materials/' .  $class->code . '/' . $material->class_activity_id . '/' . $material->filename;
 

@@ -117,6 +117,23 @@ class PostController extends Controller
         return '';
     }
 
+    public function deletePost(Request $request)
+    {
+        $attachments = PostAttachments::where('post_id', $request->post_id)->with('post')->get();
+        foreach ($attachments as $attachment) {
+            $filename = $attachment->filename;
+            $classCode = Classes::find($attachment->post->class_id);
+
+            if (Storage::exists('public/postattachment/' . $classCode->code . '/' . $filename)) {
+                Storage::delete('public/postattachment/' . $classCode->code . '/' . $filename);
+            }
+        }
+
+        PostAttachments::where('post_id', $request->post_id)->delete();
+        PostComments::where('post_id', $request->post_id)->delete();
+        Post::where('id', $request->post_id)->delete();
+    }
+
     public function deletePostAttachment(Request $request)
     {
         $folder = $request->file;
@@ -127,10 +144,22 @@ class PostController extends Controller
         TemporaryPostAttachments::where('folder', $folder)->delete();
     }
 
+    public function deleteAttachment(Request $request)
+    {
+        $attachment = PostAttachments::where('id', $request->attachment_id)->with('post')->first();
+        $filename = $attachment->filename;
+        $classCode = Classes::find($attachment->post->class_id);
+
+        if (Storage::exists('public/postattachment/' . $classCode->code . '/' . $filename)) {
+            Storage::delete('public/postattachment/' . $classCode->code . '/' . $filename);
+        }
+
+        PostAttachments::where('id', $request->attachment_id)->delete();
+    }
+
     public function commentData(Request $request)
     {
         $comment = PostComments::where('post_id', $request->post_id)->orderBy('created_at')->with('user')->get();
-        // dd($comment);
         return response()->json($comment);
     }
 

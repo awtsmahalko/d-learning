@@ -10,7 +10,11 @@
             <div v-for="(comment, key) in comments" :key="key" class="card"> -->
       <!-- start loop -->
       <!-- start loop -->
-      <div class="col-md-12 mt-3" v-for="(comment, key) in comments" :key="key">
+      <div
+        class="col-md-12 mt-3"
+        v-for="comment in comments"
+        :key="comment.post_id"
+      >
         <div class="d-flex">
           <div class="flex-shrink-0" style="margin-top: 4px">
             <img
@@ -25,11 +29,13 @@
               display: flex;
               flex-direction: row;
               justify-content: space-between;
-              align-items: center;
               width: 100%;
             "
           >
-            <div class="mx-2" style="display: flex; flex-direction: column">
+            <div
+              class="mx-2"
+              style="display: flex; flex-direction: column; width: 100%"
+            >
               <h6 class="card-title mb-0">
                 <b id="post-user">{{ comment.user.fname }}</b>
 
@@ -38,28 +44,76 @@
                 </small>
               </h6>
               <p class="comment mt-0" v-html="comment.message"></p>
+
+              <!-- attachments -->
+              <div class="col-md-12" style="border-top: 1px solid #ddd">
+                <div class="row">
+                  <!-- loop attachments -->
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div
+                        class="card file-attachment"
+                        style="margin: 3px; margin-top: 5px"
+                      >
+                        <div
+                          class="col-md-12 py-2"
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: space-between;
+                          "
+                        >
+                          <div
+                            class="pl-2"
+                            style="
+                              display: flex;
+                              flex-direction: column;
+                              width: 80%;
+                            "
+                          >
+                            <h4
+                              class="card-title mb-0"
+                              style="
+                                text-overflow: ellipsis;
+                                width: 100%;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                margin: 0px;
+                                font-size: 14px;
+                              "
+                              data-toggle="tooltip"
+                              data-placement="bottom"
+                              title="test"
+                              @click="downloadCommentAttachment(2)"
+                            >
+                              <b id="post-user">{{ "name" }}</b>
+                            </h4>
+                            <small class="card-category mt-0 text-muted">
+                              {{ "type" }}
+                            </small>
+                          </div>
+                          <div class="ms-auto">
+                            <a
+                              class="attachment-remove"
+                              @click="deleteClassworkMaterial(3)"
+                            >
+                              <i class="material-icons attachment-remove-icon"
+                                >close</i
+                              >
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /loop attachments -->
+                </div>
+              </div>
+              <!-- /attachments -->
             </div>
             <div>
-              <button
-                class="btn btn-sm btn-secondary dropdown-toggle"
-                id="navbarDropdownMenuLink1"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i
-                  class="fa fa-ellipsis-v text-lg text-muted"
-                  aria-hidden="true"
-                ></i>
-              </button>
-              <div
-                class="dropdown-menu dropdown-menu-end me-sm-n4 me-n3"
-                aria-labelledby="navbarDropdownMenuLink1"
-                style="right: auto !important; left: 0 !important"
-              >
-                <a class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#">Delete</a>
-              </div>
+              <!-- test -->
             </div>
           </div>
         </div>

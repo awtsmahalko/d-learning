@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\ClassActivityDetail;
+use App\Models\Classes;
+use App\Models\PostAttachments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +39,8 @@ Route::post('/post/comment/add', [App\Http\Controllers\PostController::class, 'c
 Route::get('/post/comment', [App\Http\Controllers\PostController::class, 'commentData']);
 Route::post('/uploadPostAttachment', [App\Http\Controllers\PostController::class, 'uploadAtachment']);
 Route::delete('/deletePostAttachment', [App\Http\Controllers\PostController::class, 'deletePostAttachment']);
+Route::delete('/post/deleteAttachment', [App\Http\Controllers\PostController::class, 'deleteAttachment']);
+Route::post('/post/delete', [App\Http\Controllers\PostController::class, 'deletePost']);
 
 // class list
 Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 'studentsList']);
@@ -47,6 +52,7 @@ Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListControl
 Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class, 'indexActivity']);
 Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
 Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
+Route::post('/class/activity/edit', [App\Http\Controllers\ClassController::class, 'updateActivity']);
 
 // activity :: studentwork
 Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassController::class, 'uploadStudentWork']);
@@ -56,6 +62,7 @@ Route::post('/class/activity/unsubmitStudentWork', [App\Http\Controllers\ClassCo
 Route::get('/class/activity/studentswork', [App\Http\Controllers\ClassController::class, 'indexStudentWork']);
 Route::post('/class/activity/addScore', [App\Http\Controllers\ClassController::class, 'addScore']);
 Route::get('/class/activity/getScore', [App\Http\Controllers\ClassController::class, 'getScore']);
+Route::delete('/class/activity/deleteStudentWork', [App\Http\Controllers\ClassController::class, 'deleteStudentWork']);
 
 //atendance
 Route::get('/attendance/view/record', [App\Http\Controllers\ClassController::class, 'attendance']);
@@ -70,7 +77,33 @@ Route::get('/leaderboard/teacher/work', [App\Http\Controllers\ClassController::c
 Route::post('/class/activity/uploadClassworkAttachment', [App\Http\Controllers\ClassController::class, 'uploadClassworkAttachment']);
 Route::delete('/class/activity/revertClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'revertClassWorkMaterial']);
 Route::delete('/class/activity/deleteClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'deleteClassWorkMaterial']);
-Route::get('/class/activity/downloadClassWorkMaterial', [App\Http\Controllers\ClassController::class, 'downloadClassWorkMaterial']);
+Route::get('/class/activity/downloadClassWorkMaterial/{class_id}/{material_id}', [App\Http\Controllers\ClassController::class, 'downloadClassWorkMaterial']);
+
+// downloadPage
+Route::get('/class/activity/downloadStudentWork/{class_id}/{id}', function ($class_id, $id) {
+    $material = ClassActivityDetail::where('id', $id)->first();
+    $class = Classes::find($class_id);
+
+    $file = public_path() . '/storage/classactivity/' .  $class->code . '/' . $material->class_activity_id . '/' . $material->filename;
+
+    $headers = [
+        'Content-Type' => 'application/' . $material->filetype,
+    ];
+
+    return response()->download($file, $material->filename, $headers);
+});
+
+Route::get('/class/post/downloadAttachment/{class_code}/{id}', function ($class_code, $id) {
+    $attachment = PostAttachments::where('id', $id)->first();
+
+    $file = public_path() . '/storage/postattachment/' .  $class_code . '/' . $attachment->filename;
+
+    $headers = [
+        'Content-Type' => 'application/' . $attachment->filetype,
+    ];
+
+    return response()->download($file, $attachment->filename, $headers);
+});
 
 
 // profile

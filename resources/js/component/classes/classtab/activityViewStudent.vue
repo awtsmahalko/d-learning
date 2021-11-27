@@ -103,6 +103,7 @@
                                         data-toggle="tooltip"
                                         data-placement="bottom"
                                         title="test"
+                                        @click="downloadFile(sw.id)"
                                       >
                                         <b id="post-user">{{ sw.filename }}</b>
                                       </h4>
@@ -120,6 +121,7 @@
                                             ? (showRemoveFile = false)
                                             : (showRemoveFile = true)
                                         "
+                                        @click="deleteWork(sw.id)"
                                       >
                                         <i
                                           class="
@@ -338,6 +340,33 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    deleteWork(activity_detail_id) {
+      this.axios({
+        method: "DELETE",
+        url: baseUrl + "/api/class/activity/deleteStudentWork",
+        data: {
+          classId: this.$route.params.class_id,
+          activityId: this.$route.params.activity_id,
+          activity_detail_id: activity_detail_id,
+        },
+      })
+        .then((response) => {
+          this.getStudentWork();
+        })
+        .catch(() => {
+          error();
+        });
+    },
+    downloadFile(sw_id) {
+      window.open(
+        baseUrl +
+          "/api/class/activity/downloadStudentWork/" +
+          this.$route.params.class_id +
+          "/" +
+          sw_id,
+        "_blank"
+      );
     },
   },
   components: {
