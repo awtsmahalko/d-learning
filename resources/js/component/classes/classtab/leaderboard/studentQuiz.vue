@@ -46,6 +46,7 @@ export default {
                 }
             }).then((res) => {
                 this.studentWorks = res.data;
+                console.log(res.data);
             }).catch((error) =>{
                 console.log(error);
             });

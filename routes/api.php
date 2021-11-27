@@ -58,7 +58,7 @@ Route::post('/class/activity/addScore', [App\Http\Controllers\ClassController::c
 Route::get('/class/activity/getScore', [App\Http\Controllers\ClassController::class, 'getScore']);
 
 //atendance
-Route::get('/class/attendance/view', [App\Http\Controllers\ClassController::class, 'attendance']);
+Route::get('/attendance/view/record', [App\Http\Controllers\ClassController::class, 'attendance']);
 Route::get('/attendance/modal/students', [App\Http\Controllers\ClassController::class, 'attendanceModalStudents']);
 Route::post('/attendance/add/record', [App\Http\Controllers\ClassController::class, 'attendanceAddRecord']);
 
