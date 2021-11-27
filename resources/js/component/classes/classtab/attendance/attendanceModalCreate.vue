@@ -35,7 +35,7 @@
  					</table>
  				</div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"> Close </button>
+                    <button type="button" ref="Close" class="btn btn-sm btn-secondary" data-dismiss="modal"> Close </button>
                     <button type="submit" id="btn-submit" class="btn btn-sm btn-primary"> Save changes </button>
                 </div>
  			</form>
@@ -57,6 +57,7 @@ export default {
         }
     },
     created(){
+        this.resetFormAttendance();
         this.fetchAttendanceStudent();
         this.formAttendance.class_id = this.classId;
     },
@@ -73,18 +74,23 @@ export default {
             });
         },
         createAttendance(){
-            success_add();
-            console.log(this.formAttendance);
-            axios.post(baseUrl + "/api/attendance/add/record", this.formAttendance).then((data) => {
-                console.log(data);
-            }).catch((error) => {
+            const form_data = this.formAttendance;
+            axios.post(baseUrl + "/api/attendance/add/record", {
+                date:this.formAttendance.date,
+                student:this.formAttendance.student,
+                class_id:this.formAttendance.class_id
+            }).then((res) => {
+                if(res.data == 1){
+                    success_add();
+                }else if(res.data == 2){
+                    entry_already_exists();
+                }else{
+                    console.log(res.data);
+                }
+                this.$root.$emit('fetchAttendaceRecordEvent');
+            }).catch(error => {
                 console.log(error);
             });
-
-            $("#attendanceCreateModal").modal('hide');
-        },
-        generateName(id){
-            return "status["+id+"]";
         },
         changeStatus(id,status){
             this.formAttendance.student[id] = status;

@@ -253,7 +253,7 @@ class ClassController extends Controller
 
     public function attendance(Request $request)
     {
-        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.lname', 'users.mname', 'users.fname')->with('attendance')->get();
+        $students_list = User::join('class_lists', 'class_lists.user_id', '=', 'users.id')->where('class_id', $request->class_id)->orderBy('users.lname', 'asc')->select('users.id','users.lname', 'users.mname', 'users.fname')->with('attendance:user_id,status')->get();
         return response()->json($students_list);
     }
 
@@ -265,19 +265,30 @@ class ClassController extends Controller
 
     public function attendanceAddRecord(Request $request)
     {
-        foreach ($request->student as $user_id => $status) {
-            if (isset($status)) {
-                $students_list[] = $status;
-                $form_data = array(
-                    'date' => date("Y-m-d", strtotime($request->date)),
-                    'user_id' => $user_id,
-                    'status' => $status,
-                    'class_id' => $request->class_id
-                );
-                Attendance::create($form_data);
-            }
+        $date = date("Y-m-d", strtotime($request->date));
+        $counter = Attendance::where('class_id', '=', $request->class_id)
+            ->where('date', '=', $date)
+            ->count();
+
+        if($counter > 0){
+            $res = 2;
+        }else{
+            foreach ($request->student as $user_id => $status) {
+                if (isset($status)) {
+                    $students_list[] = $status;
+                    $form_data = array(
+                        'date' => $date,
+                        'user_id' => $user_id,
+                        'status' => $status,
+                        'class_id' => $request->class_id
+                    );
+                    Attendance::create($form_data);
+                }
+            }      
+            $res = 1;      
         }
-        return response()->json($students_list);
+
+        return response()->json($res);
     }
 
     public function uploadClassworkAttachment(Request $request)
