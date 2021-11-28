@@ -10,11 +10,7 @@
             <div v-for="(comment, key) in comments" :key="key" class="card"> -->
       <!-- start loop -->
       <!-- start loop -->
-      <div
-        class="col-md-12 mt-3"
-        v-for="comment in comments"
-        :key="comment.post_id"
-      >
+      <div class="col-md-12 mt-3" v-for="comment in comments" :key="comment.id">
         <div class="d-flex">
           <div class="flex-shrink-0" style="margin-top: 4px">
             <img
@@ -46,7 +42,11 @@
               <p class="comment mt-0" v-html="comment.message"></p>
 
               <!-- attachments -->
-              <div class="col-md-12" style="border-top: 1px solid #ddd">
+              <div
+                v-show="1 == 0 ? true : false"
+                class="col-md-12"
+                style="border-top: 1px solid #ddd"
+              >
                 <div class="row">
                   <!-- loop attachments -->
                   <div class="col-md-6">

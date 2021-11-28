@@ -53,7 +53,7 @@
 
     <div class="card-footer mx-0 px-3 py-0 my-0" style="justify-content: start">
       <button class="btn btn-sm btn-primary" @click="openCommentModal(postId)">
-        <i class="material-icons text-sm">chat</i> Add comment {{ postId }}
+        <i class="material-icons text-sm">chat</i> Add comment
       </button>
     </div>
 
@@ -178,44 +178,44 @@ export default {
       },
       server: {
         process: (fieldName, file, metadata, load, error) => {
-          const formData = new FormData();
-          formData.append("file", file, file.name);
-          formData.append("classId", this.activityDetail.class_id);
-          // console.log(this.$route.params.activity_id);
-          this.axios({
-            method: "POST",
-            url: baseUrl + "/api/class/activity/uploadClassworkAttachment",
-            data: formData,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-            .then((response) => {
-              load(response.data);
-            })
-            .catch(() => {
-              error();
-            });
+          // const formData = new FormData();
+          // formData.append("file", file, file.name);
+          // formData.append("classId", this.activityDetail.class_id);
+          // // console.log(this.$route.params.activity_id);
+          // this.axios({
+          //   method: "POST",
+          //   url: baseUrl + "/api/post/comment/uploadCommentAttachment",
+          //   data: formData,
+          //   headers: {
+          //     "Content-Type": "multipart/form-data",
+          //   },
+          // })
+          //   .then((response) => {
+          //     load(response.data);
+          //   })
+          //   .catch(() => {
+          //     error();
+          //   });
         },
         revert: (uniqueFileId, load, error) => {
-          this.axios({
-            method: "DELETE",
-            url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
-            data: {
-              file: uniqueFileId,
-              classId: this.activityDetail.class_id,
-            },
-          })
-            .then((response) => {
-              load();
-            })
-            .catch(() => {
-              error();
-            });
-          // Can call the error method if something is wrong, should exit after
-          error("oh my goodness");
-          // Should call the load method when done, no parameters required
-          load();
+          // this.axios({
+          //   method: "DELETE",
+          //   url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
+          //   data: {
+          //     file: uniqueFileId,
+          //     classId: this.activityDetail.class_id,
+          //   },
+          // })
+          //   .then((response) => {
+          //     load();
+          //   })
+          //   .catch(() => {
+          //     error();
+          //   });
+          // // Can call the error method if something is wrong, should exit after
+          // error("oh my goodness");
+          // // Should call the load method when done, no parameters required
+          // load();
         },
       },
     };

@@ -176,4 +176,8 @@ class PostController extends Controller
             'class' => $comment
         ]);
     }
+
+    public function uploadCommentAttachment(Request $request)
+    {
+    }
 }

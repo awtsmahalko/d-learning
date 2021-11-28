@@ -37,6 +37,7 @@ Route::get('/post', [App\Http\Controllers\PostController::class, 'index']);
 Route::post('/post', [App\Http\Controllers\PostController::class, 'store']);
 Route::post('/post/comment/add', [App\Http\Controllers\PostController::class, 'commentStore']);
 Route::get('/post/comment', [App\Http\Controllers\PostController::class, 'commentData']);
+Route::post('/post/comment/uploadCommentAttachment', [App\Http\Controllers\PostController::class, 'uploadCommentAttachment']);
 Route::post('/uploadPostAttachment', [App\Http\Controllers\PostController::class, 'uploadAtachment']);
 Route::delete('/deletePostAttachment', [App\Http\Controllers\PostController::class, 'deletePostAttachment']);
 Route::delete('/post/deleteAttachment', [App\Http\Controllers\PostController::class, 'deleteAttachment']);
