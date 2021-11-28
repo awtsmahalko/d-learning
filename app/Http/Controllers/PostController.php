@@ -10,6 +10,7 @@ use App\Models\ClassActivity;
 use App\Models\Post;
 use App\Models\TemporaryPostAttachments;
 use App\Models\PostAttachments;
+use App\Models\PostCommentAttachment;
 use App\Models\PostComments;
 use Illuminate\Support\Facades\DB;
 
@@ -179,5 +180,43 @@ class PostController extends Controller
 
     public function uploadCommentAttachment(Request $request)
     {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = date('his') . '-' . $file->getClientOriginalName();
+            $filesize = $file->getSize();
+            $fileType = $file->getClientOriginalExtension();
+            $folder = uniqid() . '-' . now()->timestamp;
+
+            $fileThumbs = ["XLS", "DOCX", "CSV", "TXT", "ZIP", "EXE", "XLSX", "PPT", "PPTX"];
+            $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
+
+            if (in_array(strtoupper($fileType), $fileThumbs)) {
+                $thumbnail = asset("storage") . "/file_extension_icon/" . strtoupper($fileType) . '.png';
+            } else {
+                if (in_array(strtoupper($fileType), $imgThumbs)) {
+                    $thumbnail = asset("storage") . '/postcommentattachment/' . $request->classCode . '/' . $filename;
+                } else {
+                    $thumbnail = asset("storage") . "/file_extension_icon/FILE.png";
+                }
+            }
+
+            // insert to temporary table in database
+            $tmpPostAttachment = PostCommentAttachment::create([
+                'folder' => $folder,
+                'filename' => $filename,
+                'filesize' => $filesize,
+                'filetype' => $fileType,
+                'thumbnail' => $thumbnail,
+                'status' => 'T'
+            ]);
+
+            if ($tmpPostAttachment) {
+                $file->storeAs('public/postcommentattachment/' . $request->classCode . '/tmp/' . $folder, $filename);
+            }
+
+            return $folder;
+        }
+
+        return '';
     }
 }

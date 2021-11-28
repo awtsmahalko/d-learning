@@ -178,24 +178,24 @@ export default {
       },
       server: {
         process: (fieldName, file, metadata, load, error) => {
-          // const formData = new FormData();
-          // formData.append("file", file, file.name);
-          // formData.append("classId", this.activityDetail.class_id);
-          // // console.log(this.$route.params.activity_id);
-          // this.axios({
-          //   method: "POST",
-          //   url: baseUrl + "/api/post/comment/uploadCommentAttachment",
-          //   data: formData,
-          //   headers: {
-          //     "Content-Type": "multipart/form-data",
-          //   },
-          // })
-          //   .then((response) => {
-          //     load(response.data);
-          //   })
-          //   .catch(() => {
-          //     error();
-          //   });
+          const formData = new FormData();
+          formData.append("file", file, file.name);
+          formData.append("classCode", this.classCode);
+          // console.log(this.$route.params.activity_id);
+          this.axios({
+            method: "POST",
+            url: baseUrl + "/api/post/comment/uploadCommentAttachment",
+            data: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+            .then((response) => {
+              load(response.data);
+            })
+            .catch(() => {
+              error();
+            });
         },
         revert: (uniqueFileId, load, error) => {
           // this.axios({

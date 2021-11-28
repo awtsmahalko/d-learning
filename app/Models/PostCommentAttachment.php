@@ -9,7 +9,15 @@ class PostCommentAttachment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'folder', 'filename', 'filesize', 'filetype', 'thumbnail'];
+    protected $fillable = [
+        'post_comment_id',
+        'folder',
+        'filename',
+        'filesize',
+        'filetype',
+        'thumbnail',
+        'status'
+    ];
 
     public function comment()
     {
