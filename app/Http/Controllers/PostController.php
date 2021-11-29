@@ -160,7 +160,7 @@ class PostController extends Controller
 
     public function commentData(Request $request)
     {
-        $comment = PostComments::where('post_id', $request->post_id)->orderBy('created_at')->with('user')->get();
+        $comment = PostComments::where('post_id', $request->post_id)->orderBy('created_at')->with('user', 'comment_attachment')->get();
         return response()->json($comment);
     }
 
@@ -171,6 +171,8 @@ class PostController extends Controller
             'user_id' => $request->user_id,
             'message' => $request->message
         ]);
+
+        $this->moveCommentAttachments($request, $comment->id);
 
         return response()->json([
             'message' => 'Comment Posted Successfully!!',
@@ -218,5 +220,42 @@ class PostController extends Controller
         }
 
         return '';
+    }
+
+    public function revertCommentAttachment(Request $request)
+    {
+        $folder = $request->file;
+
+        Storage::deleteDirectory('public/postcommentattachment/' . $request->classCode . '/tmp/' . $folder);
+
+        PostCommentAttachment::where('folder', $folder)->delete();
+    }
+
+    public function moveCommentAttachments($request, $comment_id)
+    {
+        foreach ($request->commentedFiles as $commentedFile) {
+            if ($commentedFile != null) {
+                $tempPcFile = PostCommentAttachment::where('folder', $commentedFile)->first();
+
+                if (Storage::exists('public/postcommentattachment/' . $request->classCode . '/tmp/' . $tempPcFile->folder . '/' . $tempPcFile->filename)) {
+                    Storage::move('public/postcommentattachment/' . $request->classCode . '/tmp/' . $tempPcFile->folder . '/' . $tempPcFile->filename, 'public/postcommentattachment/' . $request->classCode . "/" . $comment_id . '/' . $tempPcFile->filename);
+
+                    $thumbnail = asset('storage') . '/postcommentattachment/' . $request->classCode . '/' . $comment_id . '/' . $tempPcFile->filename;
+
+                    PostCommentAttachment::where('id', $tempPcFile->id)->update(['post_comment_id' => $comment_id, 'thumbnail' => $thumbnail, 'status' => 'S']);
+
+                    Storage::deleteDirectory('public/postcommentattachment/' . $request->classCode . '/tmp/' . $tempPcFile->folder);
+                }
+            }
+        }
+    }
+
+    public function deleteCommentAttachment(Request $request)
+    {
+        $commentFile = PostCommentAttachment::find($request->commentFile_id);
+
+        Storage::delete('public/postcommentattachment/' . $request->classCode . '/' . $commentFile->post_comment_id . '/' . $commentFile->filename);
+
+        PostCommentAttachment::where('id', $request->commentFile_id)->delete();
     }
 }

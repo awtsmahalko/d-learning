@@ -17,7 +17,7 @@ class CreatePostCommentsTable extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }

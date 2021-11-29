@@ -265,7 +265,7 @@ export default {
         .then((response) => {
           this.studentWorks = response.data;
           // this.postsAttachments = response.data.post_attachments;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

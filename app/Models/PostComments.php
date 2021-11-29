@@ -20,4 +20,9 @@ class PostComments extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comment_attachment()
+    {
+        return $this->hasMany(PostCommentAttachment::class, 'post_comment_id', 'id');
+    }
 }

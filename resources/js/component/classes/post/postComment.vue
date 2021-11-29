@@ -43,13 +43,17 @@
 
               <!-- attachments -->
               <div
-                v-show="1 == 0 ? true : false"
+                v-show="comment.comment_attachment.length > 0 ? true : false"
                 class="col-md-12"
                 style="border-top: 1px solid #ddd"
               >
                 <div class="row">
                   <!-- loop attachments -->
-                  <div class="col-md-6">
+                  <div
+                    class="col-md-6"
+                    v-for="commentFile in comment.comment_attachment"
+                    :key="commentFile.id"
+                  >
                     <div class="row">
                       <div
                         class="card file-attachment"
@@ -85,18 +89,25 @@
                               data-toggle="tooltip"
                               data-placement="bottom"
                               title="test"
-                              @click="downloadCommentAttachment(2)"
+                              @click="downloadCommentAttachment(commentFile.id)"
                             >
-                              <b id="post-user">{{ "name" }}</b>
+                              <b id="post-user">{{ commentFile.filename }}</b>
                             </h4>
                             <small class="card-category mt-0 text-muted">
-                              {{ "type" }}
+                              {{ commentFile.filetype }}
                             </small>
                           </div>
-                          <div class="ms-auto">
+                          <div
+                            class="ms-auto"
+                            v-show="
+                              comment.user_id == sessionUser - sessionUser
+                                ? true
+                                : false
+                            "
+                          >
                             <a
                               class="attachment-remove"
-                              @click="deleteClassworkMaterial(3)"
+                              @click="deleteCommentAttachment(commentFile.id)"
                             >
                               <i class="material-icons attachment-remove-icon"
                                 >close</i
@@ -124,7 +135,58 @@
 </template>
 <script>
 export default {
-  props: ["comments"],
+  props: ["comments", "classCode", "userpostedId"],
+  data() {
+    return {
+      sessionUser: sessionUserId,
+    };
+  },
+  methods: {
+    downloadCommentAttachment(commentFile_id) {
+      window.open(
+        baseUrl +
+          "/api/post/comment/downloadCommentAttachment/" +
+          this.classCode +
+          "/" +
+          commentFile_id,
+        "_blank"
+      );
+    },
+    deleteCommentAttachment(commentFile_id) {
+      var _this = this;
+      swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+          return new Promise(function (resolve) {
+            _this
+              .axios({
+                method: "DELETE",
+                url: baseUrl + "/api/post/comment/deleteCommentAttachment",
+                data: {
+                  classCode: _this.classCode,
+                  commentFile_id: commentFile_id,
+                },
+              })
+              .then((response) => {
+                _this.$parent.getComment();
+                success_delete();
+              })
+              .catch(() => {
+                error();
+              });
+          });
+        },
+        allowOutsideClick: false,
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -137,5 +199,15 @@ export default {
 
 .dropdown-toggle::after {
   content: none !important;
+}
+
+.attachment-remove {
+  cursor: default;
+}
+
+.attachment-remove-icon {
+  font-size: 1.1rem;
+  color: #f44336;
+  padding: 0.40625rem 1.25rem;
 }
 </style>

@@ -3,6 +3,7 @@
 use App\Models\ClassActivityDetail;
 use App\Models\Classes;
 use App\Models\PostAttachments;
+use App\Models\PostCommentAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,9 @@ Route::post('/uploadPostAttachment', [App\Http\Controllers\PostController::class
 Route::delete('/deletePostAttachment', [App\Http\Controllers\PostController::class, 'deletePostAttachment']);
 Route::delete('/post/deleteAttachment', [App\Http\Controllers\PostController::class, 'deleteAttachment']);
 Route::post('/post/delete', [App\Http\Controllers\PostController::class, 'deletePost']);
+Route::delete('/post/comment/revertCommentAttachment', [App\Http\Controllers\PostController::class, 'revertCommentAttachment']);
+Route::delete('/post/comment/deleteCommentAttachment', [App\Http\Controllers\PostController::class, 'deleteCommentAttachment']);
+
 
 // class list
 Route::get('/studentsList', [App\Http\Controllers\ClassListController::class, 'studentsList']);
@@ -105,6 +109,19 @@ Route::get('/class/post/downloadAttachment/{class_code}/{id}', function ($class_
 
     return response()->download($file, $attachment->filename, $headers);
 });
+
+Route::get('/post/comment/downloadCommentAttachment/{class_code}/{id}', function ($class_code, $id) {
+    $attachment = PostCommentAttachment::where('id', $id)->first();
+
+    $file = public_path() . '/storage/postcommentattachment/' .  $class_code . '/' . $attachment->post_comment_id . '/' . $attachment->filename;
+
+    $headers = [
+        'Content-Type' => 'application/' . $attachment->filetype,
+    ];
+
+    return response()->download($file, $attachment->filename, $headers);
+});
+
 
 
 // profile

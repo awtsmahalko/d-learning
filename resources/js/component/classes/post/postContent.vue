@@ -48,7 +48,11 @@
     </div>
 
     <!-- comments -->
-    <postComment :comments="this.comments" :key="componentKey" />
+    <postComment
+      :comments="this.comments"
+      :classCode="classCode"
+      :userpostedId="userpostedId"
+    />
     <!-- comments -->
 
     <div class="card-footer mx-0 px-3 py-0 my-0" style="justify-content: start">
@@ -93,7 +97,9 @@
                 >
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="message">Your comment</label>
+                      <label for="message"
+                        >Your comment <span style="color: red">*</span></label
+                      >
                       <input
                         type="text"
                         class="form-control"
@@ -154,6 +160,7 @@ const FilePond = vueFilePond();
 
 export default {
   props: [
+    "userpostedId",
     "userposted",
     "dateposted",
     "descriptionposted",
@@ -175,6 +182,8 @@ export default {
         user_id: sessionUserId,
         post_id: "",
         message: "",
+        commentedFiles: [],
+        classCode: "",
       },
       server: {
         process: (fieldName, file, metadata, load, error) => {
@@ -198,39 +207,37 @@ export default {
             });
         },
         revert: (uniqueFileId, load, error) => {
-          // this.axios({
-          //   method: "DELETE",
-          //   url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
-          //   data: {
-          //     file: uniqueFileId,
-          //     classId: this.activityDetail.class_id,
-          //   },
-          // })
-          //   .then((response) => {
-          //     load();
-          //   })
-          //   .catch(() => {
-          //     error();
-          //   });
-          // // Can call the error method if something is wrong, should exit after
-          // error("oh my goodness");
-          // // Should call the load method when done, no parameters required
-          // load();
+          this.axios({
+            method: "DELETE",
+            url: baseUrl + "/api/post/comment/revertCommentAttachment",
+            data: {
+              file: uniqueFileId,
+              classCode: this.classCode,
+            },
+          })
+            .then((response) => {
+              load();
+            })
+            .catch(() => {
+              error();
+            });
+          // Can call the error method if something is wrong, should exit after
+          error("oh my goodness");
+          // Should call the load method when done, no parameters required
+          load();
         },
       },
     };
   },
   created() {
     this.comment.post_id = this.postId;
+    this.comment.classCode = this.classCode;
   },
   mounted() {
     this.is_teacher = sessionCategory == "T" ? true : false;
     this.getComment();
   },
   methods: {
-    forceRerender() {
-      this.componentKey += 1;
-    },
     async getComment() {
       await this.axios
         .get(baseUrl + "/api/post/comment", {
@@ -249,12 +256,17 @@ export default {
     },
     sendComment() {
       if (this.comment.message != "") {
+        var pcFileValue = [];
+        $("input[name='file']").each(function () {
+          pcFileValue.push($(this).val());
+        });
+
+        this.comment.commentedFiles = pcFileValue;
         this.comment.post_id = $("#hidden_post_id").val();
 
         this.axios
           .post(baseUrl + "/api/post/comment/add", this.comment)
           .then((response) => {
-            this.$parent.getPosts();
             this.getComment();
             $("#newCommentModal").modal("hide");
             this.comment.message = "";

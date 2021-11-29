@@ -560,7 +560,7 @@ export default {
         .then((response) => {
           this.activities = response.data;
           this.activityDetail.class_id = response.data.class_id;
-          console.log(response.data);
+          // console.log(response.data);
 
           this.activityDetail.instructions = response.data.instruction;
           $("#snactivityDetail").summernote("reset");
@@ -581,7 +581,7 @@ export default {
 
           this.displayTitle();
 
-          console.log(this.activityDetail);
+          // console.log(this.activityDetail);
         })
         .catch((error) => {
           console.log(error);

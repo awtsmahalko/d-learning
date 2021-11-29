@@ -332,7 +332,7 @@ export default {
           const formData = new FormData();
           formData.append("file", file, file.name);
           formData.append("classId", this.newActivity.class_id);
-          console.log(this.$route.params.activity_id);
+          // console.log(this.$route.params.activity_id);
           this.axios({
             method: "POST",
             url: baseUrl + "/api/class/activity/uploadClassworkAttachment",

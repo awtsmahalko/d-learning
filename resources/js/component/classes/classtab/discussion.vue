@@ -73,6 +73,7 @@
               style="margin-bottom: 15px; margin-top: 15px"
             >
               <postContent
+                :userpostedId="post.user.id"
                 :userposted="post.user.fname"
                 :dateposted="post.created_at"
                 :descriptionposted="post.description"
