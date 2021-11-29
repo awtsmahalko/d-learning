@@ -15,7 +15,7 @@ const mix = require('laravel-mix');
 // subfolder in hosting server 
 // 'subfolder/public/js' and 'subfolder/public/js'
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/js', [
+mix.js('resources/js/app.js', 'public/dist/js')
+    .postCss('resources/css/app.css', 'public/dist/css', [
         //
     ]).vue();
