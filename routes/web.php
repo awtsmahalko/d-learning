@@ -9,7 +9,7 @@ if ("PROD" == "LOCAL") {
 	$_REQUEST['baseUrl'] = "/dlearning";
 } else {
 	$_REQUEST['public'] = asset("public/material");
-	$_REQUEST['mixAppBlade'] = mix('js/app.js');
+	$_REQUEST['mixAppBlade'] = mix('public/js/app.js');
 	$_REQUEST['baseUrl'] = "";
 }
 
