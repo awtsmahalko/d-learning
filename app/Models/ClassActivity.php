@@ -25,6 +25,12 @@ class ClassActivity extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function class()
+    {
+        return $this->belongsTo(Classes::class);
+    }
+
+
     public function activity_details()
     {
         return $this->hasMany(ClassActivityDetail::class);

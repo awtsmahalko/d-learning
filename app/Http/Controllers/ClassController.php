@@ -92,9 +92,15 @@ class ClassController extends Controller
 
     public function indexActivity(Request $request)
     {
-        $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
-            $q->where('user_id', '=', $request->user_id);
-        }])->get();
+        if ($request->class_id > 0) {
+            $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
+                $q->where('user_id', '=', $request->user_id);
+            }])->get();
+        } else {
+            $activities = ClassActivity::orderByDesc('created_at')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
+                $q->where('user_id', '=', $request->user_id);
+            }])->get();
+        }
 
         return response()->json($activities);
     }

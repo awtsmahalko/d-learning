@@ -1,8 +1,5 @@
 <template>
     <div class="card">
-        <div class="card-header">
-            <h3>Subject Name</h3>
-        </div>
         <div class="card-body">
             <table border="1px" width="100%" style="text-align:center;
             ">
