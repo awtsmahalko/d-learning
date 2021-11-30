@@ -2,10 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card card-background">
-        <div
-          class="full-background"
-          :style="image"
-        ></div>
+        <div class="full-background" :style="image"></div>
         <div class="card-body pt-12">
           <h2 class="text-white font-weight-bold pt-2">
             {{ classData.name }}
@@ -19,7 +16,6 @@
   </div>
 </template>
 <script>
-const pre_url = baseUrl == '' ? "" : "/dlearning/public";
 export default {
   name: "card-title",
   props: ["classesId"],
@@ -29,7 +25,7 @@ export default {
         name: "",
         code: "",
       },
-      image: "background-image:url("+ pre_url+"/material/img/class.jpg)",
+      image: "background-image:url(/public/material/img/class.jpg)",
     };
   },
   created() {
