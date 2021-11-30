@@ -1,7 +1,7 @@
 <template>
   <div class="meeting">
     <div class="container-zoom">
-      <ZoomFrame :meetId="meetId" :meetingId="meetingId" :password="password" :classId="classId"/>
+      <ZoomFrame :meetId="meetId" :meetingId="meetingId" :password="password" :classId="classId" :apiKey="apiKey" :apiSecret="apiSecret"/>
     </div>
   </div>
 </template>
@@ -16,7 +16,9 @@ export default {
         meetId:'',
         meetingId:'',
         classId:'',
-        password:''
+        password:'',
+        apiKey:'',
+        apiSecret:''
       }
   },
   components: {
@@ -27,6 +29,8 @@ export default {
       this.meetingId = this.$route.params.number;
       this.password = this.$route.params.password;
       this.classId = this.$route.params.class_id;
+      this.apiKey = this.$route.params.api_key;
+      this.apiSecret = this.$route.params.api_secret;
   },
   methods : {
      fetchCredential(){
