@@ -66,7 +66,7 @@
           </div>
         </div>
         <div v-if="posts.length > 0">
-          <div v-for="post in posts" :key="post.id">
+          <div v-for="(post,postKey) in posts" :key="postKey">
             <div
               v-if="post.module === 'POST'"
               class="card"

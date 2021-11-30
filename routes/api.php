@@ -32,6 +32,7 @@ Route::post('/video/{id}/edit', [App\Http\Controllers\MeetingController::class, 
 Route::get('/video/attendee/{id}', [App\Http\Controllers\MeetingController::class, 'attendee']);
 Route::post('/video/join', [App\Http\Controllers\MeetingController::class, 'join']);
 Route::delete('/video/{id}', [App\Http\Controllers\MeetingController::class, 'destroy']);
+Route::get('/video/tokens/credentials', [App\Http\Controllers\MeetingController::class, 'apiCredentials']);
 
 // discussion :: post
 Route::get('/post', [App\Http\Controllers\PostController::class, 'index']);

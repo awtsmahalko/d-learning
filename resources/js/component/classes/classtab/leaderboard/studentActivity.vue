@@ -14,8 +14,8 @@
           <tr v-for="(workData, key) in studentWorks" :key="key">
             <td>{{ key + 1 }}</td>
             <td>{{ workData.user.lname + ", " + workData.user.fname }}</td>
-            <td>{{ workData.earned_points }}</td>
-            <td>{{ workData.total_points }}</td>
+            <td>{{ formatNumber(workData.earned_points) }}</td>
+            <td>{{ formatNumber(workData.total_points) }}</td>
           </tr>
         </tbody>
       </table>
@@ -52,6 +52,10 @@ export default {
           console.log(error);
         });
     },
+    formatNumber(value){
+        value = parseFloat(value);
+        return value.toFixed(2);
+    }
   },
 };
 </script>

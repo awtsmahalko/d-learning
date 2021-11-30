@@ -78,6 +78,8 @@
                                   number: meet.number,
                                   password: meet.password,
                                   class_id: meet.class_id,
+                                  api_key:api_key,
+                                  api_secret:api_secret
                                 },
                               }"
                               ><span class="material-icons">videocam</span>
@@ -280,9 +282,18 @@ export default {
       },
       meetings: [],
       attendees : [],
+      api_key:'',
+      api_secret:''
     };
   },
   methods: {
+    async fetchCredential(){
+      await this.axios.get(baseUrl + "/api/video/tokens/credentials").then((res) => {
+        this.api_key = res.data.api_key;
+        this.api_secret = res.data.api_secret;
+      }).catch((err) => {
+      });
+    },
     createMeeting() {
       $("#btn-submit").prop("disabled", true);
       axios
@@ -405,6 +416,7 @@ export default {
   created() {
     this.is_teacher = sessionCategory == "T" ? true : false;
     this.meeting.class_id = this.$route.params.id;
+    this.fetchCredential();
     this.fetchMeetings();
   },
   mounted() {},

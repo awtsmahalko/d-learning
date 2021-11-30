@@ -97,4 +97,10 @@ class MeetingController extends Controller
         $meeting = $meeting->delete();
         return response()->json($meeting);
     }
+
+    public function apiCredentials()
+    {
+        $apiZoom = ZoomApiController::jwtToken();
+        return response()->json($apiZoom);
+    }
 }

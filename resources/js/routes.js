@@ -63,7 +63,7 @@ export const routes = [
     },
     {
         name: 'meeting',
-        path: '/video/meeting/:id/:number/:password/:class_id',
+        path: '/video/meeting/:id/:number/:password/:class_id/:api_key/:api_secret',
         component: VideConMeeting
     },
     {
