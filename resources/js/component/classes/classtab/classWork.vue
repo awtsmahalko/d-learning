@@ -183,7 +183,7 @@
                                     id="title"
                                   >
                                     <option value="">-- select term --</option>
-                                    <option value="Prelem">Prelem</option>
+                                    <option value="Prelim">Prelim</option>
                                     <option value="Midterm">Midterm</option>
                                     <option value="Enterm">Enterm</option>
                                   </select>
