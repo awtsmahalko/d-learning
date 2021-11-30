@@ -13,7 +13,7 @@
                 </thead>
                 <tbody v-if="studentWorks.length > 0">
                     <tr v-for="(workData,key) in studentWorks" :key="key">
-                        <td></td>
+                        <td>{{ key + 1 }}</td>
                         <td>{{ workData.user.lname + ', ' + workData.user.fname}}</td>
                         <td>{{ formatNumber(workData.earned_points) }}</td>
                         <td>{{ formatNumber(workData.total_points) }}</td>
