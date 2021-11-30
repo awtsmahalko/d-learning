@@ -22,12 +22,12 @@ ZoomMtg.preLoadWasm();
 
 ZoomMtg.prepareJssdk();
 
-var API_KEY = 'xE4RMY1iRDCbzXL0hfgQ_A';
+// var API_KEY = 'xE4RMY1iRDCbzXL0hfgQ_A';
 
-var API_SECRET = 'zdxTw3HhPPWFStKXNQ3IY5JrYOkcbyfb06zC';
+// var API_SECRET = 'zdxTw3HhPPWFStKXNQ3IY5JrYOkcbyfb06zC';
 
 var role = sessionCategory == 'T' ? 1 : 0;
-var url = baseUrl == '' ? "http://127.0.0.1:8000/video/view/": "https://juancoder.com/dlearning/video/view/";
+var url = baseUrl == '' ? "http://127.0.0.1:8000/video/view/": "https://dlearning.tech/video/view/";
 
 export default {
   name: "ZoomFrame",
@@ -39,14 +39,15 @@ export default {
       signature: {}
     };
   },
-  props: ['meetId','meetingId','password','classId'],
+  props: ['meetId','meetingId','password','classId','apiKey','apiSecret'],
   created: function() {
+
     this.nickname = sessionFullname;
     // Meeting config object
     this.meetConfig = {
       signatureEndpoint: url+this.classId,
-      apiKey: API_KEY,
-      apiSecret: API_SECRET,
+      apiKey: this.apiKey,
+      apiSecret: this.apiSecret,
       meetingNumber: this.meetingId,
       userName: this.nickname,
       passWord: this.password,

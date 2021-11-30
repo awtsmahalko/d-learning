@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ApiSettings;
 
 class ZoomApiController extends Controller
 {
     public static function createZoomMeeting($meetingConfig = [])
     {
-        $jwtToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InhFNFJNWTFpUkRDYnpYTDBoZmdRX0EiLCJleHAiOjE2NDA5NjYzNDAsImlhdCI6MTYzNTkyNjEwNH0.xQObZJQKLD2xRpDpX1jQ4kVUCNhxKIat-Tcncs3iihs';
+        $apiCredentials = static::jwtToken();
+        $jwtToken = $apiCredentials->jwt_token;
 
         $requestBody = [
             'topic'         => $meetingConfig['topic']  ?? 'PHP General Talk',
@@ -35,7 +37,7 @@ class ZoomApiController extends Controller
             ]
         ];
 
-        $zoomUserId = '1N6c5fUHR2CJkluLrbV0og';
+        $zoomUserId = $apiCredentials->zoom_user_id;
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
@@ -78,5 +80,10 @@ class ZoomApiController extends Controller
         //         'response'     => json_decode($response)
         //     ];
         // }
+    }
+    public static function jwtToken()
+    {
+        $data = ApiSettings::where('status', 1)->get();
+        return $data[0];
     }
 }

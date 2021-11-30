@@ -1,15 +1,12 @@
 <template>
     <div class="card">
-        <div class="card-header">
-            <h3>Subject Name</h3>
-        </div>
         <div class="card-body">
             <table border="1px" width="100%" style="text-align:center;
             ">
                 <thead>
                     <tr>
                         <th>Student's Name</th>
-                        <th v-for="(wQ , key) in workNumber" :key="key">{{ wQ.title + ' ' + wQ.points }}</th>
+                        <th v-for="(wQ , key) in workNumber" :key="key">{{ wQ.title + ' ' + formatNumber(wQ.points) }}</th>
                         <th>Earned Points</th>
                         <th>Total Points</th>
                     </tr>
@@ -17,9 +14,9 @@
                 <tbody v-if="studentWorks.length > 0">
                     <tr v-for="(workData,key) in studentWorks" :key="key">
                         <td>{{ workData.student_name }}</td>
-                        <td v-for="(wQ , ky) in workNumber" :key="ky">{{ workData.work[ky] }}</td>
-                        <td>{{ workData.earned_points }}</td>
-                        <td>{{ workData.total_points }}</td>
+                        <td v-for="(wQ , ky) in workNumber" :key="ky">{{ formatNumber(workData.work[ky]) }}</td>
+                        <td>{{ formatNumber(workData.earned_points) }}</td>
+                        <td>{{ formatNumber(workData.total_points) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -54,6 +51,10 @@ export default {
             }).catch((error) =>{
                 console.log(error);
             });
+        },
+        formatNumber(value){
+            value = parseFloat(value);
+            return value.toFixed(2);
         }
     }
 }

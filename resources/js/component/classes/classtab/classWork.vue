@@ -183,7 +183,7 @@
                                     id="title"
                                   >
                                     <option value="">-- select term --</option>
-                                    <option value="Prelem">Prelem</option>
+                                    <option value="Prelim">Prelim</option>
                                     <option value="Midterm">Midterm</option>
                                     <option value="Enterm">Enterm</option>
                                   </select>
@@ -428,10 +428,16 @@ export default {
       this.axios
         .post(baseUrl + "/api/class/activity/add", this.newActivity)
         .then((response) => {
-          this.getActivity();
-          $("#createClassworkModal").modal("hide");
-          $("#modal_new_activity").trigger("reset");
-          alertMe(response.data.message);
+          if(response.data.counter == 1){
+            this.getActivity();
+            $("#createClassworkModal").modal("hide");
+            $("#modal_new_activity").trigger("reset");
+            alertMe(response.data.message);
+          }else if(response.data.counter == 2){
+            entry_already_exists();
+          }else{
+            alertMe(response.data.message);
+          }
         })
         .catch((error) => {
           console.log(error);
