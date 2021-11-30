@@ -109,25 +109,32 @@ class ClassController extends Controller
     {
         $title =  ($request->text_title == "") ? $request->title : $request->text_title;
 
-        $form_data = array(
-            'user_id' => $request->user_id,
-            'class_id' => $request->class_id,
-            'title' => $title,
-            'instruction' => $request->instructions,
-            'points' => $request->points,
-            'duedate' => $request->duedate,
-            'category' => $request->cw_category,
-            'status' => 1
-        );
+        $counter = ClassActivity::where('class_id', '=', $request->class_id)
+            ->where('title', '=', $title)
+            ->count();
 
-        $classactivity = ClassActivity::create($form_data);
-
-        $this->moveClassworkMaterials($request, $classactivity->id);
-
-        return response()->json([
-            'message' => 'Class Activity Created Successfully!!',
-            'class' => $classactivity
-        ]);
+        if ($counter > 0) {
+            $response['counter'] = 2;
+        } else {
+            $form_data = array(
+                'user_id' => $request->user_id,
+                'class_id' => $request->class_id,
+                'title' => $title,
+                'instruction' => $request->instructions,
+                'points' => $request->points,
+                'duedate' => $request->duedate,
+                'category' => $request->cw_category,
+                'status' => 1
+            );
+            $classactivity = ClassActivity::create($form_data);
+            $this->moveClassworkMaterials($request, $classactivity->id);
+            $response = [
+                'counter' => 1,
+                'message' => 'Class Activity Created Successfully!!',
+                'class' => $classactivity
+            ];
+        }
+        return response()->json($response);
     }
 
     public function updateActivity(Request $request)
