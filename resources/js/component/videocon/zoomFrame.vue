@@ -27,7 +27,7 @@ ZoomMtg.prepareJssdk();
 // var API_SECRET = 'zdxTw3HhPPWFStKXNQ3IY5JrYOkcbyfb06zC';
 
 var role = sessionCategory == 'T' ? 1 : 0;
-var url = baseUrl == '' ? "http://127.0.0.1:8000/video/view/": "https://dlearning.tech/video/view/";
+var url = "https://dlearning.tech/video/view/";
 
 export default {
   name: "ZoomFrame",

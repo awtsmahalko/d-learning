@@ -12,9 +12,9 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 
     <?php if ($_REQUEST['baseUrl'] == '') { ?>
-        <meta http-equiv="origin-trial" content="Am01xjFqpxOImHK8gajNHIO/9EFQDJWrQLU0EmlKWHBW5XXDYazLgMkyNzsqI2lZczgyVtWELZo0ItcK8RAEFAIAAABgeyJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAiLCJmZWF0dXJlIjoiVW5yZXN0cmljdGVkU2hhcmVkQXJyYXlCdWZmZXIiLCJleHBpcnkiOjE2NTg4Nzk5OTl9">
+        <meta http-equiv="origin-trial" content="Ahg0S5SBotCWZF9hS1/lrMc+qKaf3kL55nLSw6kVFNBa0M6CZusNFoxnh/I9zVSsCVc133Kh1r/7McjKj8r9dQ0AAAB4eyJvcmlnaW4iOiJodHRwczovL2RsZWFybmluZy50ZWNoOjQ0MyIsImZlYXR1cmUiOiJVbnJlc3RyaWN0ZWRTaGFyZWRBcnJheUJ1ZmZlciIsImV4cGlyeSI6MTY1ODg3OTk5OSwiaXNTdWJkb21haW4iOnRydWV9">
     <?php } else { ?>
-        <meta http-equiv="origin-trial" content="ApGj5uJHFroHyhR9pmEGY7NGGkOoEBZ3q8xpNRzJnXIWStJ3al/haDgZog6T3tMF7ZaMoNkT4p76/qTi+yHp0QAAAAB3eyJvcmlnaW4iOiJodHRwczovL2p1YW5jb2Rlci5jb206NDQzIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjU4ODc5OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=">
+        <meta http-equiv="origin-trial" content="Ahg0S5SBotCWZF9hS1/lrMc+qKaf3kL55nLSw6kVFNBa0M6CZusNFoxnh/I9zVSsCVc133Kh1r/7McjKj8r9dQ0AAAB4eyJvcmlnaW4iOiJodHRwczovL2RsZWFybmluZy50ZWNoOjQ0MyIsImZlYXR1cmUiOiJVbnJlc3RyaWN0ZWRTaGFyZWRBcnJheUJ1ZmZlciIsImV4cGlyeSI6MTY1ODg3OTk5OSwiaXNTdWJkb21haW4iOnRydWV9">
     <?php } ?>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
