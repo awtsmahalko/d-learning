@@ -234,7 +234,7 @@
                                     <option value="">-- select term --</option>
                                     <option value="Prelim">Prelim</option>
                                     <option value="Midterm">Midterm</option>
-                                    <option value="Enterm">Enterm</option>
+                                    <option value="Endterm">Endterm</option>
                                   </select>
                                 </div>
                                 <div class="form-group bmd-form-group">
