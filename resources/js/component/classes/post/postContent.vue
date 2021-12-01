@@ -64,7 +64,7 @@
     <!-- modal -->
     <div
       class="modal fade"
-      id="newCommentModal"
+      :id="'newCommentModal' + postId"
       role="dialog"
       aria-labelledby="newCommentModal"
       aria-hidden="true"
@@ -261,14 +261,15 @@ export default {
           pcFileValue.push($(this).val());
         });
 
+        var postid = $("#hidden_post_id").val();
         this.comment.commentedFiles = pcFileValue;
-        this.comment.post_id = $("#hidden_post_id").val();
+        this.comment.post_id = postid;
 
         this.axios
           .post(baseUrl + "/api/post/comment/add", this.comment)
           .then((response) => {
             this.getComment();
-            $("#newCommentModal").modal("hide");
+            $("#newCommentModal" + postid).modal("hide");
             this.comment.message = "";
           })
           .catch((error) => {
@@ -312,7 +313,7 @@ export default {
     },
     openCommentModal(postid) {
       $("#hidden_post_id").val(postid);
-      $("#newCommentModal").modal("show");
+      $("#newCommentModal" + postid).modal("show");
     },
     handleFilePondInit: function () {
       this.$refs.napond.getFiles();

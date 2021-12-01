@@ -26,7 +26,7 @@
                 style="border-right: 1px solid #c4c0c0"
               >
                 <img
-                  :src="attachment.thumbnail"
+                  :src="asset(attachment.thumbnail)"
                   :alt="attachment.filename"
                   style="
                     width: 92px;
@@ -111,6 +111,9 @@ export default {
           post_attachment_id,
         "_blank"
       );
+    },
+    asset(path) {
+      return imgUrl + path;
     },
   },
 };

@@ -43,6 +43,7 @@
         window.sessionUsername = "{{ $auth->username; }}";
 
         window.baseUrl = "{{ $_REQUEST['baseUrl'] }}";
+        window.imgUrl = "{{ asset('').$_REQUEST['imgUrl'] }}";
     </script>
 </head>
 
