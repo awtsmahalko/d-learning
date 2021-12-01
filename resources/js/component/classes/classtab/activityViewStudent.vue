@@ -75,19 +75,37 @@
                                   :key="key"
                                 >
                                   <div
-                                    class="col-md-12 py-2"
+                                    class="col-md-12"
                                     style="
                                       display: flex;
                                       flex-direction: row;
                                       align-items: center;
+                                      padding: 0px;
                                     "
                                   >
+                                    <div
+                                      class="card-icon p-0"
+                                      style="border-right: 1px solid #c4c0c0"
+                                    >
+                                      <img
+                                        :src="asset(sw.thumbnail)"
+                                        :alt="sw.thumbnail"
+                                        style="
+                                          width: 92px;
+                                          height: 64px;
+                                          object-fit: cover;
+                                          border-top-left-radius: 3px;
+                                          border-bottom-left-radius: 3px;
+                                          background-color: #ddd;
+                                        "
+                                      />
+                                    </div>
                                     <div
                                       class="pl-2"
                                       style="
                                         display: flex;
                                         flex-direction: column;
-                                        width: 80%;
+                                        width: 46%;
                                       "
                                     >
                                       <h4
@@ -162,7 +180,9 @@
                             <div
                               v-show="
                                 studentWork.length > 0
-                                  ? studentWork[0].status == 'S'
+                                  ? studentScore == null
+                                    ? true
+                                    : false
                                   : false
                               "
                               style="
@@ -179,7 +199,7 @@
                                 style="width: 100%"
                                 v-on:click="unsubmitWork"
                               >
-                                Unsubmit
+                                Unsubmit {{ studentScore }}
                               </button>
                             </div>
                           </div>
@@ -218,6 +238,7 @@ export default {
       is_teacher: false,
       showRemoveFile: true,
       classData: {},
+      studentScore: [],
       studentWork: [],
       studentActivityFiles: [],
       session: {
@@ -292,7 +313,9 @@ export default {
           },
         })
         .then((response) => {
-          this.studentWork = response.data;
+          this.studentWork = response.data.activity_detail;
+          this.studentScore = response.data.scoring;
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -368,6 +391,9 @@ export default {
         "_blank"
       );
     },
+    asset(path) {
+      return imgUrl + path;
+    },
   },
   components: {
     activityInstruction,
@@ -376,6 +402,11 @@ export default {
 };
 </script>
 <style scoped>
+.file-attachment {
+  border: 1px solid #c4c0c0;
+  margin: 5px;
+}
+
 .comment {
   margin-bottom: 2px;
   /* white-space: break-spaces; */

@@ -173,7 +173,7 @@ class ClassController extends Controller
                 if (Storage::exists('public/classactivity/materials/' . $class->code . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename)) {
                     Storage::move('public/classactivity/materials/' . $class->code . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename, 'public/classactivity/materials/' . $class->code . "/" . $activity_id . '/' . $tempSwFile->filename);
 
-                    $thumbnail = $_REQUEST['baseUrl'] . '/public/storage/classactivity/materials/' . $class->code . '/' . $activity_id . '/' . $tempSwFile->filename;
+                    $thumbnail = '/classactivity/materials/' . $class->code . '/' . $activity_id . '/' . $tempSwFile->filename;
 
                     ClassActivityMaterial::where('id', $tempSwFile->id)->update(['class_activity_id' => $activity_id, 'thumbnail' => $thumbnail, 'status' => 'S']);
 
@@ -205,12 +205,12 @@ class ClassController extends Controller
             $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
 
             if (in_array(strtoupper($fileType), $fileThumbs)) {
-                $thumbnail = "../../storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+                $thumbnail = "/file_extension_icon/" . strtoupper($fileType) . '.png';
             } else {
                 if (in_array(strtoupper($fileType), $imgThumbs)) {
-                    $thumbnail = '../../storage/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $filename;
+                    $thumbnail = '/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $filename;
                 } else {
-                    $thumbnail = "../../storage/file_extension_icon/FILE.png";
+                    $thumbnail = "/file_extension_icon/FILE.png";
                 }
             }
 
@@ -266,9 +266,13 @@ class ClassController extends Controller
 
     public function studentworkdata(Request $request)
     {
-        $studentWork = ClassActivityDetail::where('class_activity_id', $request->activity_id)->where('user_id', $request->user_id)->get();
+        $test = [];
 
-        return response()->json($studentWork);
+        $test['activity_detail'] = ClassActivityDetail::where('class_activity_id', $request->activity_id)->where('user_id', $request->user_id)->get();
+
+        $test['scoring'] = ClassActivityScoring::where('user_id', $request->user_id)->where('class_activity_id', $request->activity_id)->first();
+
+        return response()->json((object) $test);
     }
 
     public function unsubmitStudentWork(Request $request)
@@ -365,12 +369,12 @@ class ClassController extends Controller
             $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
 
             if (in_array(strtoupper($fileType), $fileThumbs)) {
-                $thumbnail = $_REQUEST['baseUrl'] . "/public/storage/file_extension_icon/" . strtoupper($fileType) . '.png';
+                $thumbnail = "/file_extension_icon/" . strtoupper($fileType) . '.png';
             } else {
                 if (in_array(strtoupper($fileType), $imgThumbs)) {
-                    $thumbnail = $_REQUEST['baseUrl'] . '/public/storage/classactivity/' . $classCode->code . '/' . $filename;
+                    $thumbnail = '/classactivity/' . $classCode->code . '/' . $filename;
                 } else {
-                    $thumbnail = $_REQUEST['baseUrl'] . "/public/storage/file_extension_icon/FILE.png";
+                    $thumbnail = "/file_extension_icon/FILE.png";
                 }
             }
 

@@ -9,7 +9,7 @@
           :key="key"
         >
           <div style="width: 100%padding: 11px;">
-            <div class="col-md-12">
+            <div class="col-md-12" style="overflow-x: auto">
               <div class="d-flex">
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
@@ -28,10 +28,7 @@
                     padding: 11px;
                   "
                 >
-                  <div
-                    class="mx-2"
-                    style="display: flex; flex-direction: column; width: 100%"
-                  >
+                  <div class="mx-2" style="width: 100%">
                     <h6 class="card-title mb-0">
                       <b class="comment" id="post-user">{{
                         studentWork.user.fname
@@ -62,20 +59,37 @@
                                   style="margin: 3px; margin-top: 5px"
                                 >
                                   <div
-                                    class="col-md-12 py-2"
+                                    class="col-md-12"
                                     style="
                                       display: flex;
                                       flex-direction: row;
                                       align-items: center;
-                                      justify-content: space-between;
+                                      padding: 0px;
                                     "
                                   >
+                                    <div
+                                      class="card-icon p-0"
+                                      style="border-right: 1px solid #c4c0c0"
+                                    >
+                                      <img
+                                        :src="asset(studentFile.thumbnail)"
+                                        :alt="studentFile.thumbnail"
+                                        style="
+                                          width: 92px;
+                                          height: 64px;
+                                          object-fit: cover;
+                                          border-top-left-radius: 3px;
+                                          border-bottom-left-radius: 3px;
+                                          background-color: #ddd;
+                                        "
+                                      />
+                                    </div>
                                     <div
                                       class="pl-2"
                                       style="
                                         display: flex;
                                         flex-direction: column;
-                                        width: 80%;
+                                        width: 69%;
                                       "
                                     >
                                       <h4
@@ -158,11 +172,7 @@
       aria-labelledby="scoringModal"
       aria-hidden="true"
     >
-      <div
-        class="modal-dialog"
-        role="document"
-        style="max-width: 40% !important"
-      >
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form id="modal_addScore" @submit.prevent="addScore">
             <div class="modal-header">
@@ -332,10 +342,18 @@ export default {
         "_blank"
       );
     },
+    asset(path) {
+      return imgUrl + path;
+    },
   },
 };
 </script>
 <style scoped>
+.file-attachment {
+  border: 1px solid #c4c0c0;
+  margin: 5px;
+}
+
 .comment {
   font-size: 14px;
   font-weight: 800;

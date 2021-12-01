@@ -90,12 +90,12 @@ class PostController extends Controller
             $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
 
             if (in_array(strtoupper($fileType), $fileThumbs)) {
-                $thumbnail = asset("storage") . "/file_extension_icon/" . strtoupper($fileType) . '.png';
+                $thumbnail = "/file_extension_icon/" . strtoupper($fileType) . '.png';
             } else {
                 if (in_array(strtoupper($fileType), $imgThumbs)) {
-                    $thumbnail = asset("storage") . "/postattachment/" . $classCode->code . '/' . $filename;
+                    $thumbnail = "/postattachment/" . $classCode->code . '/' . $filename;
                 } else {
-                    $thumbnail = asset("storage") . "/file_extension_icon/FILE.png";
+                    $thumbnail = "/file_extension_icon/FILE.png";
                 }
             }
 
@@ -193,12 +193,12 @@ class PostController extends Controller
             $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
 
             if (in_array(strtoupper($fileType), $fileThumbs)) {
-                $thumbnail = asset("storage") . "/file_extension_icon/" . strtoupper($fileType) . '.png';
+                $thumbnail = "/file_extension_icon/" . strtoupper($fileType) . '.png';
             } else {
                 if (in_array(strtoupper($fileType), $imgThumbs)) {
-                    $thumbnail = asset("storage") . '/postcommentattachment/' . $request->classCode . '/' . $filename;
+                    $thumbnail = '/postcommentattachment/' . $request->classCode . '/' . $filename;
                 } else {
-                    $thumbnail = asset("storage") . "/file_extension_icon/FILE.png";
+                    $thumbnail = "/file_extension_icon/FILE.png";
                 }
             }
 
@@ -240,7 +240,7 @@ class PostController extends Controller
                 if (Storage::exists('public/postcommentattachment/' . $request->classCode . '/tmp/' . $tempPcFile->folder . '/' . $tempPcFile->filename)) {
                     Storage::move('public/postcommentattachment/' . $request->classCode . '/tmp/' . $tempPcFile->folder . '/' . $tempPcFile->filename, 'public/postcommentattachment/' . $request->classCode . "/" . $comment_id . '/' . $tempPcFile->filename);
 
-                    $thumbnail = asset('storage') . '/postcommentattachment/' . $request->classCode . '/' . $comment_id . '/' . $tempPcFile->filename;
+                    $thumbnail = '/postcommentattachment/' . $request->classCode . '/' . $comment_id . '/' . $tempPcFile->filename;
 
                     PostCommentAttachment::where('id', $tempPcFile->id)->update(['post_comment_id' => $comment_id, 'thumbnail' => $thumbnail, 'status' => 'S']);
 

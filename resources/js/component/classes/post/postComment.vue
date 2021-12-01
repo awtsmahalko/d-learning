@@ -60,14 +60,32 @@
                         style="margin: 3px; margin-top: 5px"
                       >
                         <div
-                          class="col-md-12 py-2"
+                          class="col-md-12"
                           style="
                             display: flex;
                             flex-direction: row;
                             align-items: center;
                             justify-content: space-between;
+                            padding: 0px;
                           "
                         >
+                          <div
+                            class="card-icon p-0"
+                            style="border-right: 1px solid #c4c0c0"
+                          >
+                            <img
+                              :src="asset(commentFile.thumbnail)"
+                              :alt="commentFile.thumbnail"
+                              style="
+                                width: 92px;
+                                height: 64px;
+                                object-fit: cover;
+                                border-top-left-radius: 3px;
+                                border-bottom-left-radius: 3px;
+                                background-color: #ddd;
+                              "
+                            />
+                          </div>
                           <div
                             class="pl-2"
                             style="
@@ -186,10 +204,18 @@ export default {
         allowOutsideClick: false,
       });
     },
+    asset(path) {
+      return imgUrl + path;
+    },
   },
 };
 </script>
 <style scoped>
+.file-attachment {
+  border: 1px solid #c4c0c0;
+  margin: 5px;
+}
+
 .comment {
   font-size: 14px;
   font-weight: 400;

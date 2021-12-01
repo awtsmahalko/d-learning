@@ -5,7 +5,7 @@
         <!-- start loop -->
         <div class="card my-2">
           <div style="width: 100%">
-            <div class="col-md-12 pt-2">
+            <div class="col-md-12 pt-2" style="overflow-x: auto">
               <div class="d-flex">
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
@@ -59,20 +59,37 @@
                               style="margin: 3px; margin-top: 5px"
                             >
                               <div
-                                class="col-md-12 py-2"
+                                class="col-md-12"
                                 style="
                                   display: flex;
                                   flex-direction: row;
                                   align-items: center;
-                                  justify-content: space-between;
+                                  padding: 0px;
                                 "
                               >
+                                <div
+                                  class="card-icon p-0"
+                                  style="border-right: 1px solid #c4c0c0"
+                                >
+                                  <img
+                                    :src="asset(material.thumbnail)"
+                                    :alt="material.thumbnail"
+                                    style="
+                                      width: 92px;
+                                      height: 64px;
+                                      object-fit: cover;
+                                      border-top-left-radius: 3px;
+                                      border-bottom-left-radius: 3px;
+                                      background-color: #ddd;
+                                    "
+                                  />
+                                </div>
                                 <div
                                   class="pl-2"
                                   style="
                                     display: flex;
                                     flex-direction: column;
-                                    width: 80%;
+                                    width: 69%;
                                   "
                                 >
                                   <h4
@@ -282,20 +299,43 @@
                                             style="margin: 3px; margin-top: 5px"
                                           >
                                             <div
-                                              class="col-md-12 py-2"
+                                              class="col-md-12"
                                               style="
                                                 display: flex;
                                                 flex-direction: row;
                                                 align-items: center;
                                                 justify-content: space-between;
+                                                padding: 0px;
                                               "
                                             >
+                                              <div
+                                                class="card-icon p-0"
+                                                style="
+                                                  border-right: 1px solid
+                                                    #c4c0c0;
+                                                "
+                                              >
+                                                <img
+                                                  :src="
+                                                    asset(material.thumbnail)
+                                                  "
+                                                  :alt="material.thumbnail"
+                                                  style="
+                                                    width: 92px;
+                                                    height: 64px;
+                                                    object-fit: cover;
+                                                    border-top-left-radius: 3px;
+                                                    border-bottom-left-radius: 3px;
+                                                    background-color: #ddd;
+                                                  "
+                                                />
+                                              </div>
                                               <div
                                                 class="pl-2"
                                                 style="
                                                   display: flex;
                                                   flex-direction: column;
-                                                  width: 80%;
+                                                  width: 56%;
                                                 "
                                               >
                                                 <h4
@@ -653,11 +693,19 @@ export default {
       this.$refs.napond.getFiles();
       // console.log(this.$refs.napond.getFiles());
     },
+    asset(path) {
+      return imgUrl + path;
+    },
   },
 };
 </script>
 
 <style scoped>
+.file-attachment {
+  border: 1px solid #c4c0c0;
+  margin: 5px;
+}
+
 .comment {
   margin-bottom: 2px;
   /* white-space: break-spaces; */

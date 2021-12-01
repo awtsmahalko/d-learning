@@ -7,10 +7,12 @@ if ("PROD" == "LOCAL") {
 	$_REQUEST['public'] = asset("public/material");
 	$_REQUEST['mixAppBlade'] = asset('public/js/app.js');
 	$_REQUEST['baseUrl'] = "/dlearning";
+	$_REQUEST['imgUrl'] = "/public/storage";
 } else {
 	$_REQUEST['public'] = asset("material");
 	$_REQUEST['mixAppBlade'] = mix('js/app.js');
 	$_REQUEST['baseUrl'] = "";
+	$_REQUEST['imgUrl'] = "storage";
 }
 
 /*
