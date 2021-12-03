@@ -231,6 +231,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // Import Vue FilePond
 
  // Import FilePond styles
@@ -249,6 +271,7 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
       is_teacher: false,
       showRemoveFile: true,
       classData: {},
+      studentScore: [],
       studentWork: [],
       studentActivityFiles: [],
       session: {
@@ -326,7 +349,8 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
                     activity_id: _this2.$route.params.activity_id
                   }
                 }).then(function (response) {
-                  _this2.studentWork = response.data;
+                  _this2.studentWork = response.data.activity_detail;
+                  _this2.studentScore = response.data.scoring; // console.log(response.data);
                 })["catch"](function (error) {
                   console.log(error);
                   _this2.studentWork = [];
@@ -381,6 +405,29 @@ var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_2___default()();
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    deleteWork: function deleteWork(activity_detail_id) {
+      var _this5 = this;
+
+      this.axios({
+        method: "DELETE",
+        url: baseUrl + "/api/class/activity/deleteStudentWork",
+        data: {
+          classId: this.$route.params.class_id,
+          activityId: this.$route.params.activity_id,
+          activity_detail_id: activity_detail_id
+        }
+      }).then(function (response) {
+        _this5.getStudentWork();
+      })["catch"](function () {
+        error();
+      });
+    },
+    downloadFile: function downloadFile(sw_id) {
+      window.open(baseUrl + "/api/class/activity/downloadStudentWork/" + this.$route.params.class_id + "/" + sw_id, "_blank");
+    },
+    asset: function asset(path) {
+      return imgUrl + path;
     }
   },
   components: {
@@ -404,6 +451,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_filepond__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-filepond */ "./node_modules/vue-filepond/dist/vue-filepond.js");
+/* harmony import */ var vue_filepond__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_filepond__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var filepond_dist_filepond_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! filepond/dist/filepond.min.css */ "./node_modules/filepond/dist/filepond.min.css");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -509,30 +559,483 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// Import Vue FilePond
+ // Import FilePond styles
+
+ // Import FilePond plugins
+// Please note that you need to install these plugins separately
+// Create component
+
+var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_1___default()();
+var options = {
+  placeholder: "Instructions (optional)",
+  toolbar: [["style", ["style"]], ["font", ["bold", "underline", "clear"]], ["para", ["ul", "ol", "paragraph"]]],
+  disableDragAndDrop: true,
+  spellCheck: true
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["activityid"],
   data: function data() {
+    var _this = this;
+
     return {
+      is_teacher: false,
+      is_Exam_title: false,
+      activityDetailFiles: [],
       activities: [],
       activity: {
         user_id: sessionUserId,
         id: ""
       },
+      activityDetail: {
+        id: "",
+        user_id: sessionUserId,
+        classworkFiles: [],
+        class_id: "",
+        title: "",
+        text_title: "",
+        cw_category: "",
+        points: "",
+        duedate: "",
+        instructions: ""
+      },
       session: {
         user_id: sessionUserId,
         category: sessionCategory
+      },
+      server: {
+        process: function process(fieldName, file, metadata, load, error) {
+          var formData = new FormData();
+          formData.append("file", file, file.name);
+          formData.append("classId", _this.activityDetail.class_id); // console.log(this.$route.params.activity_id);
+
+          _this.axios({
+            method: "POST",
+            url: baseUrl + "/api/class/activity/uploadClassworkAttachment",
+            data: formData,
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }).then(function (response) {
+            load(response.data);
+          })["catch"](function () {
+            error();
+          });
+        },
+        revert: function revert(uniqueFileId, load, error) {
+          _this.axios({
+            method: "DELETE",
+            url: baseUrl + "/api/class/activity/revertClassWorkMaterial",
+            data: {
+              file: uniqueFileId,
+              classId: _this.activityDetail.class_id
+            }
+          }).then(function (response) {
+            load();
+          })["catch"](function () {
+            error();
+          }); // Can call the error method if something is wrong, should exit after
+
+
+          error("oh my goodness"); // Should call the load method when done, no parameters required
+
+          load();
+        }
       }
     };
   },
   created: function created() {
     this.activity.id = this.activityid;
+    this.activityDetail.id = this.activityid;
+    this.activityDetail.class_id = this.$route.params.id;
   },
   mounted: function mounted() {
+    this.is_Exam_title = false;
+    this.is_teacher = sessionCategory == "T" ? true : false;
     this.getActivity();
+    var vm = this;
+    options.callbacks = {
+      onChange: function onChange(contents) {
+        vm.activityDetail.instructions = contents;
+      }
+    };
+    $("textarea#snactivityDetail").summernote(options);
+    $("textarea#snactivityDetail").summernote("code", "<br>");
+    $("#dueDate").val(new Date(this.activityDetail.duedate).toLocaleDateString());
   },
   methods: {
     getActivity: function getActivity() {
-      var _this = this;
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -540,16 +1043,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get(baseUrl + "/api/class/activity/detail", {
+                return _this2.axios.get(baseUrl + "/api/class/activity/detail", {
                   params: {
                     user_id: sessionUserId,
-                    activityId: _this.activityid
+                    activityId: _this2.activityid
                   }
                 }).then(function (response) {
-                  _this.activities = response.data;
+                  _this2.activities = response.data;
+                  _this2.activityDetail.class_id = response.data.class_id; // console.log(response.data);
+
+                  // console.log(response.data);
+                  _this2.activityDetail.instructions = response.data.instruction;
+                  $("#snactivityDetail").summernote("reset");
+                  $("#snactivityDetail").summernote("code", response.data.instruction);
+                  _this2.activityDetail.points = response.data.points;
+                  _this2.activityDetail.duedate = new Date(response.data.duedate).toLocaleDateString();
+                  _this2.activityDetail.cw_category = response.data.category;
+
+                  if (response.data.category == "E") {
+                    _this2.activityDetail.title = response.data.title;
+                  } else {
+                    _this2.activityDetail.text_title = response.data.title;
+                  }
+
+                  _this2.displayTitle(); // console.log(this.activityDetail);
+
                 })["catch"](function (error) {
                   console.log(error);
-                  _this.activities = [];
+                  _this2.activities = [];
                 });
 
               case 2:
@@ -559,6 +1080,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    deleteClassworkMaterial: function deleteClassworkMaterial(material_id) {
+      var _this3 = this;
+
+      this.axios({
+        method: "DELETE",
+        url: baseUrl + "/api/class/activity/deleteClassWorkMaterial",
+        data: {
+          activity: this.activities,
+          material_id: material_id
+        }
+      }).then(function (response) {
+        _this3.getActivity();
+      })["catch"](function () {
+        error();
+      });
+    },
+    editClassworkModal: function editClassworkModal() {
+      this.getActivity();
+      $("#editClassworkModal").modal("show");
+    },
+    updateClasswork: function updateClasswork() {
+      var _this4 = this;
+
+      var cwFileValue = [];
+      $("input[name='file']").each(function () {
+        cwFileValue.push($(this).val());
+      });
+      this.activityDetail.classworkFiles = cwFileValue;
+      this.axios.post(baseUrl + "/api/class/activity/edit", this.activityDetail).then(function (response) {
+        _this4.$refs.napond.removeFiles();
+
+        _this4.getActivity();
+
+        $("#editClassworkModal").modal("hide");
+        alertMe(response.data.message);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    displayTitle: function displayTitle() {
+      if (this.activityDetail.cw_category == "E") {
+        this.activityDetail.text_title = "";
+        this.is_Exam_title = true;
+      } else {
+        this.activityDetail.title = "";
+        this.is_Exam_title = false;
+      }
+    },
+    downloadMaterial: function downloadMaterial(material_id) {
+      window.open(baseUrl + "/api/class/activity/downloadClassWorkMaterial/" + this.activityDetail.class_id + "/" + material_id, "_blank");
+    },
+    handleFilePondInit: function handleFilePondInit() {
+      // console.log("new activity FilePond has initialized");
+      // example of instance method call on pond reference
+      this.$refs.napond.getFiles(); // console.log(this.$refs.napond.getFiles());
+    },
+    asset: function asset(path) {
+      return imgUrl + path;
     }
   }
 });
@@ -606,7 +1186,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.comment[data-v-3a72dc6e] {\n  margin-bottom: 2px;\n  /* white-space: break-spaces; */\n}\n.dropdown-toggle[data-v-3a72dc6e]::after {\n  content: none !important;\n}\n.normalText[data-v-3a72dc6e] {\n  font-weight: 400;\n}\n.additionalLabel[data-v-3a72dc6e] {\n  color: #505050;\n  font-weight: 400;\n}\n.instructionDescription[data-v-3a72dc6e] {\n  color: #505050;\n  font-weight: 400;\n  font-size: 14px;\n}\n.file-attachment[data-v-3a72dc6e] {\n  border: 1px solid #c4c0c0;\n  margin: 5px;\n}\n.post-description[data-v-3a72dc6e] {\n  color: #5a5a5a;\n  font-weight: 410;\n}\n.attachment-remove[data-v-3a72dc6e] {\n  cursor: default;\n}\n.attachment-remove-icon[data-v-3a72dc6e] {\n  font-size: 1.1rem;\n  color: #f44336;\n  padding: 0.40625rem 1.25rem;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.file-attachment[data-v-3a72dc6e] {\n  border: 1px solid #c4c0c0;\n  margin: 5px;\n}\n.comment[data-v-3a72dc6e] {\n  margin-bottom: 2px;\n  /* white-space: break-spaces; */\n}\n.dropdown-toggle[data-v-3a72dc6e]::after {\n  content: none !important;\n}\n.normalText[data-v-3a72dc6e] {\n  font-weight: 400;\n}\n.additionalLabel[data-v-3a72dc6e] {\n  color: #505050;\n  font-weight: 400;\n}\n.instructionDescription[data-v-3a72dc6e] {\n  color: #505050;\n  font-weight: 400;\n  font-size: 14px;\n}\n.file-attachment[data-v-3a72dc6e] {\n  border: 1px solid #c4c0c0;\n  margin: 5px;\n}\n.post-description[data-v-3a72dc6e] {\n  color: #5a5a5a;\n  font-weight: 410;\n}\n.attachment-remove[data-v-3a72dc6e] {\n  cursor: default;\n}\n.attachment-remove-icon[data-v-3a72dc6e] {\n  font-size: 1.1rem;\n  color: #f44336;\n  padding: 0.40625rem 1.25rem;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -630,7 +1210,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.comment[data-v-f5bcea68] {\n  margin-bottom: 2px;\n  /* white-space: break-spaces; */\n}\n.dropdown-toggle[data-v-f5bcea68]::after {\n  content: none !important;\n}\n.normalText[data-v-f5bcea68] {\n  font-weight: 400;\n}\n.additionalLabel[data-v-f5bcea68] {\n  color: #505050;\n  font-weight: 400;\n}\n.instructionDescription[data-v-f5bcea68] {\n  color: #505050;\n  font-weight: 400;\n  font-size: 16px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.file-attachment[data-v-f5bcea68] {\n  border: 1px solid #c4c0c0;\n  margin: 5px;\n}\n.comment[data-v-f5bcea68] {\n  margin-bottom: 2px;\n  /* white-space: break-spaces; */\n}\n.dropdown-toggle[data-v-f5bcea68]::after {\n  content: none !important;\n}\n.normalText[data-v-f5bcea68] {\n  font-weight: 400;\n}\n.additionalLabel[data-v-f5bcea68] {\n  color: #505050;\n  font-weight: 400;\n}\n.instructionDescription[data-v-f5bcea68] {\n  color: #505050;\n  font-weight: 400;\n  font-size: 16px;\n}\n.file-attachment[data-v-f5bcea68] {\n  border: 1px solid #c4c0c0;\n  margin: 5px;\n}\n.post-description[data-v-f5bcea68] {\n  color: #5a5a5a;\n  font-weight: 410;\n}\n.attachment-remove[data-v-f5bcea68] {\n  cursor: default;\n}\n.attachment-remove-icon[data-v-f5bcea68] {\n  font-size: 1.1rem;\n  color: #f44336;\n  padding: 0.40625rem 1.25rem;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -14779,14 +15359,48 @@ var render = function() {
                                               _c(
                                                 "div",
                                                 {
-                                                  staticClass: "col-md-12 py-2",
+                                                  staticClass: "col-md-12",
                                                   staticStyle: {
                                                     display: "flex",
                                                     "flex-direction": "row",
-                                                    "align-items": "center"
+                                                    "align-items": "center",
+                                                    padding: "0px"
                                                   }
                                                 },
                                                 [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "card-icon p-0",
+                                                      staticStyle: {
+                                                        "border-right":
+                                                          "1px solid #c4c0c0"
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("img", {
+                                                        staticStyle: {
+                                                          width: "92px",
+                                                          height: "64px",
+                                                          "object-fit": "cover",
+                                                          "border-top-left-radius":
+                                                            "3px",
+                                                          "border-bottom-left-radius":
+                                                            "3px",
+                                                          "background-color":
+                                                            "#ddd"
+                                                        },
+                                                        attrs: {
+                                                          src: _vm.asset(
+                                                            sw.thumbnail
+                                                          ),
+                                                          alt: sw.thumbnail
+                                                        }
+                                                      })
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
                                                   _c(
                                                     "div",
                                                     {
@@ -14795,7 +15409,7 @@ var render = function() {
                                                         display: "flex",
                                                         "flex-direction":
                                                           "column",
-                                                        width: "80%"
+                                                        width: "46%"
                                                       }
                                                     },
                                                     [
@@ -14820,6 +15434,15 @@ var render = function() {
                                                             "data-placement":
                                                               "bottom",
                                                             title: "test"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.downloadFile(
+                                                                sw.id
+                                                              )
+                                                            }
                                                           }
                                                         },
                                                         [
@@ -14880,7 +15503,16 @@ var render = function() {
                                                             }
                                                           ],
                                                           staticClass:
-                                                            "attachment-remove"
+                                                            "attachment-remove",
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.deleteWork(
+                                                                sw.id
+                                                              )
+                                                            }
+                                                          }
                                                         },
                                                         [
                                                           _c(
@@ -14958,10 +15590,12 @@ var render = function() {
                                         rawName: "v-show",
                                         value:
                                           _vm.studentWork.length > 0
-                                            ? _vm.studentWork[0].status == "S"
+                                            ? _vm.studentScore == null
+                                              ? true
+                                              : false
                                             : false,
                                         expression:
-                                          "\n                              studentWork.length > 0\n                                ? studentWork[0].status == 'S'\n                                : false\n                            "
+                                          "\n                              studentWork.length > 0\n                                ? studentScore == null\n                                  ? true\n                                  : false\n                                : false\n                            "
                                       }
                                     ],
                                     staticStyle: {
@@ -14983,7 +15617,9 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                              Unsubmit\n                            "
+                                          "\n                              Unsubmit " +
+                                            _vm._s(_vm.studentScore) +
+                                            "\n                            "
                                         )
                                       ]
                                     )
@@ -15044,112 +15680,1015 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "card my-2" }, [
           _c("div", { staticStyle: { width: "100%" } }, [
-            _c("div", { staticClass: "col-md-12 pt-2" }, [
-              _c("div", { staticClass: "d-flex" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticStyle: {
-                      display: "flex",
-                      "flex-direction": "row",
-                      "justify-content": "space-between",
-                      "align-items": "baseline",
-                      width: "100%"
-                    }
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "mx-2 py-2",
-                        staticStyle: {
-                          display: "flex",
-                          "flex-direction": "column",
-                          width: "100%"
-                        }
-                      },
-                      [
-                        _c("h3", { staticClass: "card-title mb-0" }, [
-                          _c(
-                            "b",
-                            {
-                              staticClass: "comment",
-                              attrs: { id: "post-user" }
-                            },
-                            [_vm._v(_vm._s(_vm.activities.title))]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-muted mt-0 normalText" }, [
-                          _vm._v(
-                            "\n                    Posted •\n                    " +
-                              _vm._s(
-                                new Date(
-                                  _vm.activities.created_at
-                                ).toLocaleString()
-                              ) +
-                              "\n                  "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("p", {
-                          staticClass: "instructionDescription",
-                          domProps: {
-                            innerHTML: _vm._s(_vm.activities.instruction)
+            _c(
+              "div",
+              {
+                staticClass: "col-md-12 pt-2",
+                staticStyle: { "overflow-x": "auto" }
+              },
+              [
+                _c("div", { staticClass: "d-flex" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticStyle: {
+                        display: "flex",
+                        "flex-direction": "row",
+                        "justify-content": "space-between",
+                        "align-items": "baseline",
+                        width: "100%"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mx-2 py-2",
+                          staticStyle: {
+                            display: "flex",
+                            "flex-direction": "column",
+                            width: "100%"
                           }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticStyle: {
-                              display: "flex",
-                              "flex-direction": "row",
-                              "justify-content": "space-between",
-                              "align-items": "center",
-                              width: "100%",
-                              "margin-top": "12px"
+                        },
+                        [
+                          _c("h3", { staticClass: "card-title mb-0" }, [
+                            _c(
+                              "b",
+                              {
+                                staticClass: "comment",
+                                attrs: { id: "post-user" }
+                              },
+                              [_vm._v(_vm._s(_vm.activities.title))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            { staticClass: "text-muted mt-0 normalText" },
+                            [
+                              _vm._v(
+                                "\n                    Posted on\n                    " +
+                                  _vm._s(
+                                    new Date(
+                                      _vm.activities.created_at
+                                    ).toLocaleString()
+                                  ) +
+                                  "\n                  "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("p", {
+                            staticClass: "instructionDescription",
+                            domProps: {
+                              innerHTML: _vm._s(_vm.activities.instruction)
                             }
-                          },
-                          [
-                            _c("p", { staticClass: "additionalLabel" }, [
-                              _c("b", [
-                                _vm._v(
-                                  _vm._s(_vm.activities.points) + " points"
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("p", { staticClass: "additionalLabel" }, [
-                              _c("b", [
-                                _vm._v(
-                                  "Due:\n                        " +
-                                    _vm._s(
-                                      new Date(
-                                        _vm.activities.duedate
-                                      ).toLocaleDateString()
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "col-md-12",
+                              staticStyle: { "border-top": "1px solid #ddd" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "row" },
+                                _vm._l(
+                                  _vm.activities.activity_material,
+                                  function(material, key) {
+                                    return _c(
+                                      "div",
+                                      { key: key, staticClass: "col-md-6" },
+                                      [
+                                        _c("div", { staticClass: "row" }, [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "card file-attachment",
+                                              staticStyle: {
+                                                margin: "3px",
+                                                "margin-top": "5px"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass: "col-md-12",
+                                                  staticStyle: {
+                                                    display: "flex",
+                                                    "flex-direction": "row",
+                                                    "align-items": "center",
+                                                    padding: "0px"
+                                                  }
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "card-icon p-0",
+                                                      staticStyle: {
+                                                        "border-right":
+                                                          "1px solid #c4c0c0"
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("img", {
+                                                        staticStyle: {
+                                                          width: "92px",
+                                                          height: "64px",
+                                                          "object-fit": "cover",
+                                                          "border-top-left-radius":
+                                                            "3px",
+                                                          "border-bottom-left-radius":
+                                                            "3px",
+                                                          "background-color":
+                                                            "#ddd"
+                                                        },
+                                                        attrs: {
+                                                          src: _vm.asset(
+                                                            material.thumbnail
+                                                          ),
+                                                          alt:
+                                                            material.thumbnail
+                                                        }
+                                                      })
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass: "pl-2",
+                                                      staticStyle: {
+                                                        display: "flex",
+                                                        "flex-direction":
+                                                          "column",
+                                                        width: "69%"
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "h4",
+                                                        {
+                                                          staticClass:
+                                                            "card-title mb-0",
+                                                          staticStyle: {
+                                                            "text-overflow":
+                                                              "ellipsis",
+                                                            width: "100%",
+                                                            "white-space":
+                                                              "nowrap",
+                                                            overflow: "hidden",
+                                                            margin: "0px",
+                                                            "font-size": "14px"
+                                                          },
+                                                          attrs: {
+                                                            "data-toggle":
+                                                              "tooltip",
+                                                            "data-placement":
+                                                              "bottom",
+                                                            title: "test"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.downloadMaterial(
+                                                                material.id
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "b",
+                                                            {
+                                                              attrs: {
+                                                                id: "post-user"
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  material.filename
+                                                                )
+                                                              )
+                                                            ]
+                                                          )
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "small",
+                                                        {
+                                                          staticClass:
+                                                            "card-category mt-0 text-muted"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                  " +
+                                                              _vm._s(
+                                                                material.filetype
+                                                              ) +
+                                                              "\n                                "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
                                     )
-                                )
+                                  }
+                                ),
+                                0
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticStyle: {
+                                display: "flex",
+                                "flex-direction": "row",
+                                "justify-content": "space-between",
+                                "align-items": "center",
+                                width: "100%",
+                                "margin-top": "12px"
+                              }
+                            },
+                            [
+                              _c("p", { staticClass: "additionalLabel" }, [
+                                _c("b", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(
+                                        _vm.activities.category == "A"
+                                          ? "ACTIVITY"
+                                          : _vm.activities.category == "E"
+                                          ? "EXAM"
+                                          : "QUIZ"
+                                      ) +
+                                      "\n                        : " +
+                                      _vm._s(parseInt(_vm.activities.points)) +
+                                      " points"
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "additionalLabel" }, [
+                                _c("b", [
+                                  _vm._v(
+                                    "Due:\n                        " +
+                                      _vm._s(
+                                        new Date(
+                                          _vm.activities.duedate
+                                        ).toLocaleDateString()
+                                      )
+                                  )
+                                ])
                               ])
-                            ])
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm.session.category === "T"
-                      ? _c("div", [_vm._m(1), _vm._v(" "), _vm._m(2)])
-                      : _vm._e()
-                  ]
-                )
-              ])
-            ])
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.session.category === "T"
+                        ? _c("div", [
+                            _vm._m(1),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "dropdown-menu dropdown-menu-end me-sm-n4 me-n3",
+                                staticStyle: {
+                                  right: "auto !important",
+                                  left: "0 !important"
+                                },
+                                attrs: {
+                                  "aria-labelledby": "navbarDropdownMenuLink1"
+                                }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    on: { click: _vm.editClassworkModal }
+                                  },
+                                  [_vm._v("Edit")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { href: "#" }
+                                  },
+                                  [_vm._v("Delete")]
+                                )
+                              ]
+                            )
+                          ])
+                        : _vm._e()
+                    ]
+                  )
+                ])
+              ]
+            )
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "editClassworkModal",
+          role: "dialog",
+          "aria-labelledby": "editClassworkModal",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog",
+            staticStyle: { "max-width": "80% !important" },
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c(
+                "form",
+                {
+                  attrs: { id: "modal_new_activity" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.updateClasswork.apply(null, arguments)
+                    }
+                  }
+                },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body py-0" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-8" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-12" }, [
+                            _c("div", { staticClass: "card" }, [
+                              _c("div", { staticClass: "card-body" }, [
+                                _c(
+                                  "form",
+                                  {
+                                    on: {
+                                      submit: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.submitPost.apply(
+                                          null,
+                                          arguments
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c("div", { staticClass: "col-md-12" }, [
+                                        _c(
+                                          "div",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.is_Exam_title
+                                                  ? false
+                                                  : true,
+                                                expression:
+                                                  "is_Exam_title ? false : true"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "form-group bmd-form-group"
+                                          },
+                                          [
+                                            _c(
+                                              "label",
+                                              { attrs: { for: "text_title" } },
+                                              [_vm._v("Title")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value:
+                                                    _vm.activityDetail
+                                                      .text_title,
+                                                  expression:
+                                                    "activityDetail.text_title"
+                                                }
+                                              ],
+                                              staticClass: "form-control",
+                                              attrs: {
+                                                type: "text",
+                                                name: "text_title",
+                                                id: "text_title"
+                                              },
+                                              domProps: {
+                                                value:
+                                                  _vm.activityDetail.text_title
+                                              },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.$set(
+                                                    _vm.activityDetail,
+                                                    "text_title",
+                                                    $event.target.value
+                                                  )
+                                                }
+                                              }
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.is_Exam_title,
+                                                expression: "is_Exam_title"
+                                              }
+                                            ],
+                                            staticClass: "form-group"
+                                          },
+                                          [
+                                            _c(
+                                              "label",
+                                              { attrs: { for: "title" } },
+                                              [_vm._v("Title")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "select",
+                                              {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value:
+                                                      _vm.activityDetail.title,
+                                                    expression:
+                                                      "activityDetail.title"
+                                                  }
+                                                ],
+                                                staticClass: "form-control",
+                                                attrs: {
+                                                  name: "title",
+                                                  id: "title"
+                                                },
+                                                on: {
+                                                  change: function($event) {
+                                                    var $$selectedVal = Array.prototype.filter
+                                                      .call(
+                                                        $event.target.options,
+                                                        function(o) {
+                                                          return o.selected
+                                                        }
+                                                      )
+                                                      .map(function(o) {
+                                                        var val =
+                                                          "_value" in o
+                                                            ? o._value
+                                                            : o.value
+                                                        return val
+                                                      })
+                                                    _vm.$set(
+                                                      _vm.activityDetail,
+                                                      "title",
+                                                      $event.target.multiple
+                                                        ? $$selectedVal
+                                                        : $$selectedVal[0]
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "option",
+                                                  { attrs: { value: "" } },
+                                                  [_vm._v("-- select term --")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "option",
+                                                  {
+                                                    attrs: { value: "Prelim" }
+                                                  },
+                                                  [_vm._v("Prelim")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "option",
+                                                  {
+                                                    attrs: { value: "Midterm" }
+                                                  },
+                                                  [_vm._v("Midterm")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "option",
+                                                  {
+                                                    attrs: { value: "Enterm" }
+                                                  },
+                                                  [_vm._v("Enterm")]
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _vm._m(3)
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "col-md-12",
+                                          staticStyle: {
+                                            "border-top": "2px solid #ddd"
+                                          }
+                                        },
+                                        [
+                                          _c("div", { staticClass: "row" }, [
+                                            _c(
+                                              "div",
+                                              { staticClass: "col-md-12 mt-1" },
+                                              [
+                                                _c("file-pond", {
+                                                  ref: "napond",
+                                                  attrs: {
+                                                    name: "file",
+                                                    "label-idle":
+                                                      "Drop attachment here...",
+                                                    "allow-multiple": true,
+                                                    files:
+                                                      _vm.activityDetailFiles,
+                                                    server: _vm.server
+                                                  },
+                                                  on: {
+                                                    init: _vm.handleFilePondInit
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "col-md-12",
+                                                staticStyle: {
+                                                  "border-top": "1px solid #ddd"
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "row" },
+                                                  _vm._l(
+                                                    _vm.activities
+                                                      .activity_material,
+                                                    function(material, key) {
+                                                      return _c(
+                                                        "div",
+                                                        {
+                                                          key: key,
+                                                          staticClass:
+                                                            "col-md-6"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              staticClass: "row"
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "div",
+                                                                {
+                                                                  staticClass:
+                                                                    "card file-attachment",
+                                                                  staticStyle: {
+                                                                    margin:
+                                                                      "3px",
+                                                                    "margin-top":
+                                                                      "5px"
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "div",
+                                                                    {
+                                                                      staticClass:
+                                                                        "col-md-12",
+                                                                      staticStyle: {
+                                                                        display:
+                                                                          "flex",
+                                                                        "flex-direction":
+                                                                          "row",
+                                                                        "align-items":
+                                                                          "center",
+                                                                        "justify-content":
+                                                                          "space-between",
+                                                                        padding:
+                                                                          "0px"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _c(
+                                                                        "div",
+                                                                        {
+                                                                          staticClass:
+                                                                            "card-icon p-0",
+                                                                          staticStyle: {
+                                                                            "border-right":
+                                                                              "1px solid"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _c(
+                                                                            "img",
+                                                                            {
+                                                                              staticStyle: {
+                                                                                width:
+                                                                                  "92px",
+                                                                                height:
+                                                                                  "64px",
+                                                                                "object-fit":
+                                                                                  "cover",
+                                                                                "border-top-left-radius":
+                                                                                  "3px",
+                                                                                "border-bottom-left-radius":
+                                                                                  "3px",
+                                                                                "background-color":
+                                                                                  "#ddd"
+                                                                              },
+                                                                              attrs: {
+                                                                                src: _vm.asset(
+                                                                                  material.thumbnail
+                                                                                ),
+                                                                                alt:
+                                                                                  material.thumbnail
+                                                                              }
+                                                                            }
+                                                                          )
+                                                                        ]
+                                                                      ),
+                                                                      _vm._v(
+                                                                        " "
+                                                                      ),
+                                                                      _c(
+                                                                        "div",
+                                                                        {
+                                                                          staticClass:
+                                                                            "pl-2",
+                                                                          staticStyle: {
+                                                                            display:
+                                                                              "flex",
+                                                                            "flex-direction":
+                                                                              "column",
+                                                                            width:
+                                                                              "56%"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _c(
+                                                                            "h4",
+                                                                            {
+                                                                              staticClass:
+                                                                                "card-title mb-0",
+                                                                              staticStyle: {
+                                                                                "text-overflow":
+                                                                                  "ellipsis",
+                                                                                width:
+                                                                                  "100%",
+                                                                                "white-space":
+                                                                                  "nowrap",
+                                                                                overflow:
+                                                                                  "hidden",
+                                                                                margin:
+                                                                                  "0px",
+                                                                                "font-size":
+                                                                                  "14px"
+                                                                              },
+                                                                              attrs: {
+                                                                                "data-toggle":
+                                                                                  "tooltip",
+                                                                                "data-placement":
+                                                                                  "bottom",
+                                                                                title:
+                                                                                  "test"
+                                                                              },
+                                                                              on: {
+                                                                                click: function(
+                                                                                  $event
+                                                                                ) {
+                                                                                  return _vm.downloadMaterial(
+                                                                                    material.id
+                                                                                  )
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            [
+                                                                              _c(
+                                                                                "b",
+                                                                                {
+                                                                                  attrs: {
+                                                                                    id:
+                                                                                      "post-user"
+                                                                                  }
+                                                                                },
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    _vm._s(
+                                                                                      material.filename
+                                                                                    )
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            ]
+                                                                          ),
+                                                                          _vm._v(
+                                                                            " "
+                                                                          ),
+                                                                          _c(
+                                                                            "small",
+                                                                            {
+                                                                              staticClass:
+                                                                                "\n                                                  card-category\n                                                  mt-0\n                                                  text-muted\n                                                "
+                                                                            },
+                                                                            [
+                                                                              _vm._v(
+                                                                                "\n                                                " +
+                                                                                  _vm._s(
+                                                                                    material.filetype
+                                                                                  ) +
+                                                                                  "\n                                              "
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      ),
+                                                                      _vm._v(
+                                                                        " "
+                                                                      ),
+                                                                      _c(
+                                                                        "div",
+                                                                        {
+                                                                          directives: [
+                                                                            {
+                                                                              name:
+                                                                                "show",
+                                                                              rawName:
+                                                                                "v-show",
+                                                                              value:
+                                                                                _vm.is_teacher,
+                                                                              expression:
+                                                                                "is_teacher"
+                                                                            }
+                                                                          ],
+                                                                          staticClass:
+                                                                            "ms-auto"
+                                                                        },
+                                                                        [
+                                                                          _c(
+                                                                            "a",
+                                                                            {
+                                                                              staticClass:
+                                                                                "attachment-remove",
+                                                                              on: {
+                                                                                click: function(
+                                                                                  $event
+                                                                                ) {
+                                                                                  return _vm.deleteClassworkMaterial(
+                                                                                    material.id
+                                                                                  )
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            [
+                                                                              _c(
+                                                                                "i",
+                                                                                {
+                                                                                  staticClass:
+                                                                                    "\n                                                    material-icons\n                                                    attachment-remove-icon\n                                                  "
+                                                                                },
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    "close"
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ]
+                                                          )
+                                                        ]
+                                                      )
+                                                    }
+                                                  ),
+                                                  0
+                                                )
+                                              ]
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col-md-4 py-4 mt-2",
+                          staticStyle: { "border-left": "1px solid #ddd" }
+                        },
+                        [
+                          _c("div", { staticClass: "col-md-12" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "cw_category" } }, [
+                                _vm._v("Category")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.activityDetail.cw_category,
+                                      expression: "activityDetail.cw_category"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  on: {
+                                    change: [
+                                      function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.activityDetail,
+                                          "cw_category",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      },
+                                      _vm.displayTitle
+                                    ]
+                                  }
+                                },
+                                [
+                                  _c("option", { attrs: { value: "A" } }, [
+                                    _vm._v("Activity")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "E" } }, [
+                                    _vm._v("Exam")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "Q" } }, [
+                                    _vm._v("Quiz")
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "points" } }, [
+                                _vm._v("Points")
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.activityDetail.points,
+                                    expression: "activityDetail.points"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number", id: "points" },
+                                domProps: { value: _vm.activityDetail.points },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.activityDetail,
+                                      "points",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", { attrs: { for: "dueDate" } }, [
+                                _vm._v("Due Date")
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.activityDetail.duedate,
+                                    expression: "activityDetail.duedate"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "date", id: "dueDate" },
+                                domProps: { value: _vm.activityDetail.duedate },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.activityDetail,
+                                      "duedate",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4)
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -15199,23 +16738,58 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "dropdown-menu dropdown-menu-end me-sm-n4 me-n3",
-        staticStyle: { right: "auto !important", left: "0 !important" },
-        attrs: { "aria-labelledby": "navbarDropdownMenuLink1" }
-      },
-      [
-        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-          _vm._v("Edit")
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-          _vm._v("Delete")
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editClassworkModal" } },
+        [_vm._v("Details")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group bmd-form-group" }, [
+      _c("textarea", {
+        staticClass: "form-control summernote",
+        attrs: { id: "snactivityDetail", required: "" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("\n              Save changes\n            ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n              Close\n            ")]
+      )
+    ])
   }
 ]
 render._withStripped = true
