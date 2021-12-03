@@ -44,7 +44,6 @@
                         <td>{{ meet.status == "F" ? "Ended" : "Active" }}</td>
                         <td class="text-right">
                           <div
-                            v-show="is_teacher"
                             class="btn-group"
                             role="group"
                           >
@@ -56,7 +55,7 @@
                               <i class="material-icons">people</i> Attendees
                             </button>
                             <button
-                              v-show="meet.status == 'P' ? true : false"
+                              v-show="meet.status == 'P' && is_teacher ? true : false"
                               class="btn btn-sm btn-info"
                               @click="finishMeeting(meet.id)"
                             >
@@ -69,22 +68,12 @@
                             class="btn-group"
                             role="group"
                           >
-                            <router-link
+                            <a
                               class="btn btn-sm btn-primary"
-                              :to="{
-                                name: 'meeting',
-                                params: {
-                                  id: meet.id,
-                                  number: meet.number,
-                                  password: meet.password,
-                                  class_id: meet.class_id,
-                                  api_key:api_key,
-                                  api_secret:api_secret
-                                },
-                              }"
+                              :href=" meet.join_url "
+                              target="_blank"
                               ><span class="material-icons">videocam</span>
-                              {{ is_teacher ? "Start" : "Join" }}</router-link
-                            >
+                              {{ is_teacher ? "Start" : "Join" }}</a>
                             <button
                               v-show="is_teacher"
                               class="btn btn-sm btn-success"
