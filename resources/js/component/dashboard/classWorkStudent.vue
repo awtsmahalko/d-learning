@@ -1,81 +1,81 @@
 <template>
-            <div style="width: 100%;padding: 5px;">
-          <div class="col-md-12">
-            <div class="d-flex">
-              <div class="flex-shrink-0" style="padding: 11px">
-                <img
-                  alt="Image placeholder"
-                  class="avatar rounded-circle me-3"
-                  src="http://via.placeholder.com/300x180"
-                  style="width: 40px; height: 40px"
-                />
-              </div>
+  <div class="card my-2" style="width: 100%;padding: 5px;">
+    <div class="col-md-12">
+      <div class="d-flex">
+        <div class="flex-shrink-0" style="padding: 11px">
+          <img
+            alt="Image placeholder"
+            class="avatar rounded-circle me-3"
+            src="http://via.placeholder.com/300x180"
+            style="width: 40px; height: 40px"
+          />
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+          "
+        >
+
+            <router-link
+              :to="{
+                name: 'activityViewStudent',
+                params: {
+                  class_id: activity.class_id,
+                  activity_id: activity.id,
+                },
+              }"
+            >
               <div
+                class="mx-2"
                 style="
                   display: flex;
-                  flex-direction: row;
-                  justify-content: space-between;
-                  align-items: center;
-                  width: 100%;
+                  flex-direction: column;
+                  padding-top: 6px;
                 "
               >
-
-                  <router-link
-                    :to="{
-                      name: 'activityViewStudent',
-                      params: {
-                        class_id: activity.class_id,
-                        activity_id: activity.id,
-                      },
-                    }"
+                <h5 class="card-title mb-0">
+                  <b class="comment" id="post-user"
+                    >{{ activity.user.fname }} Posted a new
+                    {{
+                      activity.category == "A"
+                        ? "ACTIVITY"
+                        : activity.category == "E"
+                        ? "EXAM"
+                        : "QUIZ"
+                    }}: {{ activity.title }}</b
                   >
-                    <div
-                      class="mx-2"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        padding-top: 6px;
-                      "
-                    >
-                      <h5 class="card-title mb-0">
-                        <b class="comment" id="post-user"
-                          >{{ activity.user.fname }} Posted a new
-                          {{
-                            activity.category == "A"
-                              ? "ACTIVITY"
-                              : activity.category == "E"
-                              ? "EXAM"
-                              : "QUIZ"
-                          }}: {{ activity.title }}</b
-                        >
-                      </h5>
-                      <h6 class="card-title mb-0">
-                        <i>{{ activity.class.code }}</i> 
-                        <b>{{ activity.class.name }}</b>
-                      </h6>
-                      <small class="text-muted mt-0">
-                        Posted
-                        {{ new Date(activity.created_at).toLocaleString() }}
-                      </small>
-                    </div>
-                  </router-link>
-
-                  <div
-                    v-if="activity.activity_details_count > 0"
-                  >
-                    <span style="color: green; font-weight: 500"
-                      >SUBMITTED</span
-                    >
-                </div>
-                <div v-if="activity.activity_details_count <= 0">
-                    <span style="color: red; font-weight: 500"
-                      >DUE ON {{ new Date(activity.duedate).toLocaleString() }}</span
-                    >
-                </div>
+                </h5>
+                <h6 class="card-title mb-0">
+                  <i>{{ activity.class.code }}</i> 
+                  <b>{{ activity.class.name }}</b>
+                </h6>
+                <small class="text-muted mt-0">
+                  Posted
+                  {{ new Date(activity.created_at).toLocaleString() }}
+                </small>
               </div>
-            </div>
+            </router-link>
+
+            <div
+              v-if="activity.activity_details_count > 0"
+            >
+              <span style="color: green; font-weight: 500"
+                >SUBMITTED</span
+              >
+          </div>
+          <div v-if="activity.activity_details_count <= 0">
+              <span style="color: red; font-weight: 500"
+                >DUE ON {{ new Date(activity.duedate).toLocaleString() }}</span
+              >
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 

@@ -1,6 +1,12 @@
 <template>
   <div class="sidebar-wrapper">
     <ul class="nav">
+      <router-link v-show="$isMobile()" tag="li" to="/profile" class="nav-item">
+        <a class="nav-link">
+          <i class="material-icons">person</i>
+          <p> {{ profile_name }} </p>
+        </a>
+      </router-link>
       <router-link tag="li" to="/" class="nav-item" exact>
         <a class="nav-link">
           <i class="material-icons">dashboard</i>
@@ -32,6 +38,12 @@
           <p>Video Conferencing</p>
         </a>
       </router-link>
+      <router-link v-show="$isMobile()" tag="li" to="#" class="nav-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+        <a class="nav-link">
+          <i class="material-icons">logout</i>
+          <p>Logout</p>
+        </a>
+      </router-link>
     </ul>
   </div>
 </template>
@@ -39,7 +51,11 @@
 export default {
   name: "sidebar",
   props: ["sessionCat"],
-  created() {},
+  data() {
+    return {
+      profile_name:window.sessionFullname
+    }
+  },
 };
 </script>
 <style scoped>
