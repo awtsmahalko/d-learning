@@ -23,6 +23,7 @@
         "vue": "^2.6.14",
         "vue-axios": "^3.3.7",
         "vue-filepond": "^6.0.3",
+        "vue-mobile-detection": "^1.0.0",
         "vue-router": "^3.5.2"
     }
 }

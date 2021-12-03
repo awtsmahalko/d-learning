@@ -7,7 +7,10 @@ import VueRouter from "vue-router";
 import VueAxios from "vue-axios";
 import axios from "axios";
 import { routes } from "./routes";
+import VueMobileDetection from 'vue-mobile-detection';
 
+
+Vue.use(VueMobileDetection);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
@@ -23,3 +26,4 @@ const app = new Vue({
     router: router,
     render: h => h(App)
 });
+
