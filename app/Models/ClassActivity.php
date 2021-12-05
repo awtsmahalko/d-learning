@@ -15,10 +15,13 @@ class ClassActivity extends Model
         'title',
         'instruction',
         'points',
-        'duedate',
         'category',
         'status'
     ];
+
+    protected $casts = [
+        'duedate' => 'datetime',
+     ];
 
     public function user()
     {
@@ -30,6 +33,10 @@ class ClassActivity extends Model
         return $this->belongsTo(Classes::class);
     }
 
+    public function classLists()
+    {
+        return $this->hasMany(ClassList::class,'class_id','class_id');
+    }
 
     public function activity_details()
     {

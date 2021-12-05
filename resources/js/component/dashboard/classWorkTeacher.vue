@@ -1,8 +1,8 @@
 <template>
-    <div style="width: 100%;padding:5px;">
-        <div class="col-md-12">
-            <div class="d-flex">
-                <div class="flex-shrink-0" style="padding: 11px">
+  <div class="card my-2" style="width: 100%;padding: 5px;">
+    <div class="col-md-12">
+      <div class="d-flex">
+        <div class="flex-shrink-0" style="padding: 11px">
                 <img
                     alt="Image placeholder"
                     class="avatar rounded-circle me-3"

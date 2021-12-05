@@ -2,14 +2,6 @@
   <div class="card my-2" style="width: 100%;padding: 5px;">
     <div class="col-md-12">
       <div class="d-flex">
-        <div class="flex-shrink-0" style="padding: 11px">
-          <img
-            alt="Image placeholder"
-            class="avatar rounded-circle me-3"
-            src="http://via.placeholder.com/300x180"
-            style="width: 40px; height: 40px"
-          />
-        </div>
         <div
           style="
             display: flex;
@@ -39,7 +31,7 @@
               >
                 <h5 class="card-title mb-0">
                   <b class="comment" id="post-user"
-                    >{{ activity.user.fname }} Posted a new
+                    >
                     {{
                       activity.category == "A"
                         ? "ACTIVITY"
@@ -49,10 +41,6 @@
                     }}: {{ activity.title }}</b
                   >
                 </h5>
-                <h6 class="card-title mb-0">
-                  <i>{{ activity.class.code }}</i> 
-                  <b>{{ activity.class.name }}</b>
-                </h6>
                 <small class="text-muted mt-0">
                   Posted
                   {{ new Date(activity.created_at).toLocaleString() }}

@@ -92,14 +92,49 @@ class ClassController extends Controller
 
     public function indexActivity(Request $request)
     {
-        if ($request->class_id > 0) {
-            $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
+        $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
+            $q->where('user_id', '=', $request->user_id);
+        }])->get();
+
+        return response()->json($activities);
+    }
+
+    public function dashboardActivityOrig(Request $request)
+    {
+        if($request->view_by == 'T'){
+            $activities = ClassActivity::where('user_id',$request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
-        } else {
-            $activities = ClassActivity::orderByDesc('created_at')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
+        }else{
+            $activities = ClassActivity::whereRelation('classLists', 'user_id', $request->user_id)->orderBy('duedate')->orderBy('class_id')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
+        }
+        
+        return response()->json($activities);
+    }
+
+    public function dashboardActivity(Request $request)
+    {
+        if($request->view_by == 'T'){
+            $activities = ClassActivity::where('user_id',$request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
+                $q->where('user_id', '=', $request->user_id);
+            }])->get();
+        }else{
+            $activities = ClassActivity::whereRelation('classLists', 'user_id', $request->user_id)->orderBy('duedate')->orderBy('class_id')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
+                $q->where('user_id', '=', $request->user_id);
+            }])->get();
+        }
+    
+        $activities = $activities->groupBy(function($data) {
+            return $data->duedate->format('F d, Y');
+        });
+
+        foreach ($activities as $key => $activity) {
+            $new_activity = $activity->groupBy(function($data) {
+                return $data->class_id;
+            });
+            $activities[$key] = $new_activity;
         }
 
         return response()->json($activities);

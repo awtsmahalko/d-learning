@@ -55,6 +55,7 @@ Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, '
 Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);
 
 // activity
+Route::get('/class/activity/dashboard', [App\Http\Controllers\ClassController::class, 'dashboardActivity']);
 Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class, 'indexActivity']);
 Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
 Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
