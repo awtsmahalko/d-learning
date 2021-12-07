@@ -51,14 +51,15 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         $request->validate([
             'fname' => 'required',
             'lname' => 'required',
             'email' => 'required',
             'username' => 'required',
         ]);
-        
+
         $data = array(
             'fname' => $request->fname,
             'mname' => $request->mname,
@@ -66,16 +67,17 @@ class RegisterController extends Controller
             'email' => $request->email,
             'username' => $request->username,
         );
-    
+
 
         $users = User::find($request->id);
-        
+
         $users = $users->update($data);
 
         return response()->json($users);
     }
 
-    public function updatePassword(Request $request){
+    public function updatePassword(Request $request)
+    {
 
         $user_id = $request->id;
         $old_password = $request->old_password;
@@ -90,19 +92,97 @@ class RegisterController extends Controller
         );
 
 
-        if(Hash::check($old_password, $pw->password) != 1){
+        if (Hash::check($old_password, $pw->password) != 1) {
             $response = "Incorrect password. Please try again.";
-        }else if($new_password != $confirm_new_password){
+        } else if ($new_password != $confirm_new_password) {
             $response = "Passwords did not matched. Please try again.";
-        }else{
+        } else {
             $users = User::find($user_id);
             $sql = $users->update($data);
-            if($sql){
+            if ($sql) {
                 $response = 1;
-            }else{
+            } else {
                 $response = "Error in sql query.";
             }
+        }
 
+        return response()->json($response);
+    }
+
+    public function createStudent(Request $request)
+    {
+        // $check_id_unique
+        $count_student_id = User::where('student_id', $request->student_id)
+            ->where('category', 'S')
+            ->count();
+
+        // $check_email_unique
+
+        $count_email = User::where('email', $request->email)->count();
+
+        if ($count_student_id > 0) {
+            $response = 'id';
+        } else if ($count_email > 0) {
+            $response = 'email';
+        } else {
+            $form_data = array(
+                'student_id'    => $request->student_id,
+                'fname'         => $request->fname,
+                'mname'         => $request->mname,
+                'lname'         => $request->lname,
+                'email'         => $request->email,
+                'username'      => $request->student_id,
+                'password'      => Hash::make('12345'),
+                'category'      => 'S',
+            );
+            $user = User::create($form_data);
+            if ($user) {
+                $response = 1;
+            }
+        }
+
+        return response()->json($response);
+    }
+
+    public function viewStudent(Request $request)
+    {
+        // $check_id_unique
+        $response = User::where('category', 'S')
+            ->get();
+
+        return response()->json($response);
+    }
+
+    public function updateStudent(Request $request)
+    {
+        // $check_id_unique
+        $count_student_id = User::where('student_id', $request->student_id)
+            ->where('category', 'S')
+            ->where('id', '!=', $request->id)
+            ->count();
+
+        // $check_email_unique
+        $count_email = User::where('email', $request->email)
+            ->where('id', '!=', $request->id)
+            ->count();
+
+        if ($count_student_id > 0) {
+            $response = 'id';
+        } else if ($count_email > 0) {
+            $response = 'email';
+        } else {
+            $user = User::find($request->id);
+            $form_data = array(
+                'student_id'    => $request->student_id,
+                'fname'         => $request->fname,
+                'mname'         => $request->mname,
+                'lname'         => $request->lname,
+                'email'         => $request->email
+            );
+            $_user = $user->update($form_data);
+            if ($_user) {
+                $response = 1;
+            }
         }
 
         return response()->json($response);

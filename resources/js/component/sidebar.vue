@@ -13,19 +13,25 @@
           <p>Dashboard</p>
         </a>
       </router-link>
+    <router-link tag="li" to="/student" class="nav-item">
+        <a class="nav-link">
+            <i class="material-icons">groups</i>
+            <p>Student</p>
+        </a>
+    </router-link>
+    <router-link tag="li" to="/teacher" class="nav-item">
+        <a class="nav-link">
+            <i class="material-icons">engineering</i>
+            <p>Teacher</p>
+        </a>
+    </router-link>
       <router-link tag="li" to="/class" class="nav-item">
         <a class="nav-link">
           <i class="material-icons">meeting_room</i>
           <p>Classes</p>
         </a>
       </router-link>
-
-      <router-link
-        v-show="sessionCat"
-        tag="li"
-        to="/class-list"
-        class="nav-item"
-      >
+      <router-link tag="li" to="/class-list" class="nav-item">
         <a class="nav-link">
           <i class="material-icons">people</i>
           <p>List of students</p>

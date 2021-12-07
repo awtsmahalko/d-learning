@@ -129,3 +129,9 @@ Route::get('/post/comment/downloadCommentAttachment/{class_code}/{id}', function
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
 Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
+
+
+// student
+Route::post('/student/add/record', [App\Http\Controllers\RegisterController::class, 'createStudent']);
+Route::get('/student/view/record', [App\Http\Controllers\RegisterController::class, 'viewStudent']);
+Route::post('/student/update/record', [App\Http\Controllers\RegisterController::class, 'updateStudent']);
