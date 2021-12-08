@@ -80,7 +80,7 @@
                 </div>
               </div>
             </form>
-            <div class="row">
+            <div class="row" style="display:none;">
               <div class="col-6">
                 @if (Route::has('password.request'))
                 <a href="" class="text-light">

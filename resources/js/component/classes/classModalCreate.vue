@@ -80,6 +80,7 @@ export default {
     methods: {
         createClass(){
             axios.post(baseUrl + "/api/class/add/record", this.formData ).then((res) => {
+                $("#classCreateModal").modal('hide');
                 if(res.data == 1){
                     success_add();
                 }else{
@@ -92,6 +93,7 @@ export default {
         },
         updateClass(){
             axios.post(baseUrl + "/api/class/update/record", this.formData ).then((res) => {
+                $("#classCreateModal").modal('hide');
                 if(res.data == 1){
                     success_update();
                 }else if(res.data == 'user'){

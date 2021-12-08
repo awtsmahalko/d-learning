@@ -213,6 +213,8 @@ class ClassController extends Controller
             $activities = ClassActivity::where('user_id', $request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
+        }else if ($request->view_by == 'A') {
+            $activities = ClassActivity::orderBy('duedate')->with('user', 'class')->get();
         } else {
             $activities = ClassActivity::whereRelation('classLists', 'user_id', $request->user_id)->orderBy('duedate')->orderBy('class_id')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);

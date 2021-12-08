@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="teacherCreateModal" tabindex="-1" role="dialog" aria-labelledby="teacherCreateModalLabel" aria-hidden="true">
+    <div class="modal fade" id="teacherCreateModal" role="dialog" aria-labelledby="teacherCreateModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,6 +79,7 @@ export default {
     methods: {
         createTeacher(){
             axios.post(baseUrl + "/api/teacher/add/record", this.formTeacher ).then((res) => {
+                $("#teacherCreateModal").modal('hide');
                 if(res.data == 1){
                     success_add();
                 }else if(res.data == 'id'){
@@ -95,6 +96,7 @@ export default {
         },
         updateTeacher(){
             axios.post(baseUrl + "/api/teacher/update/record", this.formTeacher ).then((res) => {
+                $("#teacherCreateModal").modal('hide');
                 if(res.data == 1){
                     success_update();
                 }else if(res.data == 'id'){

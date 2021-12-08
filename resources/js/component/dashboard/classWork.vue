@@ -1,18 +1,19 @@
 <template>
     <div class="col-md-12">
     	<!-- start loop -->
-
     		<class-work-student v-if="category == 'S'" :activities="activities" />
     	    <class-work-teacher v-if="category == 'T'" :activities="activities" />
+    	    <class-work-admin v-if="category == 'A'" :activities="activities" />
     	<!-- end loop -->
     </div>
 </template>
 <script>
 import ClassWorkStudent from './classWorkStudent.vue';
 import classWorkTeacher from './classWorkTeacher.vue';
+import classWorkAdmin from './classWorkAdmin.vue';
 var last_date = "",last_class = "";
 export default {
-  components: { classWorkTeacher, ClassWorkStudent },
+  components: { classWorkTeacher, ClassWorkStudent ,classWorkAdmin},
     name:'dashboard-work',
     data() {
         return {

@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="studentCreateModal" tabindex="-1" role="dialog" aria-labelledby="studentCreateModalLabel" aria-hidden="true">
+    <div class="modal fade" id="studentCreateModal" role="dialog" aria-labelledby="studentCreateModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,6 +79,7 @@ export default {
     methods: {
         createStudent(){
             axios.post(baseUrl + "/api/student/add/record", this.formStudent ).then((res) => {
+                $("#studentCreateModal").modal('hide');
                 if(res.data == 1){
                     success_add();
                 }else if(res.data == 'id'){
@@ -95,6 +96,7 @@ export default {
         },
         updateStudent(){
             axios.post(baseUrl + "/api/student/update/record", this.formStudent ).then((res) => {
+                $("#studentCreateModal").modal('hide');
                 if(res.data == 1){
                     success_update();
                 }else if(res.data == 'id'){
