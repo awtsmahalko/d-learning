@@ -101,7 +101,6 @@ class ClassController extends Controller
 
     public function dashboardActivityOrig(Request $request)
     {
-            $activities = ClassActivity::where('user_id',$request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
         if ($request->view_by == 'T') {
             $activities = ClassActivity::where('user_id', $request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
