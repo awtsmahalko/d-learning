@@ -7,14 +7,20 @@
           <div class="d-flex">
             <div class="flex-shrink-0" style="padding: 11px">
               <img
-                alt="Image placeholder"
                 class="avatar rounded-circle me-3"
-                src="http://via.placeholder.com/300x180"
+                :src="asset(userpostedAvatar)"
+                :alt="userpostedAvatar"
                 style="width: 40px; height: 40px"
               />
             </div>
             <div
-              style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;"
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+              "
             >
               <!-- sessionCategory -->
               <div v-if="session.category === 'T'">
@@ -26,7 +32,11 @@
                 >
                   <div
                     class="mx-2"
-                    style="display: flex; flex-direction: column; padding-top: 6px;"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      padding-top: 6px;
+                    "
                   >
                     <h6 class="card-title mb-0">
                       <b class="comment" id="post-user"
@@ -79,12 +89,8 @@
               </div>
 
               <div v-show="is_teacher == false ? true : false">
-                <div
-                  v-show="studentSubmitted > 0 ? true : false"
-                >
-                  <span style="color: green; font-weight: 500"
-                    >SUBMITTED</span
-                  >
+                <div v-show="studentSubmitted > 0 ? true : false">
+                  <span style="color: green; font-weight: 500">SUBMITTED</span>
                 </div>
               </div>
             </div>
@@ -100,6 +106,7 @@ export default {
   props: [
     "title",
     "classCode",
+    "userpostedAvatar",
     "postId",
     "teacher",
     "postedDate",
@@ -117,8 +124,13 @@ export default {
       },
     };
   },
-   mounted() {
+  mounted() {
     this.is_teacher = sessionCategory == "T" ? true : false;
+  },
+  methods: {
+    asset(path) {
+      return imgUrl + path;
+    },
   },
 };
 </script>

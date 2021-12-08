@@ -6,9 +6,9 @@
           <div class="d-flex">
             <div class="flex-shrink-0" style="padding: 11px">
               <img
-                alt="Image placeholder"
                 class="avatar rounded-circle me-3"
-                src="http://via.placeholder.com/300x180"
+                :src="asset(userpostedAvatar)"
+                :alt="userpostedAvatar"
                 style="width: 40px; height: 40px"
               />
             </div>
@@ -161,6 +161,7 @@ const FilePond = vueFilePond();
 export default {
   props: [
     "userpostedId",
+    "userpostedAvatar",
     "userposted",
     "dateposted",
     "descriptionposted",
@@ -317,6 +318,9 @@ export default {
     },
     handleFilePondInit: function () {
       this.$refs.napond.getFiles();
+    },
+    asset(path) {
+      return imgUrl + path;
     },
   },
 };

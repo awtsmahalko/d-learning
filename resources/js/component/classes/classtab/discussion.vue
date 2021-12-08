@@ -66,7 +66,7 @@
           </div>
         </div>
         <div v-if="posts.length > 0">
-          <div v-for="(post,postKey) in posts" :key="postKey">
+          <div v-for="(post, postKey) in posts" :key="postKey">
             <div
               v-if="post.module === 'POST'"
               class="card"
@@ -74,6 +74,7 @@
             >
               <postContent
                 :userpostedId="post.user.id"
+                :userpostedAvatar="post.user.avatar"
                 :userposted="post.user.fname"
                 :dateposted="post.created_at"
                 :descriptionposted="post.description"
@@ -86,6 +87,7 @@
               <postContentCw
                 :title="post.title"
                 :classCode="classData.code"
+                :userpostedAvatar="post.user.avatar"
                 :postId="post.id"
                 :cw_category="post.category"
                 :teacher="post.user.fname"

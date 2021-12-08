@@ -60,6 +60,8 @@ Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class,
 Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
 Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
 Route::post('/class/activity/edit', [App\Http\Controllers\ClassController::class, 'updateActivity']);
+Route::post('/class/activity/delete', [App\Http\Controllers\ClassController::class, 'deleteActivity']);
+
 
 // activity :: studentwork
 Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassController::class, 'uploadStudentWork']);
@@ -129,3 +131,4 @@ Route::get('/post/comment/downloadCommentAttachment/{class_code}/{id}', function
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
 Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
+Route::post('/updateAvatar', [App\Http\Controllers\RegisterController::class, 'updateAvatar']);

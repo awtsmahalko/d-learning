@@ -41,6 +41,7 @@
         window.sessionLname = "{{ $auth->lname ; }}";
         window.sessionEmail = "{{ $auth->email; }}";
         window.sessionUsername = "{{ $auth->username; }}";
+        window.sessionAvatar = "{{ $auth->avatar; }}";
 
         window.baseUrl = "{{ $_REQUEST['baseUrl'] }}";
         window.imgUrl = "{{ asset('').$_REQUEST['imgUrl'] }}";

@@ -17,9 +17,9 @@
             <div class="d-flex">
               <div class="flex-shrink-0" style="padding: 11px">
                 <img
-                  alt="Image placeholder"
                   class="avatar rounded-circle me-3"
-                  src="http://via.placeholder.com/300x180"
+                  :src="asset(activity.user.avatar)"
+                  :alt="activity.user.avatar"
                   style="width: 40px; height: 40px"
                 />
               </div>
@@ -250,7 +250,7 @@
                     <div class="form-group">
                       <label for="dueDate">Due Date</label>
                       <input
-                        type="date"
+                        type="datetime-local"
                         v-model="newActivity.duedate"
                         class="form-control"
                         id="dueDate"
@@ -428,14 +428,14 @@ export default {
       this.axios
         .post(baseUrl + "/api/class/activity/add", this.newActivity)
         .then((response) => {
-          if(response.data.counter == 1){
+          if (response.data.counter == 1) {
             this.getActivity();
             $("#createClassworkModal").modal("hide");
             $("#modal_new_activity").trigger("reset");
             alertMe(response.data.message);
-          }else if(response.data.counter == 2){
+          } else if (response.data.counter == 2) {
             entry_already_exists();
-          }else{
+          } else {
             alertMe(response.data.message);
           }
         })
@@ -457,6 +457,9 @@ export default {
       // example of instance method call on pond reference
       this.$refs.napond.getFiles();
       // console.log(this.$refs.napond.getFiles());
+    },
+    asset(path) {
+      return imgUrl + path;
     },
   },
   components: {
