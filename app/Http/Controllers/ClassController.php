@@ -11,6 +11,8 @@ use App\Models\ClassList;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\ClassActivityMaterial;
+use App\Models\Meeting;
+use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -90,6 +92,97 @@ class ClassController extends Controller
         return response()->json('Class deleted!');
     }
 
+    public function addRecord(Request $request)
+    {
+        $response = 0;
+        $form_data = array(
+            'code' => Str::random(6),
+            'name' => $request->name,
+            'description' => $request->description,
+            'user_id' => $request->user_id
+        );
+        $class = Classes::create($form_data);
+
+        if ($class) {
+            $response = 1;
+        }
+        return response()->json($response);
+    }
+
+    public function viewRecord(Request $request)
+    {
+        if ($request->category == 'T') {
+            $class = Classes::where('user_id', $request->user_id)->with('meetings', 'classLists')->get();
+        } else if ($request->category == 'A') {
+            $class = Classes::with('user', 'meetings', 'classLists')->get();
+        } else {
+            $class = Classes::whereRelation('classLists', 'user_id', $request->user_id)->with('meetings')->get();
+        }
+        return response()->json($class);
+    }
+
+
+    public function updateRecord(Request $request)
+    {
+        $response = 0;
+
+        $form_data = array(
+            'name' => $request->name,
+            'description' => $request->description,
+            'user_id' => $request->user_id
+        );
+
+        $class = Classes::find($request->id);
+        if ($class->user_id == $request->user_id) {
+            $class->update($form_data);
+            $response = 1;
+        } else {
+            if ($this->checkIfClassUsed($request->id, 0) > 0) {
+                $response = 'user';
+            } else {
+                $class->update($form_data);
+                $response = 1;
+            }
+        }
+        return response()->json($response);
+    }
+
+    public function deleteRecord(Request $request)
+    {
+        $class = Classes::find($request->id);
+        if ($this->checkIfClassUsed($request->id) > 0) {
+            $response = 2;
+        } else {
+            $class->delete();
+            $response = 1;
+        }
+
+        return response()->json($response);
+    }
+
+    public function checkIfClassUsed($class_id, $all = 1)
+    {
+        $count_activity = ClassActivity::where('class_id', $class_id)->count();
+        $count_post = Post::where('class_id', $class_id)->count();
+        $count_meeting = Meeting::where('class_id', $class_id)->count();
+
+        $count_init = $count_activity + $count_post + $count_meeting;
+        $count_list = ClassList::where('class_id', $class_id)->count();
+
+        return $all == 1 ? $count_init + $count_list : $count_init;
+    }
+
+    public function fetchUserByCategory(Request $request)
+    {
+
+        $users = User::where('category', $request->category)
+            ->orderBy('fname')
+            ->get();
+
+        return response()->json($users);
+    }
+
+
     public function indexActivity(Request $request)
     {
         $activities = ClassActivity::where('class_id', $request->class_id)->orderByDesc('created_at')->with('user')->withCount(["activity_details" => function ($q) use ($request) {
@@ -101,37 +194,37 @@ class ClassController extends Controller
 
     public function dashboardActivityOrig(Request $request)
     {
-        if($request->view_by == 'T'){
-            $activities = ClassActivity::where('user_id',$request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
+        if ($request->view_by == 'T') {
+            $activities = ClassActivity::where('user_id', $request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
-        }else{
+        } else {
             $activities = ClassActivity::whereRelation('classLists', 'user_id', $request->user_id)->orderBy('duedate')->orderBy('class_id')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
         }
-        
+
         return response()->json($activities);
     }
 
     public function dashboardActivity(Request $request)
     {
-        if($request->view_by == 'T'){
-            $activities = ClassActivity::where('user_id',$request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
+        if ($request->view_by == 'T') {
+            $activities = ClassActivity::where('user_id', $request->user_id)->orderBy('duedate')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
-        }else{
+        } else {
             $activities = ClassActivity::whereRelation('classLists', 'user_id', $request->user_id)->orderBy('duedate')->orderBy('class_id')->with('user', 'class')->withCount(["activity_details" => function ($q) use ($request) {
                 $q->where('user_id', '=', $request->user_id);
             }])->get();
         }
-    
-        $activities = $activities->groupBy(function($data) {
+
+        $activities = $activities->groupBy(function ($data) {
             return $data->duedate->format('F d, Y');
         });
 
         foreach ($activities as $key => $activity) {
-            $new_activity = $activity->groupBy(function($data) {
+            $new_activity = $activity->groupBy(function ($data) {
                 return $data->class_id;
             });
             $activities[$key] = $new_activity;

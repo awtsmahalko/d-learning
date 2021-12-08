@@ -83,7 +83,7 @@ export default {
     };
   },
   created() {
-    this.sessionCat = sessionCategory == "T" ? true : false;
+    this.sessionCat = sessionCategory == "T";
   },
   components: { sidebar },
 };

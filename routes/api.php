@@ -24,6 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('class', App\Http\Controllers\ClassController::class);
 
+Route::post('/class/add/record', [App\Http\Controllers\ClassController::class, 'addRecord']);
+Route::get('/class/view/record', [App\Http\Controllers\ClassController::class, 'viewRecord']);
+Route::post('/class/update/record', [App\Http\Controllers\ClassController::class, 'updateRecord']);
+Route::delete('/class/delete/record', [App\Http\Controllers\ClassController::class, 'deleteRecord']);
+Route::get('/class/user/category', [App\Http\Controllers\ClassController::class, 'fetchUserByCategory']);
+
 Route::get('/video', [App\Http\Controllers\MeetingController::class, 'index']);
 Route::get('/video/api', [App\Http\Controllers\MeetingController::class, 'api']);
 Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'create']);
@@ -130,8 +136,14 @@ Route::get('/post/comment/downloadCommentAttachment/{class_code}/{id}', function
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
 Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
 
+Route::delete('/user/delete/record', [App\Http\Controllers\RegisterController::class, 'deleteUser']);
 
 // student
 Route::post('/student/add/record', [App\Http\Controllers\RegisterController::class, 'createStudent']);
 Route::get('/student/view/record', [App\Http\Controllers\RegisterController::class, 'viewStudent']);
 Route::post('/student/update/record', [App\Http\Controllers\RegisterController::class, 'updateStudent']);
+
+// teacher
+Route::post('/teacher/add/record', [App\Http\Controllers\RegisterController::class, 'createTeacher']);
+Route::get('/teacher/view/record', [App\Http\Controllers\RegisterController::class, 'viewTeacher']);
+Route::post('/teacher/update/record', [App\Http\Controllers\RegisterController::class, 'updateTeacher']);

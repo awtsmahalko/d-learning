@@ -16,6 +16,10 @@ const ActivityViewStudent = () => import('./component/classes/classtab/activityV
 
 // students
 const StudentIndex = () => import('./component/student/studentIndex')
+
+// teacher
+const TeacherIndex = () => import('./component/teacher/teacherIndex')
+
 // profile
 const ProfileView = () => import('./component/profile/indexProfile')
 
@@ -101,5 +105,11 @@ export const routes = [
         path: "/student",
         component : StudentIndex,
         meta: { title: 'Student' }
+    },
+    {
+        name: "teacher",
+        path: "/teacher",
+        component : TeacherIndex,
+        meta: { title: 'Teacher' }
     }
 ]

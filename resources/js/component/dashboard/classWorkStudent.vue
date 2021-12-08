@@ -1,74 +1,55 @@
 <template>
-  <div class="card my-2" style="width: 100%;padding: 5px;">
-    <div class="col-md-12">
-      <div class="d-flex">
-        <div
-          style="
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-          "
-        >
-
-            <router-link
-              :to="{
-                name: 'activityViewStudent',
-                params: {
-                  class_id: activity.class_id,
-                  activity_id: activity.id,
-                },
-              }"
-            >
-              <div
-                class="mx-2"
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  padding-top: 6px;
-                "
-              >
-                <h5 class="card-title mb-0">
-                  <b class="comment" id="post-user"
-                    >
-                    {{
-                      activity.category == "A"
-                        ? "ACTIVITY"
-                        : activity.category == "E"
-                        ? "EXAM"
-                        : "QUIZ"
-                    }}: {{ activity.title }}</b
-                  >
-                </h5>
-                <small class="text-muted mt-0">
-                  Posted
-                  {{ new Date(activity.created_at).toLocaleString() }}
-                </small>
-              </div>
-            </router-link>
-
-            <div
-              v-if="activity.activity_details_count > 0"
-            >
-              <span style="color: green; font-weight: 500"
-                >SUBMITTED</span
-              >
-          </div>
-          <div v-if="activity.activity_details_count <= 0">
-              <span style="color: red; font-weight: 500"
-                >DUE ON {{ new Date(activity.duedate).toLocaleString() }}</span
-              >
-          </div>
-        </div>
+  <div>
+    <div v-for="(activity, keyDate) in activities" :key="keyDate">
+    		<div class="row">
+    			<h3>{{ keyDate }}</h3>
+    		</div>
+    		<div v-for="(rowData,key) in activity" :key="key">
+    			<div class="card">
+    				<table style="width:100%;padding:5px;border-radius:15px;" border="1">
+    					<tr align="center">
+    						<td width="20%" :rowspan="rowData.length + 1">
+    							<b>{{ rowData[0].class.name }}</b>
+    							<br> {{ rowData[0].user.fname + ' ' + rowData[0].user.lname}}
+    						</td>
+    					</tr>
+    					<tr v-for="(actRow,keyRow) in rowData" :key="keyRow">
+    						<td style="padding:10px;border-right:none;">
+    							<b>{{ actRow.category == "A"
+                                ? "ACTIVITY"
+                                : actRow.category == "E"
+                                ? "EXAM"
+                                : "QUIZ"
+                            }}</b>
+    							<router-link :to="{
+                                name: 'activityViewStudent',
+                                params: {
+                                class_id: actRow.class_id,
+                                activity_id: actRow.id,
+                                },
+                            }">: <b>{{ actRow.title }} </b>
+    							</router-link>
+    						</td>
+    						<!-- <td style="padding:10px;border-left:none;border-right:none;" align="right">
+    							<span style="color: green; font-weight: 500">SUBMITTED</span>
+    						</td> -->
+    						<td style="padding:10px;border-left:none;" align="right">DUE: {{ formatDate(actRow.duedate) }}</td>
+    					</tr>
+    				</table>
+    			</div>
+    		</div>
       </div>
-    </div>
   </div>
 </template>
 <script>
 
 export default {
     name:'class-work-student',
-    props:["activity"]
+    props:["activities"],
+    methods:{
+        formatDate(value){
+            return moment(String(value)).format('hh:mm A')
+        },
+    }
 }
 </script>
