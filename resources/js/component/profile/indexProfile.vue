@@ -13,7 +13,11 @@
               </h3>
               <h6>
                 {{
-                  profileDetails.profile_category == "T" ? "Teacher" : "Student"
+                  profileDetails.profile_category == "T"
+                    ? "Teacher"
+                    : profileDetails.profile_category == "A"
+                    ? "Admin"
+                    : "Student"
                 }}
               </h6>
             </div>
@@ -40,7 +44,10 @@
                   <i class="material-icons">person</i> My Information
                 </a>
               </li>
-              <li class="nav-item">
+              <li
+                class="nav-item"
+                v-show="profileDetails.profile_category == 'A' ? false : true"
+              >
                 <a
                   class="nav-link"
                   href="#classes"
@@ -89,6 +96,7 @@
                     class="centered"
                     style="cursor: default"
                     @click="openUploadAvatarModal"
+                    v-show="!$isMobile()"
                   >
                     <span class="material-icons" style="font-size: 24px"
                       >edit</span

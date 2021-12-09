@@ -128,11 +128,7 @@
       aria-labelledby="createClassworkModal"
       aria-hidden="true"
     >
-      <div
-        class="modal-dialog"
-        role="document"
-        style="max-width: 80% !important"
-      >
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <form id="modal_new_activity" @submit.prevent="createClasswork">
             <div class="modal-header">

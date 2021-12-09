@@ -10,8 +10,12 @@
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
                     class="avatar rounded-circle me-3"
-                    :src="assetPP(activities.user.avatar)"
-                    :alt="activities.user.avatar"
+                    :src="
+                      assetPP(
+                        activities.user != null ? activities.user.avatar : ''
+                      )
+                    "
+                    :alt="activities.user != null ? activities.user.avatar : ''"
                     style="width: 40px; height: 40px"
                   />
                 </div>
@@ -124,31 +128,29 @@
                     </div>
                     <!-- /attachments -->
 
-                    <div
-                      style="
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                        align-items: center;
-                        width: 100%;
-                        margin-top: 12px;
-                      "
-                    >
-                      <p class="additionalLabel">
-                        <b>
-                          {{
-                            activities.category == "A"
-                              ? "ACTIVITY"
-                              : activities.category == "E"
-                              ? "EXAM"
-                              : "QUIZ"
-                          }}
-                          : {{ parseInt(activities.points) }} points</b
-                        >
-                      </p>
-                      <p class="additionalLabel">
-                        <b>Due: {{ formatDate(activities.duedate) }}</b>
-                      </p>
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-6 text-left">
+                          <p class="additionalLabel">
+                            <b>
+                              {{
+                                activities.category == "A"
+                                  ? "ACTIVITY"
+                                  : activities.category == "E"
+                                  ? "EXAM"
+                                  : "QUIZ"
+                              }}
+                              : {{ parseInt(activities.points) }} points</b
+                            >
+                          </p>
+                        </div>
+
+                        <div class="col-md-6 text-right">
+                          <p class="additionalLabel">
+                            <b>Due: {{ formatDate(activities.duedate) }}</b>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -195,11 +197,7 @@
       aria-labelledby="editClassworkModal"
       aria-hidden="true"
     >
-      <div
-        class="modal-dialog"
-        role="document"
-        style="max-width: 80% !important"
-      >
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <form id="modal_new_activity" @submit.prevent="updateClasswork">
             <div class="modal-header">
