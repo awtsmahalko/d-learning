@@ -10,7 +10,7 @@
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
                     class="avatar rounded-circle me-3"
-                    :src="asset(activities.user.avatar)"
+                    :src="assetPP(activities.user.avatar)"
                     :alt="activities.user.avatar"
                     style="width: 40px; height: 40px"
                   />
@@ -689,6 +689,13 @@ export default {
       // example of instance method call on pond reference
       this.$refs.napond.getFiles();
       // console.log(this.$refs.napond.getFiles());
+    },
+    assetPP(path) {
+      var thumbs =
+        path == ""
+          ? imgUrl + "/profile/default/default_avatar.jpeg"
+          : imgUrl + path;
+      return thumbs;
     },
     asset(path) {
       return imgUrl + path;
