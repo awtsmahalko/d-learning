@@ -315,7 +315,7 @@ class ClassController extends Controller
 
     public function activityDetail(Request $request)
     {
-        $activity = ClassActivity::where('id', $request->activityId)->with('activity_material', 'activity_scoring', 'user')->first();
+        $activity = ClassActivity::where('id', $request->activityId)->with('user', 'activity_material', 'activity_scoring')->first();
 
         return response()->json($activity);
     }

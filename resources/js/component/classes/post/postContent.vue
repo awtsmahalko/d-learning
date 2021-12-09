@@ -69,11 +69,7 @@
       aria-labelledby="newCommentModal"
       aria-hidden="true"
     >
-      <div
-        class="modal-dialog"
-        role="document"
-        style="max-width: 50% !important"
-      >
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form id="modal_newComment" @submit.prevent="sendComment()">
             <div class="modal-header">
