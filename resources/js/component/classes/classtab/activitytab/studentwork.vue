@@ -14,7 +14,7 @@
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
                     class="avatar rounded-circle me-3"
-                    :src="asset(studentWork.user.avatar)"
+                    :src="assetPP(studentWork.user.avatar)"
                     :alt="studentWork.user.avatar"
                     style="width: 40px; height: 40px"
                   />
@@ -342,12 +342,15 @@ export default {
         "_blank"
       );
     },
-    asset(path) {
+    assetPP(path) {
       var thumbs =
         path == ""
           ? imgUrl + "/profile/default/default_avatar.jpeg"
           : imgUrl + path;
       return thumbs;
+    },
+    asset(path) {
+      return imgUrl + path;
     },
   },
 };
