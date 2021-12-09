@@ -130,7 +130,7 @@ export default {
   methods: {
     asset(path) {
       var thumbs =
-        path == null
+        path == null || path == ""
           ? imgUrl + "/profile/default/default_avatar.jpeg"
           : imgUrl + path;
       return thumbs;
