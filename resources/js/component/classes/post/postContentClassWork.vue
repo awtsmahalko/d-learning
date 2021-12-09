@@ -129,7 +129,11 @@ export default {
   },
   methods: {
     asset(path) {
-      return imgUrl + path;
+      var thumbs =
+        path == ""
+          ? imgUrl + "/profile/default/default_avatar.jpeg"
+          : imgUrl + path;
+      return thumbs;
     },
   },
 };

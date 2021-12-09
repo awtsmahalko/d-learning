@@ -459,7 +459,11 @@ export default {
       // console.log(this.$refs.napond.getFiles());
     },
     asset(path) {
-      return imgUrl + path;
+      var thumbs =
+        path == ""
+          ? imgUrl + "/profile/default/default_avatar.jpeg"
+          : imgUrl + path;
+      return thumbs;
     },
   },
   components: {
