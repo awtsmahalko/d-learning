@@ -15,13 +15,30 @@
               <p class="card-category">{{ clas.code }}</p>
               <h3 class="card-title">{{ clas.name }}</h3>
               <p class="card-category">{{ clas.description }}</p>
+                <div>
+                    <router-link
+                        :to="{
+                        name: 'classView',
+                        params: { id: clas.id },
+                        }"
+                        class="btn btn-block btn-sm btn-success"
+                        ><span class="material-icons">visibility</span> View Class</router-link
+                    >
+                </div>
             </div>
             <div class="card-footer">
-              <div class="stats">
+              <div class="stats" v-if="category == 'T'">
                 <i class="material-icons text-primary">people</i>
                 <router-link
                   :to="{ name: 'classlistView', params: { id: clas.id } }"
                   >{{ clas.class_lists.length }} students enrolled</router-link
+                >
+              </div>
+              <div class="stats">
+                <i class="material-icons text-primary">videocam</i>
+                <router-link
+                  :to="{ name: 'videoView', params: { id: clas.id } }"
+                  >{{ clas.meetings.length }} meetings</router-link
                 >
               </div>
             </div>
@@ -34,13 +51,15 @@
 
 <script>
 export default {
-  name: "classList",
+  name: "user-class-index",
   data() {
     return {
       classes: [],
+      category:''
     };
   },
   mounted() {
+    this.category = sessionCategory;
     this.fetchClasses();
   },
   methods: {

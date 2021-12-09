@@ -15,6 +15,11 @@ class Classes extends Model
         'user_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function classLists()
     {
         return $this->hasMany(ClassList::class, 'class_id');
