@@ -1,8 +1,12 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <admin-class-index v-show="show_admin" />
-      <user-class-index v-show="show_user" />
+      <div v-if="category == 'A'">
+        <admin-class-index />
+      </div>
+      <div v-else>
+        <user-class-index/>
+      </div>
     </div>
   </div>
 </template>
@@ -14,13 +18,11 @@ export default {
   components : {AdminClassIndex, UserClassIndex },
   data() {
     return {
-      show_admin:false,
-      show_user:false
+      category:''
     };
   },
   mounted() {
-    this.show_admin = sessionCategory == 'A' ? true : false;
-    this.show_user = sessionCategory == 'A' ? false : true;
+    this.category = sessionCategory;
   }
 };
 </script>
