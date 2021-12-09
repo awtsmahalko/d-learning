@@ -6,7 +6,7 @@
                 <thead>
                     <tr>
                         <th>Rank</th>
-                        <th>Student's Name</th>
+                        <th>Student's ID</th>
                         <th>Earned Points</th>
                         <th>Total Points</th>
                     </tr>
@@ -14,7 +14,7 @@
                 <tbody v-if="studentWorks.length > 0">
                     <tr v-for="(workData,key) in studentWorks" :key="key">
                         <td>{{ key+1 }}</td>
-                        <td>{{ workData.user.lname + ', ' + workData.user.fname}}</td>
+                        <td>{{ workData.user.student_id}}</td>
                         <td>{{ formatNumber(workData.earned_points) }}</td>
                         <td>{{ formatNumber(workData.total_points) }}</td>
                     </tr>

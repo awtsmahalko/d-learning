@@ -118,7 +118,7 @@ export default {
                 })
                 .then((response) => {
                     _this.fetchStudent();
-                    response.data == 1 ? success_delete() : entry_already_exists();
+                    response.data == 1 ? success_delete() : swal('Cannot proceed','Student has records','warning');
                 })
                 .catch((error) => {
                     console.log(error);

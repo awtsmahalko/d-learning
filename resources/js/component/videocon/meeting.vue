@@ -3,7 +3,7 @@
     <div class="container-zoom">
       <ZoomFrame :meetId="meetId" :meetingId="meetingId" :password="password" :classId="classId" :apiKey="apiKey" :apiSecret="apiSecret"/>
     </div>
-    <div><button @click="recordVideo" id="btn_record" class="btn btn-danger" style="z-index: 1000;position: fixed;top:7px;right: 60px;"><span class="material-icons">radio_button_checked</span>  Record</button></div>
+    <div><button v-show="show_record" @click="recordVideo" id="btn_record" class="btn btn-danger" style="z-index: 1000;position: fixed;top:7px;right: 60px;"><span class="material-icons">radio_button_checked</span>  Record</button></div>
   </div>
 </template>
 
@@ -19,7 +19,8 @@ export default {
         classId:'',
         password:'',
         apiKey:'',
-        apiSecret:''
+        apiSecret:'',
+        show_record: false
       }
   },
   components: {
@@ -32,6 +33,8 @@ export default {
       this.classId = this.$route.params.class_id;
       this.apiKey = this.$route.params.api_key;
       this.apiSecret = this.$route.params.api_secret;
+
+      this.show_record = sessionCategory == 'T' ? true : false;
   },
   methods : {
      fetchCredential(){

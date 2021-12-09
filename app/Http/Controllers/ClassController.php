@@ -605,7 +605,7 @@ class ClassController extends Controller
             ->where("class_activities.class_id", "=", $request->class_id)
             ->groupBy("class_activity_scorings.user_id")
             ->orderByRaw('SUM(class_activity_scorings.points) desc')
-            ->with('user:id,fname,mname,lname')
+            ->with('user:id,student_id,fname,mname,lname')
             ->get();
         return response()->json($student_list);
     }
