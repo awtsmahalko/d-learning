@@ -1,7 +1,5 @@
 const Welcome = () => import('./component/welcome')
 const Classes = () => import('./component/classes/indexClass')
-const ClassesAdd = () => import('./component/classes/createClass')
-const ClassesEdit = () => import('./component/classes/editClass')
 const ClassesView = () => import('./component/classes/viewClass')
 
 // for class list
@@ -35,18 +33,6 @@ export const routes = [
         path: '/class',
         component: Classes,
         meta: { title: 'Class' }
-    },
-    {
-        name: 'classAdd',
-        path: '/class/add',
-        component: ClassesAdd,
-        meta: { title: 'Add Class' }
-    },
-    {
-        name: 'classEdit',
-        path: '/class/edit/:id',
-        component: ClassesEdit,
-        meta: { title: 'Edit Class' }
     },
     {
         name: 'classView',
