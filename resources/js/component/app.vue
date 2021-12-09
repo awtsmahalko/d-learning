@@ -45,7 +45,7 @@
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  <i class="material-icons">person</i>
+                  <i class="material-icons">person</i> {{ profile_name }}
                   <p class="d-lg-none d-md-block">Account</p>
                 </a>
                 <div
@@ -79,10 +79,11 @@ export default {
   data() {
     return {
       sessionCat: "",
+      profile_name:window.sessionFullname
     };
   },
   created() {
-    this.sessionCat = sessionCategory == "T" ? true : false;
+    this.sessionCat = sessionCategory == "T";
   },
   components: { sidebar },
 };

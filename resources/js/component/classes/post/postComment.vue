@@ -14,9 +14,9 @@
         <div class="d-flex">
           <div class="flex-shrink-0" style="margin-top: 4px">
             <img
-              alt="Image placeholder"
               class="avatar rounded-circle me-3"
-              src="http://via.placeholder.com/300x180"
+              :src="asset(comment.user.avatar)"
+              :alt="comment.user.avatar"
               style="width: 40px; height: 40px"
             />
           </div>

@@ -13,9 +13,9 @@
               <div class="d-flex">
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
-                    alt="Image placeholder"
                     class="avatar rounded-circle me-3"
-                    src="http://via.placeholder.com/300x180"
+                    :src="asset(studentWork.user.avatar)"
+                    :alt="studentWork.user.avatar"
                     style="width: 40px; height: 40px"
                   />
                 </div>

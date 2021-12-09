@@ -10,6 +10,9 @@
           <p class="text-white">
             Class code: <b>{{ classData.code }}</b>
           </p>
+          <p class="text-white">
+            Description: <b>{{ classData.description }}</b>
+          </p>
         </div>
       </div>
     </div>

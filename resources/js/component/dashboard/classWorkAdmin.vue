@@ -1,5 +1,5 @@
 <template>
-  <div>
+    <div>
     <div v-for="(activity, keyDate) in activities" :key="keyDate">
     		<div class="row">
     			<h3>{{ keyDate }}</h3>
@@ -20,15 +20,7 @@
                                 : actRow.category == "E"
                                 ? "EXAM"
                                 : "QUIZ"
-                            }}</b>
-    							<router-link :to="{
-                                name: 'activityViewStudent',
-                                params: {
-                                class_id: actRow.class_id,
-                                activity_id: actRow.id,
-                                },
-                            }">: <b>{{ actRow.title }} </b>
-    							</router-link>
+                            }}</b>: <b>{{ actRow.title }} </b>
     						</td>
     						<!-- <td style="padding:10px;border-left:none;border-right:none;" align="right">
     							<span style="color: green; font-weight: 500">SUBMITTED</span>
@@ -44,7 +36,7 @@
 <script>
 
 export default {
-    name:'class-work-student',
+    name:'class-work-admin',
     props:["activities"],
     methods:{
         formatDate(value){

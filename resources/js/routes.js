@@ -14,50 +14,55 @@ const VideConMeeting = () => import('./component/videocon/meeting')
 const ActivityViewTeacher = () => import('./component/classes/classtab/activityViewTeacher')
 const ActivityViewStudent = () => import('./component/classes/classtab/activityViewStudent')
 
+// students
+const StudentIndex = () => import('./component/student/studentIndex')
+
+// teacher
+const TeacherIndex = () => import('./component/teacher/teacherIndex')
+
 // profile
 const ProfileView = () => import('./component/profile/indexProfile')
 
-const baseUrl = "";
 export const routes = [
     {
         name: 'home',
-        path: baseUrl + '/',
+        path: '/',
         component: Welcome,
         meta: { title: 'Home' }
     },
     {
         name: 'class',
-        path: baseUrl + '/class',
+        path: '/class',
         component: Classes,
         meta: { title: 'Class' }
     },
     {
         name: 'classAdd',
-        path: baseUrl + '/class/add',
+        path: '/class/add',
         component: ClassesAdd,
         meta: { title: 'Add Class' }
     },
     {
         name: 'classEdit',
-        path: baseUrl + '/class/edit/:id',
+        path: '/class/edit/:id',
         component: ClassesEdit,
         meta: { title: 'Edit Class' }
     },
     {
         name: 'classView',
-        path: baseUrl + '/class/:id',
+        path: '/class/:id',
         component: ClassesView,
         meta: { title: 'View Class' }
     },
     {
         name: 'video',
-        path: baseUrl + '/video',
+        path: '/video',
         component: VideCon,
         meta: { title: 'Video Conferencing' }
     },
     {
         name: 'videoView',
-        path: baseUrl + '/video/view/:id',
+        path: '/video/view/:id',
         component: VideConView,
         meta: { title: 'View Meeting' }
     },
@@ -68,31 +73,43 @@ export const routes = [
     },
     {
         name: "classlist",
-        path: baseUrl + "/class-list",
+        path: "/class-list",
         component: ClassList,
         meta: { title: 'List of Students' }
     },
     {
         name: "classlistView",
-        path: baseUrl + "/class-list/view/:id",
+        path: "/class-list/view/:id",
         component: ClassListView,
         meta: { title: 'Class List' }
     },
     {
         name: 'activityViewTeacher',
-        path: baseUrl + '/class/:class_id/T/activity/:activity_id',
+        path: '/class/:class_id/T/activity/:activity_id',
         component: ActivityViewTeacher,
         meta: { title: 'Activity' }
     },
     {
         name: 'activityViewStudent',
-        path: baseUrl + '/class/:class_id/S/activity/:activity_id',
+        path: '/class/:class_id/S/activity/:activity_id',
         component: ActivityViewStudent,
         meta: { title: 'Activity' }
     },
     {
         name: "profileView",
-        path: baseUrl + "/profile",
+        path: "/profile",
         component: ProfileView
+    },
+    {
+        name: "student",
+        path: "/student",
+        component : StudentIndex,
+        meta: { title: 'Student' }
+    },
+    {
+        name: "teacher",
+        path: "/teacher",
+        component : TeacherIndex,
+        meta: { title: 'Teacher' }
     }
 ]

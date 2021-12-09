@@ -20,6 +20,10 @@ class ClassActivity extends Model
         'status'
     ];
 
+    protected $casts = [
+        'duedate' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,6 +34,10 @@ class ClassActivity extends Model
         return $this->belongsTo(Classes::class);
     }
 
+    public function classLists()
+    {
+        return $this->hasMany(ClassList::class, 'class_id', 'class_id');
+    }
 
     public function activity_details()
     {

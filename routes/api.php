@@ -24,6 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('class', App\Http\Controllers\ClassController::class);
 
+Route::post('/class/add/record', [App\Http\Controllers\ClassController::class, 'addRecord']);
+Route::get('/class/view/record', [App\Http\Controllers\ClassController::class, 'viewRecord']);
+Route::post('/class/update/record', [App\Http\Controllers\ClassController::class, 'updateRecord']);
+Route::delete('/class/delete/record', [App\Http\Controllers\ClassController::class, 'deleteRecord']);
+Route::get('/class/user/category', [App\Http\Controllers\ClassController::class, 'fetchUserByCategory']);
+
 Route::get('/video', [App\Http\Controllers\MeetingController::class, 'index']);
 Route::get('/video/api', [App\Http\Controllers\MeetingController::class, 'api']);
 Route::post('/video/create', [App\Http\Controllers\MeetingController::class, 'create']);
@@ -55,10 +61,13 @@ Route::post('/studentsList', [App\Http\Controllers\ClassListController::class, '
 Route::delete('/deleteStudentsList/{id}', [App\Http\Controllers\ClassListController::class, 'deleteStudentsList']);
 
 // activity
+Route::get('/class/activity/dashboard', [App\Http\Controllers\ClassController::class, 'dashboardActivity']);
 Route::get('/class/activity/view', [App\Http\Controllers\ClassController::class, 'indexActivity']);
 Route::get('/class/activity/detail', [App\Http\Controllers\ClassController::class, 'activityDetail']);
 Route::post('/class/activity/add', [App\Http\Controllers\ClassController::class, 'createActivity']);
 Route::post('/class/activity/edit', [App\Http\Controllers\ClassController::class, 'updateActivity']);
+Route::post('/class/activity/delete', [App\Http\Controllers\ClassController::class, 'deleteActivity']);
+
 
 // activity :: studentwork
 Route::post('/class/activity/uploadStudentWork', [App\Http\Controllers\ClassController::class, 'uploadStudentWork']);
@@ -128,3 +137,16 @@ Route::get('/post/comment/downloadCommentAttachment/{class_code}/{id}', function
 // profile
 Route::post('/updateProfile', [App\Http\Controllers\RegisterController::class, 'updateProfile']);
 Route::post('/updatePassword', [App\Http\Controllers\RegisterController::class, 'updatePassword']);
+Route::post('/updateAvatar', [App\Http\Controllers\RegisterController::class, 'updateAvatar']);
+
+Route::delete('/user/delete/record', [App\Http\Controllers\RegisterController::class, 'deleteUser']);
+
+// student
+Route::post('/student/add/record', [App\Http\Controllers\RegisterController::class, 'createStudent']);
+Route::get('/student/view/record', [App\Http\Controllers\RegisterController::class, 'viewStudent']);
+Route::post('/student/update/record', [App\Http\Controllers\RegisterController::class, 'updateStudent']);
+
+// teacher
+Route::post('/teacher/add/record', [App\Http\Controllers\RegisterController::class, 'createTeacher']);
+Route::get('/teacher/view/record', [App\Http\Controllers\RegisterController::class, 'viewTeacher']);
+Route::post('/teacher/update/record', [App\Http\Controllers\RegisterController::class, 'updateTeacher']);

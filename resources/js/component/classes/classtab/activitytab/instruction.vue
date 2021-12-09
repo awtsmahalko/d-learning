@@ -9,9 +9,9 @@
               <div class="d-flex">
                 <div class="flex-shrink-0" style="padding: 11px">
                   <img
-                    alt="Image placeholder"
                     class="avatar rounded-circle me-3"
-                    src="http://via.placeholder.com/300x180"
+                    :src="asset(activities.user.avatar)"
+                    :alt="activities.user.avatar"
                     style="width: 40px; height: 40px"
                   />
                 </div>
@@ -35,7 +35,7 @@
                     </h3>
                     <p class="text-muted mt-0 normalText">
                       Posted on
-                      {{ new Date(activities.created_at).toLocaleString() }}
+                      {{ formatDate(activities.created_at) }}
                     </p>
                     <p
                       class="instructionDescription"
@@ -147,12 +147,7 @@
                         >
                       </p>
                       <p class="additionalLabel">
-                        <b
-                          >Due:
-                          {{
-                            new Date(activities.duedate).toLocaleDateString()
-                          }}</b
-                        >
+                        <b>Due: {{ formatDate(activities.duedate) }}</b>
                       </p>
                     </div>
                   </div>
@@ -178,7 +173,9 @@
                       <a class="dropdown-item" @click="editClassworkModal"
                         >Edit</a
                       >
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" @click="deleteClasswork"
+                        >Delete</a
+                      >
                     </div>
                   </div>
                 </div>
@@ -438,7 +435,7 @@
                     <div class="form-group">
                       <label for="dueDate">Due Date</label>
                       <input
-                        type="date"
+                        type="datetime-local"
                         v-model="activityDetail.duedate"
                         class="form-control"
                         id="dueDate"
@@ -695,6 +692,41 @@ export default {
     },
     asset(path) {
       return imgUrl + path;
+    },
+    formatDate(date) {
+      return new Date(date).toLocaleString("en-US", { timeZone: "UTC" });
+    },
+    deleteClasswork() {
+      var _this = this;
+      swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+          return new Promise(function (resolve) {
+            _this.axios
+              .post(
+                baseUrl + "/api/class/activity/delete",
+                _this.activityDetail
+              )
+              .then((response) => {
+                console.log(_this.activityDetail);
+                success_delete();
+                window.location.href =
+                  "/class/" + _this.activityDetail.class_id;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          });
+        },
+        allowOutsideClick: false,
+      });
     },
   },
 };

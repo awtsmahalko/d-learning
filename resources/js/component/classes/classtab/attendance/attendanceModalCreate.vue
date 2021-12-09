@@ -1,5 +1,5 @@
 <template>
-<div class="modal fade" id="attendanceCreateModal" tabindex="-1" role="dialog" aria-labelledby="attendanceCreateModalLabel" aria-hidden="true">
+<div class="modal fade" id="attendanceCreateModal" role="dialog" aria-labelledby="attendanceCreateModalLabel" aria-hidden="true">
  	<div class="modal-dialog" role="document">
  		<div class="modal-content">
  			<div class="modal-header">
@@ -80,6 +80,7 @@ export default {
                 student:this.formAttendance.student,
                 class_id:this.formAttendance.class_id
             }).then((res) => {
+                $("#attendanceCreateModal").modal('hide');
                 if(res.data == 1){
                     success_add();
                 }else if(res.data == 2){
