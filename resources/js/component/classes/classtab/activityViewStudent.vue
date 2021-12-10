@@ -52,9 +52,20 @@
                                   class="col-md-12"
                                   style="border-bottom: 2px solid #ddd"
                                 >
+                                  <input
+                                    v-show="$isMobile()"
+                                    type="file"
+                                    name="normalFiles"
+                                    id="normalFiles"
+                                    ref="normalFilesRefs"
+                                    multiple
+                                    v-on:change="handleFileUploads()"
+                                  />
                                   <file-pond
                                     v-show="
-                                      studentWork.length > 0
+                                      $isMobile()
+                                        ? false
+                                        : studentWork.length > 0
                                         ? studentWork[0].status != 'S'
                                         : true
                                     "
@@ -156,7 +167,9 @@
                               <div
                                 v-show="
                                   studentWork.length > 0
-                                    ? studentWork[0].status != 'S'
+                                    ? studentWork[0].status == 'C'
+                                      ? true
+                                      : false
                                     : true
                                 "
                                 style="
@@ -180,8 +193,10 @@
                             <div
                               v-show="
                                 studentWork.length > 0
-                                  ? studentScore == null
-                                    ? true
+                                  ? studentWork[0].status == 'S'
+                                    ? studentScore == null
+                                      ? true
+                                      : false
                                     : false
                                   : false
                               "
@@ -237,10 +252,12 @@ export default {
     return {
       is_teacher: false,
       showRemoveFile: true,
+      isMobile: this.$isMobile(),
       classData: {},
       studentScore: [],
       studentWork: [],
       studentActivityFiles: [],
+      normalFiles: [],
       session: {
         user_id: sessionUserId,
         category: sessionCategory,
@@ -323,23 +340,51 @@ export default {
         });
     },
     submitWork() {
-      var swFileValue = [];
-      $("input[name='file']").each(function () {
-        swFileValue.push($(this).val());
-      });
+      // var swFileValue = [];
+      // normal upload
+      let normalFormData = new FormData();
 
+      if (!this.isMobile) {
+        let v = 0;
+        $("input[name='file']").each(function () {
+          // swFileValue.push($(this).val());
+          var test = v++;
+          normalFormData.append(
+            "submitStudentData[" + test + "]",
+            $(this).val()
+          );
+        });
+      }
+
+      if (this.isMobile) {
+        for (var i = 0; i < this.normalFiles.length; i++) {
+          let normalFile = this.normalFiles[i];
+          normalFormData.append("file[" + i + "]", normalFile);
+        }
+      }
+
+      // normalFormData.append("submitStudentData", swFileValue);
+      normalFormData.append("user_id", sessionUserId);
+      normalFormData.append("classId", this.$route.params.class_id);
+      normalFormData.append("activityId", this.$route.params.activity_id);
+      normalFormData.append("isMobile", this.isMobile);
+      // console.log(swFileValue);
       this.axios
-        .post(baseUrl + "/api/class/activity/submitStudentWork", {
-          submitStudentData: swFileValue,
-          user_id: sessionUserId,
-          classId: this.$route.params.class_id,
-          activityId: this.$route.params.activity_id,
-        })
+        .post(
+          baseUrl + "/api/class/activity/submitStudentWork",
+          normalFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
         .then((response) => {
           // console.log(swFileValue);
           this.$refs.swpond.removeFiles();
           this.showRemoveFile = false;
           this.getStudentWork();
+          $("#normalFiles").val("");
         })
         .catch((error) => {
           console.log(error);
@@ -393,6 +438,9 @@ export default {
     },
     asset(path) {
       return imgUrl + path;
+    },
+    handleFileUploads() {
+      this.normalFiles = this.$refs.normalFilesRefs.files;
     },
   },
   components: {

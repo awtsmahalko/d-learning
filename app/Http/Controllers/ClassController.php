@@ -366,28 +366,84 @@ class ClassController extends Controller
         return '';
     }
 
+    public function mobileUploadStudenWork($request)
+    {
+        $classCode = Classes::find($request->classId);
+        if ($request->hasFile('file')) {
+            $data = [];
+            if ($request->file('file') != null) {
+                foreach ($request->file('file') as $file) {
+                    // $file = $request->file('file');
+                    $filename = date('his') . '-' . $file->getClientOriginalName();
+                    $filesize = $file->getSize();
+                    $fileType = $file->getClientOriginalExtension();
+                    $folder = uniqid() . '-' . now()->timestamp;
+
+                    $fileThumbs = ["XLS", "DOCX", "CSV", "TXT", "ZIP", "EXE", "XLSX", "PPT", "PPTX"];
+                    $imgThumbs = ["JPEG", "JPG", "EXIF", "TIFF", "GIF", "BMP", "PNG", "SVG", "ICO", "PPM", "PGM", "PNM"];
+
+                    if (in_array(strtoupper($fileType), $fileThumbs)) {
+                        $thumbnail = "/file_extension_icon/" . strtoupper($fileType) . '.png';
+                    } else {
+                        if (in_array(strtoupper($fileType), $imgThumbs)) {
+                            $thumbnail = '/classactivity/' . $classCode->code . '/' . $request->activityId . '/' . $filename;
+                        } else {
+                            $thumbnail = "/file_extension_icon/FILE.png";
+                        }
+                    }
+
+                    // insert to temporary table in database
+                    $tmpPostAttachment = ClassActivityDetail::create([
+                        'class_activity_id' => $request->activityId,
+                        'user_id' => $request->user_id,
+                        'folder' => $folder,
+                        'filename' => $filename,
+                        'filesize' => $filesize,
+                        'filetype' => $fileType,
+                        'thumbnail' => $thumbnail,
+                        'status' => 'T'
+                    ]);
+
+                    if ($tmpPostAttachment) {
+                        $file->storeAs('public/classactivity/' . $classCode->code . '/' . $request->activityId . '/tmp/' . $folder, $filename);
+                    }
+
+                    $data[] = $folder;
+                }
+            }
+            return $data;
+        }
+    }
+
     public function submitStudentWork(Request $request)
     {
+        if ($request->isMobile == "true") {
+            $fileFolders = $this->mobileUploadStudenWork($request);
+            $studentWorkFiles = ($fileFolders != null) ? $fileFolders : ["0" => []];
+        } else {
+            $studentWorkFiles = $request->submitStudentData;
+        }
+
         $class = Classes::find($request->classId);
         $statusUnSubmitted = ClassActivityDetail::where('class_activity_id', $request->activityId)->first();
 
-        if ($statusUnSubmitted->status == 'C') {
-            $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->user_id)->update(['status' => 'S']);
-        } else {
-            foreach ($request->submitStudentData as $studentWorkFile) {
-                if ($studentWorkFile != null) {
-                    $tempSwFile = ClassActivityDetail::where('folder', $studentWorkFile)->first();
+        // if ($statusUnSubmitted->status == 'C') {
+        $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->where('user_id', $request->user_id)->update(['status' => 'S']);
+        // } else {
+        foreach ($studentWorkFiles as $studentWorkFile) {
+            if ($studentWorkFile != null) {
+                $tempSwFile = ClassActivityDetail::where('folder', $studentWorkFile)->first();
 
-                    if (Storage::exists('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename)) {
-                        Storage::move('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename, 'public/classactivity/' . $class->code . "/" . $request->activityId . '/' . $tempSwFile->filename);
+                if (Storage::exists('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename)) {
+                    Storage::move('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder . '/' . $tempSwFile->filename, 'public/classactivity/' . $class->code . "/" . $request->activityId . '/' . $tempSwFile->filename);
 
-                        $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->update(['status' => 'S']);
+                    $updateResponse = ClassActivityDetail::where('class_activity_id', $request->activityId)->update(['status' => 'S']);
 
-                        Storage::deleteDirectory('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder);
-                    }
+                    Storage::deleteDirectory('public/classactivity/' . $class->code . '/' . $request->activityId . '/tmp/' . $tempSwFile->folder);
                 }
             }
         }
+        // }
 
         return response()->json([
             'message' => 'Post Created Successfully!!'
